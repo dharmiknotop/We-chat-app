@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { register } = require('../controllers/registerController')
+const { register, deleteAllUser } = require('../controllers/registerController')
 const { body } = require('express-validator')
 const { login } = require('../controllers/loginController')
 
@@ -35,5 +35,6 @@ router.route('/register').post(
   checkRequestValidationMiddleware,
   register,
 )
+router.route('/deleteAll').delete(deleteAllUser)
 
 module.exports = router

@@ -1,10 +1,30 @@
 {
+  "name": "chattingapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/server.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
     "response-format": "^1.2.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dharmiknotop/nextJsChattingApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dharmiknotop/nextJsChattingApp/issues"
+  },
+  "homepage": "https://github.com/dharmiknotop/nextJsChattingApp#readme"
 }
