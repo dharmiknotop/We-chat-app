@@ -1,0 +1,222 @@
+.s {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
+
+  &__registerContainer {
+    width: 385px;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 25px;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 24px;
+    color: #263238;
+    margin-bottom: 15px;
+  }
+
+  &__subTitle {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #7e7e7e;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  &__inputContainer {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-family: 'Lato', sans-serif;
+      margin: 10px 0;
+    }
+
+    input {
+      height: 40px;
+      border: 1px solid #263238;
+      border-radius: 8px;
+      padding-left: 10px;
+    }
+  }
+
+  &__notActiveBtn {
+    width: 175px;
+    height: 40px;
+
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #fcfcfc;
+
+    background: linear-gradient(
+      90.86deg,
+      rgba(3, 119, 235, 0.5) 0%,
+      rgba(3, 97, 191, 0.46) 103.69%
+    );
+    box-shadow: 0px 7px 11px rgba(3, 119, 235, 0.3);
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    pointer-events: none;
+  }
+
+  &__btnContainer {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  &__activeBtn {
+    width: 175px;
+    height: 40px;
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    color: #fcfcfc;
+
+    background: linear-gradient(
+      90.86deg,
+      #0377eb 0%,
+      rgba(3, 97, 191, 0.92) 103.69%
+    );
+    box-shadow: 0px 7px 11px rgba(3, 119, 235, 0.3);
+    border-radius: 8px;
+    border: none;
+    outline: none;
+
+    &:hover {
+      background: linear-gradient(
+        90.86deg,
+        #0377eb 0%,
+        rgba(8, 69, 129, 0.92) 103.69%
+      );
+      transition: 0.5s all ease-in-out;
+    }
+  }
+
+  &__defaultUserBtn {
+    width: 175px;
+    height: 40px;
+
+    background: white;
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 146.5%;
+    color: #0377eb;
+
+    border: 1px solid #0377eb;
+    filter: drop-shadow(0px 4px 20px rgba(99, 99, 99, 0.1));
+    border-radius: 8px;
+
+    margin-left: 15px;
+
+    &:hover {
+      background: linear-gradient(
+        90.86deg,
+        #0377eb 0%,
+        rgba(3, 97, 191, 0.92) 103.69%
+      );
+      box-shadow: 0px 7px 11px rgba(3, 119, 235, 0.3);
+      color: #fcfcfc;
+      transition: 0.5s all ease;
+    }
+  }
+
+  &__alreadyHaveAnAccTxt {
+    font-family: 'lato';
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 146.5%;
+    margin-top: 15px;
+    a {
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 146.5%;
+      color: #0377eb;
+      margin-left: 5px;
+    }
+  }
+}
+.s2 {
+  &__backgroundImgContainer {
+    width: calc(100vw - 385px);
+    max-width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 70px;
+
+    &__title {
+      font-weight: 600;
+      font-size: 25px;
+      color: white;
+
+      margin: 0;
+      margin-top: 50px;
+    }
+
+    &__subTitle {
+      font-family: 'lato';
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 25px;
+      color: white;
+
+      margin: 0;
+      margin-top: 20px;
+    }
+
+    &__logInTxt {
+      position: relative;
+      font-weight: 600;
+      font-size: 18px;
+      color: white;
+      overflow: hidden;
+      cursor: pointer;
+
+      margin: 0;
+      margin-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+  &__backgroundImgContainer__logInTxt:hover &__underline {
+    transform: translateX(0%);
+    transition: 0.5s all ease-in-out;
+  }
+  &__underline {
+    width: 190px;
+    height: 5px;
+    position: absolute;
+    background-color: white;
+    transform: translateX(-100%);
+    margin-top: 5px;
+  }
+
+  &__backgroundImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+}
+.errorMessage {
+  font-family: 'lato';
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 146%;
+  color: #eb372b;
+
+  margin-top: 5px;
+}

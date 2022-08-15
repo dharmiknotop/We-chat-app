@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
-const connectToDatabase = () => {
+function connectToDatabase() {
   mongoose
     .connect(process.env.DATABASE_URL, {
       useNewUrlParser: true,
@@ -10,4 +10,4 @@ const connectToDatabase = () => {
       console.log('connected successfully')
     })
 }
-module.exports = connectToDatabase
+export default connectToDatabase

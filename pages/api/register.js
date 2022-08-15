@@ -1,8 +1,20 @@
-const userModal = require('../models/userModal')
-const encryptPassword = require('../utils/encryptPassword')
-const FormatResponse = require('response-format')
-const jwt = require('jsonwebtoken')
-exports.register = async (req, res) => {
+import nc from 'next-connect'
+import connectToDatabase from '../../utils/connectDb'
+import userModal from '../../models/userModal'
+import encryptPassword from '../../utils/encryptPassword'
+import jwt from 'jsonwebtoken'
+import FormatResponse from 'response-format'
+
+connectToDatabase()
+const handler = nc({
+  onError: (err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).end('Something broke!')
+  },
+  onNoMatch: (req, res) => {
+    res.status(404).end('Page is not found')
+  },
+}).post(async (req, res) => {
   try {
     const { name, email, password } = req.body
 
@@ -39,18 +51,6 @@ exports.register = async (req, res) => {
   } catch (error) {
     return res.status(400).json(FormatResponse.badRequest(error.message, {}))
   }
-}
+})
 
-exports.deleteAllUser = async (req, res) => {
-  try {
-    const deleteAll = await userModal.deleteMany({})
-
-    if (deleteAll) {
-      return res
-        .status(200)
-        .json(FormatResponse.success('Success', { deleteAll }))
-    }
-  } catch (err) {
-    return res.status(400).json(FormatResponse.badRequest(err.message, {}))
-  }
-}
+export default handler
