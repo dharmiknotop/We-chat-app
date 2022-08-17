@@ -1,11 +1,9 @@
 import nc from 'next-connect'
-import connectToDatabase from '../../utils/connectDb'
-import userModal from '../../models/userModal'
-import encryptPassword from '../../utils/encryptPassword'
+import userModal from '../../../models/userModal'
 import jwt from 'jsonwebtoken'
 import FormatResponse from 'response-format'
+import { createCookie } from '../../../utils/createCookie'
 
-connectToDatabase()
 const handler = nc({
   onError: (err, req, res, next) => {
     console.error(err.stack)
@@ -17,6 +15,7 @@ const handler = nc({
 }).post(async (req, res) => {
   try {
     const { name, email, password } = req.body
+    const { cookies } = req
 
     // check does user exist in User
 
@@ -31,7 +30,7 @@ const handler = nc({
     }
     // encrypting the password
 
-    const encryptedPassword = await encryptPassword(password)
+    const encryptedPassword = await bcrypt.hashSync(password, 12)
 
     // creating the user
 
@@ -43,11 +42,17 @@ const handler = nc({
 
     //generating token
 
-    const token = await jwt.sign({ id: newUser._id }, process.env.SECRET_KEY)
+    const token = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+        id: newUser._id,
+      },
+      process.env.SECRET_KEY,
+    )
 
-    console.log(token)
+    createCookie(res, cookies, token)
 
-    return res.status(200).json(FormatResponse.success('Success', { newUser }))
+    return res.status(200).json(FormatResponse.success('Success', newUser))
   } catch (error) {
     return res.status(400).json(FormatResponse.badRequest(error.message, {}))
   }

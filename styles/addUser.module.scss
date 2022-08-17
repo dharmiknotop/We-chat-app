@@ -1,0 +1,17 @@
+.s {
+  height: 50vh;
+  overflow: auto;
+  padding: 0 10px;
+
+  &__itemContainer {
+    padding: 5px 0;
+    font-family: 'lato';
+    font-weight: 500;
+  }
+
+  &__topSection {
+    padding: 10px;
+    font-weight: 800;
+    background: #f0f2f5;
+  }
+}

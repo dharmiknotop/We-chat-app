@@ -1,5 +1,8 @@
-import { Schema, model,models } from'mongoose'
+import { Schema, model, models } from 'mongoose'
+import connectToDatabase from '../utils/connectDb'
 const { ObjectId } = Schema
+
+connectToDatabase()
 
 const userSchema = new Schema({
   name: {
@@ -22,6 +25,17 @@ const userSchema = new Schema({
     trim: true,
     default: '',
   },
+  userList: [
+    {
+      userId: {
+        type: ObjectId,
+      },
+      userName: {
+        type: String,
+        default: '',
+      },
+    },
+  ],
 })
 
 module.exports = models.User || model('User', userSchema)

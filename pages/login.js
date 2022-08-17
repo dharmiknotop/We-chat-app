@@ -1,8 +1,8 @@
-import styles from '../styles/register.module.scss'
 import { useEffect, useState } from 'react'
 import inputValidation from '../src/commonFiles/inputValidation'
 import Link from 'next/link'
 import axios from 'axios'
+import styles from '../styles/register.module.scss'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { authUserAtom } from '../src/recoil/recoil'
@@ -36,35 +36,29 @@ const register = () => {
       return
     }
 
-    register()
+    logIn()
   }
 
   const validateForm = async () => {
     let hasError = false
 
     let tempError = {
-      name: '',
       email: '',
       password: '',
     }
 
-    tempError.name = inputValidation.isInputEmpty(formData.name)
-    if (tempError.name !== '') {
+    tempError.email = inputValidation.isInputEmpty(formData.email)
+    if (tempError.email !== '') {
       hasError = true
       setShowBtn(false)
     }
 
-    // tempError.email = inputValidation.isInputEmailValid(formData.email)
-    // if (tempError.email !== '') {
-    //   hasError = true
-    //   setShowBtn(false)
-    // }
+    tempError.password = inputValidation.isInputEmpty(formData.password)
+    if (tempError.password !== '') {
+      hasError = true
+      setShowBtn(false)
+    }
 
-    // tempError.password = inputValidation.isInputPasswordValid(formData.password)
-    // if (tempError.password !== '') {
-    //   hasError = true
-    //   setShowBtn(false)
-    // }
     setFormDataError({
       ...tempError,
     })
@@ -72,7 +66,7 @@ const register = () => {
     return hasError
   }
 
-  const register = async () => {
+  const logIn = async () => {
     setRequestPostData({
       loading: true,
       success: '',
@@ -81,16 +75,16 @@ const register = () => {
 
     try {
       const res = await axios.post(
-        `api/auth/register`,
+        `api/auth/login`,
         { ...formData },
         {
           withCredentials: true,
         },
       )
       setUser({
-        userId: res.data.data._id,
-        userName: res.data.data.name,
-        userEmail: res.data.data.email,
+        id: res.data.data._id,
+        name: res.data.data.name,
+        email: res.data.data.email,
       })
 
       console.log(res.data.data)
@@ -115,27 +109,9 @@ const register = () => {
   return (
     <div className={styles.s}>
       <div className={styles.s__registerContainer}>
-        <h2 className={styles.s__title}>Sign up to your account</h2>
-        <h3 className={styles.s__subTitle}>
-          Create a account to chat with the world.
-        </h3>
-        <div className={styles.s__inputContainer}>
-          <label>Name</label>
-          <input
-            type="text"
-            onChange={(val) => {
-              setShowBtn(true)
-              setFormData({
-                ...formData,
-                name: val.target.value,
-              })
-            }}
-          />
+        <h2 className={styles.s__title}>Log in to your account</h2>
+        <h3 className={styles.s__subTitle}>log in to chat with the world.</h3>
 
-          {formDataError.name !== '' && (
-            <span className={styles.errorMessage}>Please Enter Name</span>
-          )}
-        </div>
         <div className={styles.s__inputContainer}>
           <label>Email</label>
           <input
@@ -175,10 +151,7 @@ const register = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.name !== '' &&
-              formData.email !== '' &&
-              formData.password !== '' &&
-              showBtn
+              formData.email !== '' && formData.password !== '' && showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
             }`}
@@ -187,7 +160,7 @@ const register = () => {
             }}
           >
             {' '}
-            get started
+            Log in
           </button>
           <button className={`${styles.s__defaultUserBtn}`}>
             Pre Defined User
@@ -195,8 +168,8 @@ const register = () => {
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
           Have an account ?{' '}
-          <Link href="/login">
-            <a> Log In</a>
+          <Link href="/register">
+            <a> Sign Up</a>
           </Link>
         </span>
       </div>
