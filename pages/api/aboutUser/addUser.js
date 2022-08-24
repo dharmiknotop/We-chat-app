@@ -7,12 +7,12 @@ const handler = nc()
   .post(async (req, res) => {
     try {
       const { id } = req.payload
-      const { name, _id } = req.body
+      const { userName, _id } = req.body
       const user = await userModal.findOneAndUpdate(
         { _id: id },
         {
           $push: {
-            userList: { name, _id },
+            userList: { userName, userId: _id },
           },
         },
       )

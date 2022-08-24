@@ -1,12 +1,10 @@
 import nc from 'next-connect'
-import connectToDatabase from '../../../utils/connectDb'
 import userModal from '../../../models/userModal'
 import jwt from 'jsonwebtoken'
 import FormatResponse from 'response-format'
 import { createCookie } from '../../../utils/createCookie'
-const bcrypt = require('bcryptjs')
+import bcrypt from 'bcryptjs'
 
-connectToDatabase()
 const handler = nc({
   onError: (err, req, res, next) => {
     console.error(err.stack)

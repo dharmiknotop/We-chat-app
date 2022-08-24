@@ -2,13 +2,14 @@ import FormatResponse from 'response-format'
 import jwt from 'jsonwebtoken'
 
 const verifyJwt = async (req, res, next) => {
-  console.log(req.cookies.token)
   if (
     req.cookies.token === undefined ||
     req.cookies.token === '' ||
     req.cookies.token === null
   ) {
-    return res.status(401).json(FormatResponse.badRequest('kya yar', {}))
+    return res
+      .status(401)
+      .json(FormatResponse.badRequest('Unauthorized token doesnot exist', {}))
   }
   try {
     req.payload = jwt.verify(req.cookies.token, process.env.SECRET_KEY)
@@ -16,7 +17,11 @@ const verifyJwt = async (req, res, next) => {
     next()
   } catch (err) {
     console.log(err)
-    return res.status(401).json(FormatResponse.badRequest('unauthodrized', {}))
+    return res
+      .status(401)
+      .json(
+        FormatResponse.badRequest('Unauthorized Problem while verifying', {}),
+      )
   }
 }
 export default verifyJwt

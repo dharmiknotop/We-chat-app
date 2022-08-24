@@ -25,6 +25,10 @@ const userSchema = new Schema({
     trim: true,
     default: '',
   },
+  logoUrl: {
+    type: String,
+    default: '',
+  },
   userList: [
     {
       userId: {

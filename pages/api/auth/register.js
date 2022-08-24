@@ -3,6 +3,7 @@ import userModal from '../../../models/userModal'
 import jwt from 'jsonwebtoken'
 import FormatResponse from 'response-format'
 import { createCookie } from '../../../utils/createCookie'
+import bcrypt from 'bcryptjs'
 
 const handler = nc({
   onError: (err, req, res, next) => {
@@ -14,7 +15,7 @@ const handler = nc({
   },
 }).post(async (req, res) => {
   try {
-    const { name, email, password } = req.body
+    const { name, email, password, logoUrl } = req.body
     const { cookies } = req
 
     // check does user exist in User
@@ -38,6 +39,7 @@ const handler = nc({
       name,
       email,
       password: encryptedPassword,
+      logoUrl,
     })
 
     //generating token

@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { authUserAtom } from '../recoil/recoil'
 import { useRecoilState } from 'recoil'
+import { useRouter } from 'next/router'
 
 const ValidateUser = () => {
+  const router = useRouter()
   const [user, setUser] = useRecoilState(authUserAtom)
   const getUserDetails = async () => {
     try {
@@ -17,6 +19,7 @@ const ValidateUser = () => {
       })
     } catch (error) {
       console.log('error: ', error)
+      // router.push('/login')
     }
   }
 

@@ -10,8 +10,13 @@
   }
 
   &__topSection {
+    display: flex;
+    justify-content: space-between;
+
     padding: 10px;
     font-weight: 800;
     background: #f0f2f5;
+
+    border-radius: 8px;
   }
 }

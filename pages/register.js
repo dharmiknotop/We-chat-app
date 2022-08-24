@@ -18,10 +18,13 @@ const register = () => {
 
   const [showBtn, setShowBtn] = useState(true)
 
+  const [selectedImage, setSelectedImage] = useState('')
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
+    logoUrl: '',
   })
   const [formDataError, setFormDataError] = useState({
     name: '',
@@ -32,9 +35,9 @@ const register = () => {
   const [user, setUser] = useRecoilState(authUserAtom)
 
   const uploadDetails = () => {
-    if (!validateForm()) {
-      return
-    }
+    // if (!validateForm()) {
+    //   return
+    // }
 
     register()
   }
@@ -79,6 +82,7 @@ const register = () => {
       error: '',
     })
 
+    getImageUrl()
     try {
       const res = await axios.post(
         `api/auth/register`,
@@ -88,9 +92,10 @@ const register = () => {
         },
       )
       setUser({
-        userId: res.data.data._id,
-        userName: res.data.data.name,
-        userEmail: res.data.data.email,
+        id: res.data.data._id,
+        name: res.data.data.name,
+        email: res.data.data.email,
+        logoUrl: res.data.data.logoUrl,
       })
 
       console.log(res.data.data)
@@ -100,7 +105,9 @@ const register = () => {
         success: 'sign up done succesfully.',
         error: '',
       })
-      console.log(user)
+
+      console.log(form)
+
       router.push('/')
     } catch (error) {
       console.log('error: ', error)
@@ -110,6 +117,27 @@ const register = () => {
         error: 'Some unexpected error occur.',
       })
     }
+  }
+
+  const getImageUrl = async () => {
+    console.log(selectedImage)
+    const form = new FormData()
+
+    form.append('file', selectedImage)
+    form.append('upload_preset', 'weChat')
+    form.append('cloud_name', 'dflwrsxue')
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/dflwrsxue/image/upload`,
+      { method: 'POST', body: form },
+    )
+    const res2 = res.json()
+
+    setFormData({ ...formData, logoUrl: res2.url })
+  }
+
+  const uploadImage = (e) => {
+    setSelectedImage(e.target.files[0])
   }
 
   return (
@@ -169,6 +197,15 @@ const register = () => {
           {formDataError.password !== '' && (
             <span className={styles.errorMessage}>
               Please Enter Valid password
+            </span>
+          )}
+        </div>
+        <div>
+          <label>User Logo</label>
+          <input type="file" accept=".jpg,.png,.jpeg" onChange={uploadImage} />
+          {formDataError.email !== '' && (
+            <span className={styles.errorMessage}>
+              Please Enter Valid Email
             </span>
           )}
         </div>
