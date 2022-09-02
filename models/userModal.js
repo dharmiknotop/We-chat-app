@@ -34,7 +34,16 @@ const userSchema = new Schema({
       userId: {
         type: ObjectId,
       },
+
       userName: {
+        type: String,
+        default: '',
+      },
+      userLogo: {
+        type: String,
+        default: '',
+      },
+      chatRoomId: {
         type: String,
         default: '',
       },

@@ -6,16 +6,33 @@ const handler = nc()
   .use(verifyJwt)
   .post(async (req, res) => {
     try {
-      const { id } = req.payload
-      const { userName, _id } = req.body
+      const { id, userName, userLogo } = req.payload
+      const { otherUserName, otherUserId, otherUserLogo, chatRoomId } = req.body
+      console.log()
+      //adding the other user in the user's userList
       const user = await userModal.findOneAndUpdate(
         { _id: id },
         {
           $push: {
-            userList: { userName, userId: _id },
+            userList: {
+              userName: otherUserName,
+              userId: otherUserId,
+              userLogo: otherUserLogo,
+            },
           },
         },
       )
+      //adding the  user in the other user's userList
+      console.log(otherUserId)
+      await userModal.findOneAndUpdate(
+        { _id: otherUserId },
+        {
+          $push: {
+            userList: { userName, userId: id, userLogo },
+          },
+        },
+      )
+
       return res.status(200).json(FormatResponse.success('Success', user))
     } catch (error) {
       return res.status(400).json(FormatResponse.badRequest(error.message, {}))

@@ -40,7 +40,14 @@ const handler = nc({
       })
     }
 
-    const token = jwt.sign({ id: isValidUser._id }, process.env.SECRET_KEY)
+    const token = jwt.sign(
+      {
+        id: isValidUser._id,
+        userName: isValidUser.name,
+        userLogo: isValidUser.logoUrl,
+      },
+      process.env.SECRET_KEY,
+    )
 
     console.log(token)
     createCookie(res, cookies, token)

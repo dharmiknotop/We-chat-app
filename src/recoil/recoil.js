@@ -7,6 +7,7 @@ export const authUserAtom = atom({
     id: '',
     name: '',
     email: '',
+    logoUrl: '',
   },
 })
 export const theOtherUser = atom({
@@ -14,5 +15,6 @@ export const theOtherUser = atom({
   default: {
     id: '',
     name: '',
+    chatRoomId: '',
   },
 })

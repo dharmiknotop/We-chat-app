@@ -48,6 +48,8 @@ const handler = nc({
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
         id: newUser._id,
+        userName: newUser.name,
+        userLogo: newUser.logoUrl,
       },
       process.env.SECRET_KEY,
     )

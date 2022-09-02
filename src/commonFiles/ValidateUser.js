@@ -16,6 +16,7 @@ const ValidateUser = () => {
         id: res.data.data._id,
         name: res.data.data.name,
         email: res.data.data.email,
+        logoUrl: res.data.data.logoUrl,
       })
     } catch (error) {
       console.log('error: ', error)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import inputValidation from '../src/commonFiles/inputValidation'
 import Link from 'next/link'
 import axios from 'axios'
@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { authUserAtom } from '../src/recoil/recoil'
 
-const register = () => {
+const Login = () => {
   const router = useRouter()
 
   const [requestPostData, setRequestPostData] = useState({
@@ -85,6 +85,7 @@ const register = () => {
         id: res.data.data._id,
         name: res.data.data.name,
         email: res.data.data.email,
+        logoUrl: res.data.data.logoUrl,
       })
 
       console.log(res.data.data)
@@ -198,4 +199,4 @@ const register = () => {
   )
 }
 
-export default register
+export default Login

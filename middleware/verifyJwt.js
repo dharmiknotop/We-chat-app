@@ -13,7 +13,7 @@ const verifyJwt = async (req, res, next) => {
   }
   try {
     req.payload = jwt.verify(req.cookies.token, process.env.SECRET_KEY)
-    // console.log(req.payload)
+    console.log(req.payload)
     next()
   } catch (err) {
     console.log(err)

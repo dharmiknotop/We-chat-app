@@ -24,7 +24,6 @@ const register = () => {
     name: '',
     email: '',
     password: '',
-    logoUrl: '',
   })
   const [formDataError, setFormDataError] = useState({
     name: '',
@@ -82,11 +81,14 @@ const register = () => {
       error: '',
     })
 
-    getImageUrl()
+    const logoUrl = await getImageUrl()
+
+    console.log('url ', formData)
+
     try {
       const res = await axios.post(
         `api/auth/register`,
-        { ...formData },
+        { ...formData, logoUrl },
         {
           withCredentials: true,
         },
@@ -98,15 +100,11 @@ const register = () => {
         logoUrl: res.data.data.logoUrl,
       })
 
-      console.log(res.data.data)
-
       setRequestPostData({
         loading: false,
         success: 'sign up done succesfully.',
         error: '',
       })
-
-      console.log(form)
 
       router.push('/')
     } catch (error) {
@@ -120,7 +118,6 @@ const register = () => {
   }
 
   const getImageUrl = async () => {
-    console.log(selectedImage)
     const form = new FormData()
 
     form.append('file', selectedImage)
@@ -131,13 +128,9 @@ const register = () => {
       `https://api.cloudinary.com/v1_1/dflwrsxue/image/upload`,
       { method: 'POST', body: form },
     )
-    const res2 = res.json()
+    const res2 = await res.json()
 
-    setFormData({ ...formData, logoUrl: res2.url })
-  }
-
-  const uploadImage = (e) => {
-    setSelectedImage(e.target.files[0])
+    return res2.url
   }
 
   return (
@@ -200,9 +193,16 @@ const register = () => {
             </span>
           )}
         </div>
-        <div>
+        <div className="mt-2">
           <label>User Logo</label>
-          <input type="file" accept=".jpg,.png,.jpeg" onChange={uploadImage} />
+          <input
+            type="file"
+            accept=".jpg,.png,.jpeg"
+            onChange={(e) => {
+              setSelectedImage(e.target.files[0])
+            }}
+            className="mt-2"
+          />
           {formDataError.email !== '' && (
             <span className={styles.errorMessage}>
               Please Enter Valid Email

@@ -20,7 +20,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
     })
     try {
       const res = await axios.post(
-        `/api/auth/getAllUser`,
+        `/api/aboutUser/getAllUser`,
         {},
         {
           withCredentials: true,
@@ -51,7 +51,11 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
     try {
       const res = await axios.post(
         `/api/aboutUser/addUser`,
-        { userId: item._id, userName: item.name },
+        {
+          otherUserId: item._id,
+          otherUserName: item.name,
+          otherUserLogo: item.logoUrl,
+        },
         {
           withCredentials: true,
         },
