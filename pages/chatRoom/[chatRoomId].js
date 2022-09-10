@@ -16,7 +16,7 @@ export default function Home() {
 
   const [messages, setMessages] = useState([])
 
-  const createMessage = async () => {
+  const getMessages = async () => {
     setRequestGetUser({
       loading: true,
       success: '',
@@ -49,12 +49,20 @@ export default function Home() {
   }
 
   useEffect(() => {
-    createMessage()
+    getMessages()
   }, [])
+
+  useEffect(() => {
+    getMessages()
+  }, [chatRoomId])
 
   return (
     <div>
-      <MainScreen chats={messages} />
+      <MainScreen
+        chats={messages}
+        getMessages={getMessages}
+        chatRoomId={chatRoomId}
+      />
     </div>
   )
 }

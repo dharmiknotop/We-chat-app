@@ -2,6 +2,14 @@ import nc from 'next-connect'
 import FormatResponse from 'response-format'
 import verifyJwt from '../../../middleware/verifyJwt'
 import messageModal from '../../../models/messageModal'
+import { db } from '../../../firebaseConfig'
+import {
+  collection,
+  doc,
+  increment,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore'
 const handler = nc()
   .use(verifyJwt)
   .post(async (req, res) => {
@@ -9,10 +17,21 @@ const handler = nc()
       const { id } = req.payload
       const { chatRoomId, message } = req.body
 
+      console.log(chatRoomId)
+      console.log(message)
+
+      const colRef = doc(db, 'chats', chatRoomId.toString())
+
       const messages = await messageModal.create({
         userId: id,
         chatRoomId,
         message,
+      })
+
+      updateDoc(colRef, {
+        messageCount: increment(1),
+      }).then(() => {
+        console.log('sucess')
       })
 
       return res

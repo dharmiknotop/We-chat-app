@@ -3,11 +3,12 @@ import { BiSend } from 'react-icons/bi'
 import { Fragment, useState } from 'react'
 import axios from 'axios'
 import { useRecoilValue } from 'recoil'
-import { theOtherUser } from '../../recoil/recoil'
+import { theOtherUser, authUserAtom } from '../../recoil/recoil'
 import TheChats from './TheChats'
 
 const RightSection = ({ theChatter, chats }) => {
   const otherUser = useRecoilValue(theOtherUser)
+  const user = useRecoilValue(authUserAtom)
 
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
@@ -61,7 +62,7 @@ const RightSection = ({ theChatter, chats }) => {
                 currently no user Selected
               </div>
             )}
-            {chats && <TheChats chats={chats} />}
+            {chats && <TheChats chats={chats} user={user} />}
 
             <div className={styles.s__chatContainer__overlay}></div>
           </div>

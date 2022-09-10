@@ -1,0 +1,20 @@
+.text_left {
+  text-align: left;
+}
+.text_right {
+  text-align: right;
+}
+.chats {
+  padding: 5px 15px;
+  margin: 10px 0;
+  &__left {
+    color: white;
+    background-color: pink;
+    border-radius: 10px;
+  }
+  &__right {
+    background-color: cyan;
+    color: white;
+    border-radius: 10px;
+  }
+}

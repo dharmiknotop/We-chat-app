@@ -3,6 +3,8 @@ import FormatResponse from 'response-format'
 import verifyJwt from '../../../middleware/verifyJwt'
 import userModal from '../../../models/userModal'
 import chatModal from '../../../models/chatModal'
+import { db } from '../../../firebaseConfig'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 const handler = nc()
   .use(verifyJwt)
   .post(async (req, res) => {
@@ -11,6 +13,8 @@ const handler = nc()
       const { otherUserName, otherUserId } = req.body
 
       const tempChatRoom = await chatModal.create({ userList: [] })
+
+      const colRef = doc(db, 'chats', tempChatRoom._id.toString())
 
       console.log(tempChatRoom)
 
@@ -50,8 +54,12 @@ const handler = nc()
           $set: { 'userList.$.chatRoomId': chatRoom._id },
         },
       )
-
-      console.log(theOtherUser)
+      setDoc(colRef, {
+        messageCount: 0,
+        chatRoomId: tempChatRoom._id.toString(),
+      }).then(() => {
+        console.log('sucess')
+      })
 
       return res.status(200).json(FormatResponse.success('Success', chatRoom))
     } catch (error) {

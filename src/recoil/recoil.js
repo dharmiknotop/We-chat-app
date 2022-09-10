@@ -8,6 +8,7 @@ export const authUserAtom = atom({
     name: '',
     email: '',
     logoUrl: '',
+    isLoggedIn: '',
   },
 })
 export const theOtherUser = atom({

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import inputValidation from '../src/commonFiles/inputValidation'
 import Link from 'next/link'
 import axios from 'axios'
@@ -86,6 +86,7 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
+        isLoggedIn: 'true',
       })
 
       console.log(res.data.data)
@@ -95,7 +96,9 @@ const Login = () => {
         success: 'sign up done succesfully.',
         error: '',
       })
+
       console.log(user)
+
       router.push('/')
     } catch (error) {
       console.log('error: ', error)
@@ -106,6 +109,13 @@ const Login = () => {
       })
     }
   }
+  useEffect(() => {
+    user && user.isLoggedIn === 'true' ? router.push('/') : null
+  }, [])
+
+  useEffect(() => {
+    user && user.isLoggedIn === 'true' ? router.push('/') : null
+  }, [user, router])
 
   return (
     <div className={styles.s}>

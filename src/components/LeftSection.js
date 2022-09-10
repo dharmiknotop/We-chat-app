@@ -233,13 +233,15 @@ const LeftSection = ({ user, setTheChatter }) => {
             >
               {/* {console.log('item', item)} */}
               <div className="rounded-circle me-5">
-                <Image
-                  src={item?.userLogo}
-                  alt="userLogoImg"
-                  width="50"
-                  height="50"
-                  className="rounded-circle"
-                />
+                {item?.userLogo && (
+                  <Image
+                    src={item?.userLogo}
+                    alt="userLogoImg"
+                    width="50"
+                    height="50"
+                    className="rounded-circle"
+                  />
+                )}
               </div>
               <div>{item?.userName}</div>
             </div>
