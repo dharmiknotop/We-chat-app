@@ -257,6 +257,7 @@ const Register = () => {
           className={styles.s2__backgroundImg}
           src="/img/register/backgroundImg.png"
           alt=""
+          layout="fill"
         />
       </div>
     </div>
