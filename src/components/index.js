@@ -24,7 +24,7 @@ const Index = ({ chats, getMessages, chatRoomId }) => {
 
   useEffect(() => {
     user.isLoggedIn === '' ? router.push('/login') : null
-  }, [])
+  }, [router, user])
 
   useEffect(() => {
     const unsub = onSnapshot(tempColRef, (snapshot) => {

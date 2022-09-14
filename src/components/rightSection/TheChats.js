@@ -7,7 +7,7 @@ const TheChats = ({ chats, user, messageEndRef }) => {
       behavior: 'smooth',
       block: 'start',
     })
-  }, [chats])
+  }, [chats, messageEndRef])
 
   return (
     <div>

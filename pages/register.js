@@ -6,8 +6,9 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { authUserAtom } from '../src/recoil/recoil'
+import Image from 'next/image'
 
-const register = () => {
+const Register = () => {
   const router = useRouter()
 
   const [requestPostData, setRequestPostData] = useState({
@@ -244,7 +245,7 @@ const register = () => {
         </h5>
         <h6 className={styles.s2__backgroundImgContainer__subTitle}>
           Communication has never been this
-          <br /> easy, you're just one click far to use this.
+          <br /> easy, you re just one click far to use this.
           <br />
           log in if already registered.
         </h6>
@@ -252,7 +253,7 @@ const register = () => {
           Log in to your account
           <div className={styles.s2__underline}></div>
         </div>
-        <img
+        <Image
           className={styles.s2__backgroundImg}
           src="/img/register/backgroundImg.png"
           alt=""
@@ -262,4 +263,4 @@ const register = () => {
   )
 }
 
-export default register
+export default Register

@@ -6,6 +6,7 @@ import styles from '../styles/register.module.scss'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { authUserAtom } from '../src/recoil/recoil'
+import Image from 'next/image'
 
 const Login = () => {
   const router = useRouter()
@@ -109,9 +110,6 @@ const Login = () => {
       })
     }
   }
-  useEffect(() => {
-    user && user.isLoggedIn === 'true' ? router.push('/') : null
-  }, [])
 
   useEffect(() => {
     user && user.isLoggedIn === 'true' ? router.push('/') : null
@@ -191,7 +189,7 @@ const Login = () => {
         </h5>
         <h6 className={styles.s2__backgroundImgContainer__subTitle}>
           Communication has never been this
-          <br /> easy, you're just one click far to use this.
+          <br /> easy, you re just one click far to use this.
           <br />
           log in if already registered.
         </h6>
@@ -199,7 +197,7 @@ const Login = () => {
           Log in to your account
           <div className={styles.s2__underline}></div>
         </div>
-        <img
+        <Image
           className={styles.s2__backgroundImg}
           src="/img/register/backgroundImg.png"
           alt=""

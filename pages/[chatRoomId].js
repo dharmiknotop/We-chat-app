@@ -50,10 +50,6 @@ export default function Home() {
 
   useEffect(() => {
     getMessages()
-  }, [])
-
-  useEffect(() => {
-    getMessages()
   }, [chatRoomId])
 
   return (
