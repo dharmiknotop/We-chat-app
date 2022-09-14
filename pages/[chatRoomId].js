@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import MainScreen from '../../src/components/index'
+import MainScreen from '../src/components/index'
 
 export default function Home() {
   const router = useRouter()

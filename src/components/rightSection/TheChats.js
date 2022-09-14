@@ -1,22 +1,30 @@
-import React from 'react'
+import { useEffect } from 'react'
 import styles from './css/theChats.module.scss'
 
-const TheChats = ({ chats, user }) => {
-  console.log(user)
+const TheChats = ({ chats, user, messageEndRef }) => {
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }, [chats])
+
   return (
     <div>
       {chats &&
         chats.map((item) => {
           return (
             <div
-              key={item?.id}
+              key={item.id}
               className={`${styles.chats} ${
-                item.id === user.id ? styles.text_left : styles.text_right
+                item.userId === user.id ? styles.text__right : styles.text__left
               }`}
             >
               <span
                 className={`${styles.chats} ${
-                  item.id === user.id ? styles.chats__left : styles.chats__right
+                  item.userId === user.id
+                    ? styles.chats__right
+                    : styles.chats__left
                 }`}
               >
                 {item?.message}
@@ -24,6 +32,7 @@ const TheChats = ({ chats, user }) => {
             </div>
           )
         })}
+      <div ref={messageEndRef} />
     </div>
   )
 }

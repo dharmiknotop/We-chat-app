@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil'
 import { theOtherUser, authUserAtom } from '../../recoil/recoil'
 import TheChats from './TheChats'
 
-const RightSection = ({ theChatter, chats }) => {
+const RightSection = ({ theChatter, chats, messageEndRef }) => {
   const otherUser = useRecoilValue(theOtherUser)
   const user = useRecoilValue(authUserAtom)
 
@@ -32,7 +32,6 @@ const RightSection = ({ theChatter, chats }) => {
           withCredentials: true,
         },
       )
-      console.log(otherUser)
 
       setRequestGetUser({
         loading: false,
@@ -51,8 +50,8 @@ const RightSection = ({ theChatter, chats }) => {
 
   return (
     <Fragment>
-      <div className={` ${styles.s__container}`}>
-        <div className="h-100">
+      <div className={` ${styles.s__containerOuter}`}>
+        <div className={` ${styles.s__container}`}>
           {' '}
           <div className={styles.s__headerContainer}>{theChatter.name}</div>
           <div className={styles.s__chatContainer}>
@@ -62,7 +61,13 @@ const RightSection = ({ theChatter, chats }) => {
                 currently no user Selected
               </div>
             )}
-            {chats && <TheChats chats={chats} user={user} />}
+            {chats && (
+              <TheChats
+                chats={chats}
+                user={user}
+                messageEndRef={messageEndRef}
+              />
+            )}
 
             <div className={styles.s__chatContainer__overlay}></div>
           </div>
@@ -82,6 +87,7 @@ const RightSection = ({ theChatter, chats }) => {
             className={styles.s__addAChatContainer__svg}
             onClick={() => {
               createMessage()
+              setSearchQuery('')
             }}
           />
         </div>

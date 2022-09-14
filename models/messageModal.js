@@ -17,6 +17,9 @@ const userSchema = new Schema({
     type: String,
     default: '',
   },
+  // createdAt: {
+  //   type: String,
+  // },
 })
 
 module.exports = models.Messages || model('Messages', userSchema)
