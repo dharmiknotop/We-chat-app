@@ -9,6 +9,11 @@ const userSchema = new Schema({
     type: ObjectId,
     default: '',
   },
+
+  userName: {
+    type: String,
+    default: '',
+  },
   chatRoomId: {
     type: ObjectId,
     default: '',
@@ -17,6 +22,7 @@ const userSchema = new Schema({
     type: String,
     default: '',
   },
+
   // createdAt: {
   //   type: String,
   // },

@@ -18,7 +18,7 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
-  const createMessage = async (item) => {
+  const createMessage = async () => {
     setRequestGetUser({
       loading: true,
       success: '',
@@ -27,7 +27,11 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
     try {
       const res = await axios.post(
         `/api/messages/addMessage`,
-        { chatRoomId: otherUser.chatRoomId, message: searchQuery },
+        {
+          chatRoomId: otherUser.chatRoomId,
+          message: searchQuery,
+          userName: otherUser.name,
+        },
         {
           withCredentials: true,
         },

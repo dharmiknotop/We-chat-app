@@ -70,6 +70,7 @@
     align-items: center;
   }
 }
+
 .search {
   &__searchOuterContainer {
     height: 50px;
@@ -89,5 +90,27 @@
       border: none;
       outline: none;
     }
+  }
+}
+
+.specificMessages {
+  height: calc(100vh - 115px);
+  overflow-y: auto;
+
+  &_container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    padding-left: 10px;
+    border-bottom: 1px solid gray;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 14px;
   }
 }

@@ -11,8 +11,6 @@ const handler = nc()
       const messages = await messageModal.find({
         chatRoomId,
       })
-      console.log(chatRoomId)
-      console.log(messages)
 
       return res
         .status(200)

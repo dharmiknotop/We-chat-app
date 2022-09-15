@@ -15,15 +15,15 @@ const handler = nc()
   .post(async (req, res) => {
     try {
       const { id } = req.payload
-      const { chatRoomId, message } = req.body
+      const { chatRoomId, message, userName } = req.body
 
-      console.log(chatRoomId)
-      console.log(message)
+      console.log(userName)
 
       const colRef = doc(db, 'chats', chatRoomId.toString())
 
       const messages = await messageModal.create({
         userId: id,
+        userName,
         chatRoomId,
         message,
       })

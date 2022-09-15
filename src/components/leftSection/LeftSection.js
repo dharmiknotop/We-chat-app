@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from './css/leftSection.module.scss'
 import useOnClickOutside from '../../../hooks/useOnClickOutside'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -25,6 +26,8 @@ const LeftSection = ({ user, setTheChatter }) => {
   const [showDropDown, setShowDropDown] = useState(false)
 
   const [userList, setUserList] = useState([])
+
+  const [specificMessages, setSpecificMessages] = useState([])
 
   const [chatRoomId, setChatRoomId] = useState('')
 
@@ -106,6 +109,9 @@ const LeftSection = ({ user, setTheChatter }) => {
           withCredentials: true,
         },
       )
+      console.log(res.data.data)
+
+      setSpecificMessages(res.data.data)
 
       setRequestGetUser({
         loading: false,
@@ -308,7 +314,31 @@ const LeftSection = ({ user, setTheChatter }) => {
           })}
         </div>
       ) : (
-        <div>\sdaf</div>
+        <div className={styles.specificMessages}>
+          {specificMessages.map((item) => {
+            console.log(item)
+            return (
+              <Link key={item._id} href={`/${item.chatRoomId}`}>
+                <a>
+                  {' '}
+                  <div
+                    className={styles.specificMessages_container}
+                    onClick={() => {
+                      setTheChatter({
+                        id: item?.id,
+                        name: item?.userName,
+                        chatRoomId,
+                      })
+                    }}
+                  >
+                    <h1>{item?.userName}</h1>
+                    <h2> {item?.message} </h2>
+                  </div>
+                </a>
+              </Link>
+            )
+          })}
+        </div>
       )}
       {renderAddUserModal()}
     </div>
