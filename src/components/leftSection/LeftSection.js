@@ -11,6 +11,8 @@ import { useRouter } from 'next/router'
 import { DebounceInput } from 'react-debounce-input'
 
 import { AiOutlineSearch } from 'react-icons/ai'
+import { messageId } from '../../recoil/recoil'
+import { useRecoilState } from 'recoil'
 
 const LeftSection = ({ user, setTheChatter }) => {
   const locationRef = useRef()
@@ -23,13 +25,15 @@ const LeftSection = ({ user, setTheChatter }) => {
   })
   const [searchQuery, setSearchQuery] = useState('')
 
-  const [showDropDown, setShowDropDown] = useState(false)
+  const [specificMessageId, setSpecificMessageId] = useRecoilState(messageId)
 
   const [userList, setUserList] = useState([])
 
   const [specificMessages, setSpecificMessages] = useState([])
 
   const [chatRoomId, setChatRoomId] = useState('')
+
+  const [showDropDown, setShowDropDown] = useState(false)
 
   const [addUserModal, setAddUserModal] = useState(false)
 
@@ -109,7 +113,6 @@ const LeftSection = ({ user, setTheChatter }) => {
           withCredentials: true,
         },
       )
-      console.log(res.data.data)
 
       setSpecificMessages(res.data.data)
 
@@ -316,7 +319,7 @@ const LeftSection = ({ user, setTheChatter }) => {
       ) : (
         <div className={styles.specificMessages}>
           {specificMessages.map((item) => {
-            console.log(item)
+            // console.log('specificMeassage', item)
             return (
               <Link key={item._id} href={`/${item.chatRoomId}`}>
                 <a>
@@ -329,6 +332,7 @@ const LeftSection = ({ user, setTheChatter }) => {
                         name: item?.userName,
                         chatRoomId,
                       })
+                      setSpecificMessageId({ id: item?._id })
                     }}
                   >
                     <h1>{item?.userName}</h1>

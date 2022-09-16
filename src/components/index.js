@@ -2,7 +2,7 @@ import axios from 'axios'
 import styles from '../../styles/mainScreen.module.scss'
 import { useRecoilState } from 'recoil'
 import { useRecoilValue } from 'recoil'
-import { authUserAtom, theOtherUser } from '../recoil/recoil'
+import { authUserAtom, messageId, theOtherUser } from '../recoil/recoil'
 import { collection, query, where, onSnapshot } from '@firebase/firestore'
 import { db } from '../../firebaseConfig'
 import LeftSection from './leftSection/LeftSection'
@@ -18,7 +18,7 @@ const Index = ({ chats, getMessages, chatRoomId }) => {
 
   const user = useRecoilValue(authUserAtom)
 
-  const otherUser = useRecoilValue(theOtherUser)
+  const messageRefId = useRecoilValue(messageId)
 
   const tempColRef = collection(db, 'chats')
 
@@ -32,11 +32,13 @@ const Index = ({ chats, getMessages, chatRoomId }) => {
         if (getMessages) {
           getMessages()
         }
+        if (!messageRefId) {
+          messageEndRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+        }
 
-        messageEndRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        })
         console.log('message ref')
       } else {
         console.log('no space')

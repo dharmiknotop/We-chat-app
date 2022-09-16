@@ -1,24 +1,57 @@
-import { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { messageId } from '../../recoil/recoil'
 import styles from './css/theChats.module.scss'
 
 const TheChats = ({ chats, user, messageEndRef }) => {
+  const message = useRecoilValue(messageId)
+
+  const [highlightMessage, setHighlightMessage] = useState(false)
+
+  const messageRef = useRef()
+
+  const changeBackgroundRef = useRef(0)
+
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }, [chats, messageEndRef])
+    if (!message) {
+      messageEndRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }, [chats, messageEndRef, message])
+
+  useEffect(() => {
+    if (message) {
+      messageRef?.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+      console.log(changeBackgroundRef.current)
+
+      if (changeBackgroundRef.current !== 0 && changeBackgroundRef) {
+        changeBackgroundRef.current.style.backgroundColor = '#04b3b3'
+
+        setTimeout(() => {
+          changeBackgroundRef.current.style.backgroundColor = 'cyan'
+        }, 500)
+      }
+    }
+  }, [message, messageRef, changeBackgroundRef])
 
   return (
     <div>
       {chats &&
         chats.map((item) => {
+          // console.log('chats', item)
+
           return (
             <div
-              key={item.id}
+              key={item._id}
+              ref={item._id === message.id ? messageRef : null}
               className={`${styles.chats} ${
                 item.userId === user.id ? styles.text__right : styles.text__left
-              }`}
+              } `}
             >
               <span
                 className={`${styles.chats} ${
@@ -26,6 +59,7 @@ const TheChats = ({ chats, user, messageEndRef }) => {
                     ? styles.chats__right
                     : styles.chats__left
                 }`}
+                ref={item._id === message.id ? changeBackgroundRef : null}
               >
                 {item?.message}
               </span>
