@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { authUserAtom } from '../src/recoil/recoil'
 import Image from 'next/image'
+import { RiAlertFill } from 'react-icons/ri'
 
 const Login = () => {
   const router = useRouter()
@@ -103,11 +104,19 @@ const Login = () => {
       router.push('/')
     } catch (error) {
       console.log('error: ', error)
-      setRequestPostData({
-        loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
-      })
+      if (error.response) {
+        setRequestPostData({
+          loading: false,
+          success: '',
+          error: error.response.data.message,
+        })
+      } else {
+        setRequestPostData({
+          loading: false,
+          success: '',
+          error: 'Something went wrong',
+        })
+      }
     }
   }
 
@@ -125,6 +134,7 @@ const Login = () => {
           <label>Email</label>
           <input
             type="text"
+            value={formData.email}
             onChange={(val) => {
               setShowBtn(true)
               setFormData({
@@ -143,6 +153,7 @@ const Login = () => {
           <label>Password</label>
           <input
             type="text"
+            value={formData.password}
             onChange={(val) => {
               setShowBtn(true)
               setFormData({
@@ -157,6 +168,25 @@ const Login = () => {
             </span>
           )}
         </div>
+        {requestPostData.loading && (
+          <div className="text-center pt-4">
+            <div className="spinner-border text-primary" role="status" />
+          </div>
+        )}
+        {!requestPostData.loading && requestPostData.error !== '' && (
+          <div className={`${styles.errorMessageContainer}`}>
+            <div className={`${styles.errorMessageContainer__errorMessage}`}>
+              <RiAlertFill className="me-2" />
+              {requestPostData.error}
+            </div>
+          </div>
+        )}
+
+        {!requestPostData.loading && requestPostData.success !== '' && (
+          <div className="text-center pt-2">
+            <div className="text-success">{requestPostData.success}</div>
+          </div>
+        )}
         <div className={styles.s__btnContainer}>
           <button
             className={`${
@@ -184,6 +214,12 @@ const Login = () => {
       </div>
 
       <div className={styles.s2__backgroundImgContainer}>
+        <Image
+          className={styles.s2__backgroundImg}
+          src="/img/register/backgroundImg.png"
+          alt=""
+          layout="fill"
+        />{' '}
         <h5 className={styles.s2__backgroundImgContainer__title}>
           Get started with account
         </h5>
@@ -193,16 +229,15 @@ const Login = () => {
           <br />
           log in if already registered.
         </h6>
-        <div className={styles.s2__backgroundImgContainer__logInTxt}>
-          Log in to your account
-          <div className={styles.s2__underline}></div>
-        </div>
-        <Image
-          className={styles.s2__backgroundImg}
-          src="/img/register/backgroundImg.png"
-          alt=""
-          layout="fill"
-        />
+        <Link href="/register">
+          <a>
+            {' '}
+            <div className={styles.s2__backgroundImgContainer__logInTxt}>
+              Sign in to your account
+              <div className={styles.s2__underline}></div>
+            </div>
+          </a>
+        </Link>
       </div>
     </div>
   )

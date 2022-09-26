@@ -81,6 +81,7 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
             className={styles.s__addAChatContainer__input}
             type="text"
             placeholder="Type a Message"
+            value={searchQuery}
             onChange={(val) => {
               setSearchQuery(val.target.value)
             }}
@@ -90,8 +91,10 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
             color="gray"
             className={styles.s__addAChatContainer__svg}
             onClick={() => {
-              createMessage()
-              setSearchQuery('')
+              if (searchQuery !== '') {
+                createMessage()
+                setSearchQuery('')
+              }
             }}
           />
         </div>

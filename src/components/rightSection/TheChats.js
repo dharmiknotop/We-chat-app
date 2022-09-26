@@ -13,12 +13,13 @@ const TheChats = ({ chats, user, messageEndRef }) => {
   const changeBackgroundRef = useRef(0)
 
   useEffect(() => {
-    if (!message) {
+    if (message.id === '') {
       messageEndRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       })
     }
+    console.log('testing', message)
   }, [chats, messageEndRef, message])
 
   useEffect(() => {
@@ -27,14 +28,15 @@ const TheChats = ({ chats, user, messageEndRef }) => {
         behavior: 'smooth',
         block: 'start',
       })
-      console.log(changeBackgroundRef.current)
 
-      if (changeBackgroundRef.current !== 0 && changeBackgroundRef) {
-        changeBackgroundRef.current.style.backgroundColor = '#04b3b3'
+      if (changeBackgroundRef.current) {
+        if (changeBackgroundRef.current.style) {
+          changeBackgroundRef.current.style.backgroundColor = '#04b3b3'
 
-        setTimeout(() => {
-          changeBackgroundRef.current.style.backgroundColor = 'cyan'
-        }, 500)
+          setTimeout(() => {
+            changeBackgroundRef.current.style.backgroundColor = 'cyan'
+          }, 500)
+        }
       }
     }
   }, [message, messageRef, changeBackgroundRef])

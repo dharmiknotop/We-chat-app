@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { authUserAtom } from '../src/recoil/recoil'
 import Image from 'next/image'
+import { RiAlertFill } from 'react-icons/ri'
 
 const Register = () => {
   const router = useRouter()
@@ -35,9 +36,9 @@ const Register = () => {
   const [user, setUser] = useRecoilState(authUserAtom)
 
   const uploadDetails = () => {
-    // if (!validateForm()) {
-    //   return
-    // }
+    if (validateForm()) {
+      return
+    }
 
     register()
   }
@@ -57,17 +58,17 @@ const Register = () => {
       setShowBtn(false)
     }
 
-    // tempError.email = inputValidation.isInputEmailValid(formData.email)
-    // if (tempError.email !== '') {
-    //   hasError = true
-    //   setShowBtn(false)
-    // }
+    tempError.email = inputValidation.isInputEmailValid(formData.email)
+    if (tempError.email !== '') {
+      hasError = true
+      setShowBtn(false)
+    }
 
-    // tempError.password = inputValidation.isInputPasswordValid(formData.password)
-    // if (tempError.password !== '') {
-    //   hasError = true
-    //   setShowBtn(false)
-    // }
+    tempError.password = inputValidation.isInputPasswordValid(formData.password)
+    if (tempError.password !== '') {
+      hasError = true
+      setShowBtn(false)
+    }
     setFormDataError({
       ...tempError,
     })
@@ -210,6 +211,25 @@ const Register = () => {
             </span>
           )}
         </div>
+        {requestPostData.loading && (
+          <div className="text-center pt-4">
+            <div className="spinner-border text-primary" role="status" />
+          </div>
+        )}
+        {!requestPostData.loading && requestPostData.error !== '' && (
+          <div className={`${styles.errorMessageContainer}`}>
+            <div className={`${styles.errorMessageContainer__errorMessage}`}>
+              <RiAlertFill className="me-2" />
+              {requestPostData.error}
+            </div>
+          </div>
+        )}
+
+        {!requestPostData.loading && requestPostData.success !== '' && (
+          <div className="text-center pt-2">
+            <div className="text-success">{requestPostData.success}</div>
+          </div>
+        )}
         <div className={styles.s__btnContainer}>
           <button
             className={`${
@@ -240,6 +260,12 @@ const Register = () => {
       </div>
 
       <div className={styles.s2__backgroundImgContainer}>
+        <Image
+          className={styles.s2__backgroundImg}
+          src="/img/register/backgroundImg.png"
+          alt=""
+          layout="fill"
+        />{' '}
         <h5 className={styles.s2__backgroundImgContainer__title}>
           Get started with account
         </h5>
@@ -253,12 +279,6 @@ const Register = () => {
           Log in to your account
           <div className={styles.s2__underline}></div>
         </div>
-        <Image
-          className={styles.s2__backgroundImg}
-          src="/img/register/backgroundImg.png"
-          alt=""
-          layout="fill"
-        />
       </div>
     </div>
   )
