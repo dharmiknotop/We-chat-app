@@ -81,6 +81,7 @@ const Login = () => {
         { ...formData },
         {
           withCredentials: true,
+          'Content-Type': 'application/json; charset=UTF-8',
         },
       )
       setUser({
@@ -103,7 +104,7 @@ const Login = () => {
 
       router.push('/')
     } catch (error) {
-      console.log('error: ', error.response.data)
+      console.log('error: ', error?.response?.data)
       if (error.response) {
         setRequestPostData({
           loading: false,
