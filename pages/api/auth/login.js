@@ -18,11 +18,15 @@ const handler = nc({
     const { email, password } = req.body
     const { cookies } = req
 
+    let isValidUser
     // check does user exist in User
-
-    const isValidUser = await userModal.findOne({
-      email,
-    })
+    try {
+      isValidUser = await userModal.findOne({
+        email,
+      })
+    } catch (error) {
+      return res.status(400).json(FormatResponse.badRequest(error.message, {}))
+    }
 
     if (!isValidUser) {
       return res

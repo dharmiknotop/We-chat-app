@@ -103,7 +103,7 @@ const Login = () => {
 
       router.push('/')
     } catch (error) {
-      console.log('error: ', error)
+      console.log('error: ', error.response.data)
       if (error.response) {
         setRequestPostData({
           loading: false,
