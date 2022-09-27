@@ -81,7 +81,6 @@ const Login = () => {
         { ...formData },
         {
           withCredentials: true,
-          'Content-Type': 'application/json; charset=UTF-8',
         },
       )
       setUser({
