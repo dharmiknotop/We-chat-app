@@ -1,31 +1,34 @@
-import { Schema, model, models } from 'mongoose'
-import connectToDatabase from '../utils/connectDb'
-const { ObjectId } = Schema
+import { Schema, model, models } from "mongoose";
+import connectToDatabase from "../utils/connectDb";
+const { ObjectId } = Schema;
 
-connectToDatabase()
+connectToDatabase();
 
 const userSchema = new Schema({
   userId: {
     type: ObjectId,
-    default: '',
+    default: "",
   },
-
+  otherUserId: {
+    type: ObjectId,
+    default: "",
+  },
   userName: {
     type: String,
-    default: '',
+    default: "",
   },
   chatRoomId: {
     type: ObjectId,
-    default: '',
+    default: "",
   },
   message: {
     type: String,
-    default: '',
+    default: "",
   },
 
   // createdAt: {
   //   type: String,
   // },
-})
+});
 
-module.exports = models.Messages || model('Messages', userSchema)
+module.exports = models.Messages || model("Messages", userSchema);

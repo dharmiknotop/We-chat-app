@@ -68,6 +68,23 @@
   &__chatListItem {
     display: flex;
     align-items: center;
+
+    padding: 10px 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f0f2f5;
+    }
+
+    &__nameSection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__nameTxt {
+      font-size: 20px;
+      font-weight: 600;
+    }
   }
 }
 
@@ -89,6 +106,7 @@
       background-color: transparent;
       border: none;
       outline: none;
+      width: 100%;
     }
   }
 }

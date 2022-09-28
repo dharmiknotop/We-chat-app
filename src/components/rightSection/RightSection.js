@@ -24,13 +24,15 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
       success: '',
       error: '',
     })
+    console.log(user);
     try {
       const res = await axios.post(
         `/api/messages/addMessage`,
         {
           chatRoomId: otherUser.chatRoomId,
           message: searchQuery,
-          userName: otherUser.name,
+          userName: user.name,
+          otherUserId:otherUser.id
         },
         {
           withCredentials: true,
@@ -91,6 +93,9 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
             color="gray"
             className={styles.s__addAChatContainer__svg}
             onClick={() => {
+              console.log(otherUser);
+              console.log(searchQuery);
+
               if (searchQuery !== '') {
                 createMessage()
                 setSearchQuery('')

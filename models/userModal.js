@@ -1,33 +1,33 @@
-import { Schema, model, models } from 'mongoose'
-import connectToDatabase from '../utils/connectDb'
-const { ObjectId } = Schema
+import { Schema, model, models } from "mongoose";
+import connectToDatabase from "../utils/connectDb";
+const { ObjectId } = Schema;
 
-connectToDatabase()
+connectToDatabase();
 
 const userSchema = new Schema({
   name: {
     type: String,
     maxLength: 150,
     trim: true,
-    default: '',
+    default: "",
   },
   email: {
     type: String,
-    required: [true, 'Please provide an email'],
+    required: [true, "Please provide an email"],
     unique: true,
     lowercase: true,
     trim: true,
-    default: '',
+    default: "",
   },
   password: {
     type: String,
-    required: [true, 'Please provide password'],
+    required: [true, "Please provide password"],
     trim: true,
-    default: '',
+    default: "",
   },
   logoUrl: {
     type: String,
-    default: '',
+    default: "",
   },
   userList: [
     {
@@ -37,18 +37,25 @@ const userSchema = new Schema({
 
       userName: {
         type: String,
-        default: '',
+        default: "",
       },
+
       userLogo: {
         type: String,
-        default: '',
+        default: "",
       },
+
+      lastMessage: {
+        type: String,
+        default: "",
+      },
+
       chatRoomId: {
         type: String,
-        default: '',
+        default: "",
       },
     },
   ],
-})
+});
 
-module.exports = models.User || model('User', userSchema)
+module.exports = models.User || model("User", userSchema);
