@@ -1,91 +1,95 @@
-import styles from '../styles/register.module.scss'
-import { useEffect, useState } from 'react'
-import inputValidation from '../src/commonFiles/inputValidation'
-import Link from 'next/link'
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import { useRecoilState } from 'recoil'
-import { authUserAtom } from '../src/recoil/recoil'
-import Image from 'next/image'
-import { RiAlertFill } from 'react-icons/ri'
+import styles from "../styles/register.module.scss";
+import { useEffect, useState } from "react";
+import inputValidation from "../src/commonFiles/inputValidation";
+import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { authUserAtom } from "../src/recoil/recoil";
+import Image from "next/image";
+import { RiAlertFill } from "react-icons/ri";
 
 const Register = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const [requestPostData, setRequestPostData] = useState({
     loading: false,
-    success: '',
-    error: '',
-  })
+    success: "",
+    error: "",
+  });
 
-  const [showBtn, setShowBtn] = useState(true)
+  const [showBtn, setShowBtn] = useState(true);
 
-  const [selectedImage, setSelectedImage] = useState('')
+  const [selectedImage, setSelectedImage] = useState("");
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  })
+    name: "",
+    email: "",
+    password: "",
+  });
   const [formDataError, setFormDataError] = useState({
-    name: '',
-    email: '',
-    password: '',
-  })
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const [user, setUser] = useRecoilState(authUserAtom)
+  const [user, setUser] = useRecoilState(authUserAtom);
 
   const uploadDetails = () => {
-    if (validateForm()) {
-      return
+    if (!validateForm()) {
+      return;
     }
 
-    register()
-  }
+    register();
+  };
 
   const validateForm = async () => {
-    let hasError = false
+    let hasError = false;
 
     let tempError = {
-      name: '',
-      email: '',
-      password: '',
-    }
+      name: "",
+      email: "",
+      password: "",
+    };
 
-    tempError.name = inputValidation.isInputEmpty(formData.name)
-    if (tempError.name !== '') {
-      hasError = true
-      setShowBtn(false)
-    }
+    // tempError.name = inputValidation.isInputEmpty(formData.name);
+    // if (tempError.name !== "") {
+    //   hasError = true;
+    //   setShowBtn(false);
+    // }
 
-    tempError.email = inputValidation.isInputEmailValid(formData.email)
-    if (tempError.email !== '') {
-      hasError = true
-      setShowBtn(false)
-    }
+    // tempError.email = inputValidation.isInputEmailValid(formData.email);
+    // if (tempError.email !== "") {
+    //   hasError = true;
+    //   setShowBtn(false);
+    // }
 
-    tempError.password = inputValidation.isInputPasswordValid(formData.password)
-    if (tempError.password !== '') {
-      hasError = true
-      setShowBtn(false)
-    }
+    // tempError.password = inputValidation.isInputPasswordValid(
+    //   formData.password
+    // );
+    // if (tempError.password !== "") {
+    //   hasError = true;
+    //   setShowBtn(false);
+    // }
     setFormDataError({
       ...tempError,
-    })
+    });
 
-    return hasError
-  }
+    return hasError;
+  };
 
   const register = async () => {
     setRequestPostData({
       loading: true,
-      success: '',
-      error: '',
-    })
+      success: "",
+      error: "",
+    });
 
-    const logoUrl = await getImageUrl()
+    let logoUrl;
 
-    console.log('url ', formData)
+    if (selectedImage) {
+      logoUrl = await getImageUrl();
+    }
 
     try {
       const res = await axios.post(
@@ -93,47 +97,47 @@ const Register = () => {
         { ...formData, logoUrl },
         {
           withCredentials: true,
-        },
-      )
+        }
+      );
       setUser({
         id: res.data.data._id,
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-      })
+      });
 
       setRequestPostData({
         loading: false,
-        success: 'sign up done succesfully.',
-        error: '',
-      })
+        success: "sign up done succesfully.",
+        error: "",
+      });
 
-      router.push('/')
+      router.push("/");
     } catch (error) {
-      console.log('error: ', error)
+      console.log("error: ", error);
       setRequestPostData({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
-      })
+        success: "",
+        error: "Some unexpected error occur.",
+      });
     }
-  }
+  };
 
   const getImageUrl = async () => {
-    const form = new FormData()
+    const form = new FormData();
 
-    form.append('file', selectedImage)
-    form.append('upload_preset', 'weChat')
-    form.append('cloud_name', 'dflwrsxue')
+    form.append("file", selectedImage);
+    form.append("upload_preset", "weChat");
+    form.append("cloud_name", "dflwrsxue");
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/dflwrsxue/image/upload`,
-      { method: 'POST', body: form },
-    )
-    const res2 = await res.json()
+      { method: "POST", body: form }
+    );
+    const res2 = await res.json();
 
-    return res2.url
-  }
+    return res2.url;
+  };
 
   return (
     <div className={styles.s}>
@@ -147,15 +151,15 @@ const Register = () => {
           <input
             type="text"
             onChange={(val) => {
-              setShowBtn(true)
+              setShowBtn(true);
               setFormData({
                 ...formData,
                 name: val.target.value,
-              })
+              });
             }}
           />
 
-          {formDataError.name !== '' && (
+          {formDataError.name !== "" && (
             <span className={styles.errorMessage}>Please Enter Name</span>
           )}
         </div>
@@ -164,14 +168,14 @@ const Register = () => {
           <input
             type="text"
             onChange={(val) => {
-              setShowBtn(true)
+              setShowBtn(true);
               setFormData({
                 ...formData,
                 email: val.target.value,
-              })
+              });
             }}
           />
-          {formDataError.email !== '' && (
+          {formDataError.email !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid Email
             </span>
@@ -182,14 +186,14 @@ const Register = () => {
           <input
             type="text"
             onChange={(val) => {
-              setShowBtn(true)
+              setShowBtn(true);
               setFormData({
                 ...formData,
                 password: val.target.value,
-              })
+              });
             }}
           />
-          {formDataError.password !== '' && (
+          {formDataError.password !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid password
             </span>
@@ -201,11 +205,11 @@ const Register = () => {
             type="file"
             accept=".jpg,.png,.jpeg"
             onChange={(e) => {
-              setSelectedImage(e.target.files[0])
+              setSelectedImage(e.target.files[0]);
             }}
             className="mt-2"
           />
-          {formDataError.email !== '' && (
+          {formDataError.email !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid Email
             </span>
@@ -216,7 +220,7 @@ const Register = () => {
             <div className="spinner-border text-primary" role="status" />
           </div>
         )}
-        {!requestPostData.loading && requestPostData.error !== '' && (
+        {!requestPostData.loading && requestPostData.error !== "" && (
           <div className={`${styles.errorMessageContainer}`}>
             <div className={`${styles.errorMessageContainer__errorMessage}`}>
               <RiAlertFill className="me-2" />
@@ -225,7 +229,7 @@ const Register = () => {
           </div>
         )}
 
-        {!requestPostData.loading && requestPostData.success !== '' && (
+        {!requestPostData.loading && requestPostData.success !== "" && (
           <div className="text-center pt-2">
             <div className="text-success">{requestPostData.success}</div>
           </div>
@@ -233,18 +237,18 @@ const Register = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.name !== '' &&
-              formData.email !== '' &&
-              formData.password !== '' &&
+              formData.name !== "" &&
+              formData.email !== "" &&
+              formData.password !== "" &&
               showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
             }`}
             onClick={() => {
-              uploadDetails()
+              uploadDetails();
             }}
           >
-            {' '}
+            {" "}
             get started
           </button>
           <button className={`${styles.s__defaultUserBtn}`}>
@@ -252,7 +256,7 @@ const Register = () => {
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
-          Have an account ?{' '}
+          Have an account ?{" "}
           <Link href="/login">
             <a> Log In</a>
           </Link>
@@ -265,7 +269,7 @@ const Register = () => {
           src="/img/register/backgroundImg.png"
           alt=""
           layout="fill"
-        />{' '}
+        />{" "}
         <h5 className={styles.s2__backgroundImgContainer__title}>
           Get started with account
         </h5>
@@ -281,7 +285,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

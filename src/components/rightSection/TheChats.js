@@ -1,45 +1,48 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useRecoilValue } from 'recoil'
-import { messageId } from '../../recoil/recoil'
-import styles from './css/theChats.module.scss'
+import React, { useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { messageId } from "../../recoil/recoil";
+import styles from "./css/theChats.module.scss";
+
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 const TheChats = ({ chats, user, messageEndRef }) => {
-  const message = useRecoilValue(messageId)
+  const message = useRecoilValue(messageId);
 
-  const [highlightMessage, setHighlightMessage] = useState(false)
+  const [highlightMessage, setHighlightMessage] = useState(false);
 
-  const messageRef = useRef()
+  const messageRef = useRef();
 
-  const changeBackgroundRef = useRef(0)
+  const changeBackgroundRef = useRef(0);
+
+  // console.log('messagesId',message.id);
 
   useEffect(() => {
-    if (message.id === '') {
+    if (message.id === "") {
       messageEndRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+        behavior: "smooth",
+        block: "start",
+      });
     }
-    console.log('testing', message)
-  }, [chats, messageEndRef, message])
+  }, [chats, messageEndRef, message]);
 
   useEffect(() => {
     if (message) {
       messageRef?.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+        behavior: "smooth",
+        block: "start",
+      });
 
       if (changeBackgroundRef.current) {
         if (changeBackgroundRef.current.style) {
-          changeBackgroundRef.current.style.backgroundColor = '#04b3b3'
+          changeBackgroundRef.current.style.backgroundColor = "#04b3b3";
 
           setTimeout(() => {
-            changeBackgroundRef.current.style.backgroundColor = 'cyan'
-          }, 500)
+            changeBackgroundRef.current.style.backgroundColor = "cyan";
+          }, 500);
         }
       }
     }
-  }, [message, messageRef, changeBackgroundRef])
+  }, [message, messageRef, changeBackgroundRef]);
 
   return (
     <div>
@@ -64,13 +67,14 @@ const TheChats = ({ chats, user, messageEndRef }) => {
                 ref={item._id === message.id ? changeBackgroundRef : null}
               >
                 {item?.message}
+                <MdKeyboardArrowDown className={`${styles.dropdownIcon}`} />
               </span>
             </div>
-          )
+          );
         })}
       <div ref={messageEndRef} />
     </div>
-  )
-}
+  );
+};
 
-export default TheChats
+export default TheChats;

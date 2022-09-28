@@ -1,8 +1,8 @@
-import { Schema, model, models } from 'mongoose'
-import connectToDatabase from '../utils/connectDb'
-const { ObjectId } = Schema
+import { Schema, model, models } from "mongoose";
+import connectToDatabase from "../utils/connectDb";
+const { ObjectId } = Schema;
 
-connectToDatabase()
+connectToDatabase();
 
 const userSchema = new Schema({
   userList: [
@@ -12,10 +12,14 @@ const userSchema = new Schema({
       },
       userName: {
         type: String,
-        default: '',
+        default: "",
       },
     },
   ],
-})
+  lastMessage: {
+    type: String,
+    default: "",
+  },
+});
 
-module.exports = models.ChatRoom || model('ChatRoom', userSchema)
+module.exports = models.ChatRoom || model("ChatRoom", userSchema);

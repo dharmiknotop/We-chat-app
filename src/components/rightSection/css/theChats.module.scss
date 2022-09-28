@@ -1,20 +1,69 @@
 .text__left {
   text-align: left;
 }
+
 .text__right {
   text-align: right;
 }
+
 .chats {
-  padding: 5px 15px;
+  padding: 5px 30px 5px 15px;
   margin: 10px 0;
+  position: relative;
+
   &__left {
     color: white;
     background-color: pink;
     border-radius: 10px;
+    border-top-left-radius: 0px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 100%;
+      width: 0px;
+      height: 0px;
+      border-left: 10px solid transparent;
+      border-top: 10px solid pink;
+    }
   }
+
   &__right {
     background-color: cyan;
     color: white;
     border-radius: 10px;
+    border-top-right-radius: 0px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 0px;
+      height: 0px;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid cyan;
+      transform: rotate(90deg);
+    }
   }
+}
+
+.chats__right:hover .dropdownIcon {
+  display: block;
+}
+
+.chats__left:hover .dropdownIcon {
+  display: block;
+}
+
+.dropdownIcon {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%, -50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }

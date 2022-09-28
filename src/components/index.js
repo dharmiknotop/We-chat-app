@@ -39,7 +39,6 @@ const Index = ({ chats, getMessages, chatRoomId }) => {
           })
         }
 
-        console.log('message ref')
       } else {
         console.log('no space')
       }
