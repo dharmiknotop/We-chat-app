@@ -139,6 +139,67 @@ const Register = () => {
     return res2.url;
   };
 
+  const logInWithDefaultUser = async () => {
+    setRequestPostData({
+      loading: true,
+      success: "",
+      error: "",
+    });
+
+    try {
+      const res = await axios.post(
+        `api/auth/login`,
+        {
+          name: "Default User",
+          email: "Default User",
+          password: "Default User",
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      setUser({
+        id: res.data.data._id,
+        name: res.data.data.name,
+        email: res.data.data.email,
+        logoUrl: res.data.data.logoUrl,
+        isLoggedIn: "true",
+      });
+
+      console.log(res.data.data);
+
+      setRequestPostData({
+        loading: true,
+        success: "sign up done succesfully.",
+        error: "",
+      });
+
+      console.log(user);
+
+      router.push("/");
+      setRequestPostData({
+        loading: false,
+        success: "sign up done succesfully.",
+        error: "",
+      });
+    } catch (error) {
+      console.log("error: ", error);
+      if (error.response) {
+        setRequestPostData({
+          loading: false,
+          success: "",
+          error: error.response.data.message,
+        });
+      } else {
+        setRequestPostData({
+          loading: false,
+          success: "",
+          error: "Something went wrong",
+        });
+      }
+    }
+  };
+
   return (
     <div className={styles.s}>
       <div className={styles.s__registerContainer}>
@@ -251,8 +312,13 @@ const Register = () => {
             {" "}
             get started
           </button>
-          <button className={`${styles.s__defaultUserBtn}`}>
-            Pre Defined User
+          <button
+            className={`${styles.s__defaultUserBtn}`}
+            onClick={() => {
+              logInWithDefaultUser();
+            }}
+          >
+            Default User
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
@@ -279,10 +345,14 @@ const Register = () => {
           <br />
           log in if already registered.
         </h6>
-        <div className={styles.s2__backgroundImgContainer__logInTxt}>
-          Log in to your account
-          <div className={styles.s2__underline}></div>
-        </div>
+        <Link href="/login">
+          <a>
+            <div className={styles.s2__backgroundImgContainer__logInTxt}>
+              Log in to your account
+              <div className={styles.s2__underline}></div>
+            </div>
+          </a>
+        </Link>
       </div>
     </div>
   );
