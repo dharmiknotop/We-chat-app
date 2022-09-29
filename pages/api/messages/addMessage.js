@@ -10,7 +10,8 @@ const handler = nc()
   .post(async (req, res) => {
     try {
       const { id } = req.payload;
-      const { chatRoomId, message, userName, otherUserId } = req.body;
+      const { chatRoomId, message, userName, otherUserId, replyerInfo } =
+        req.body;
 
       const colRef = doc(db, "chats", chatRoomId.toString());
 
@@ -20,6 +21,7 @@ const handler = nc()
         userName,
         chatRoomId,
         message,
+        replyerInfo,
       });
 
       updateDoc(colRef, {
@@ -37,8 +39,6 @@ const handler = nc()
         }
       );
 
-      console.log(user);
-
       const theOtherUser = await userModal.findOneAndUpdate(
         { $and: [{ _id: otherUserId }, { "userList.userId": id }] },
 
@@ -46,19 +46,6 @@ const handler = nc()
           $set: { "userList.$.lastMessage": message },
         }
       );
-
-      console.log(theOtherUser);
-
-      // const updateLastMessage = await chatModal.findOneAndUpdate(
-      //   {
-      //     chatRoomId,
-      //   },
-      //   {
-      //     $set: {
-      //       lastMessage: message,
-      //     },
-      //   }
-      // );
 
       return res
         .status(200)
