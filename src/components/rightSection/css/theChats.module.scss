@@ -1,15 +1,17 @@
 .text__left {
+  padding: 5px 30px 5px 15px;
   text-align: left;
 }
 
 .text__right {
   text-align: right;
+  padding: 5px 30px 5px 15px;
 }
 
 .chats {
-  padding: 5px 30px 5px 15px;
-  margin: 10px 0;
+  padding: 5px 20px 5px 10px;
   position: relative;
+  display: inline-block;
 
   &__left {
     color: white;
@@ -34,6 +36,7 @@
     color: white;
     border-radius: 10px;
     border-top-right-radius: 0px;
+    text-align: left;
 
     &::after {
       content: "";
@@ -47,6 +50,47 @@
       transform: rotate(90deg);
     }
   }
+
+  &__replyContainer {
+    padding: 5px 30px 5px 5px;
+    border-radius: 10px;
+
+    &__replyerName {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    &__replyerTxt {
+      font-size: 12px;
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+  }
+
+  &__userReplyContainerForUser {
+    background: #53d8d87d;
+    border-left: 10px solid purple;
+  }
+
+  &__otherUserReplyContainerForUser {
+    background: #53d8d87d;
+    border-left: 10px solid #b65c6c;
+  }
+
+  &__userReplyContainerForOtherUser {
+    background: #e2869685;
+    border-left: 10px solid purple;
+  }
+
+  &__otherUserReplyContainerForOtherUser {
+    background: #e2869685;
+    border-left: 10px solid #b65c6c;
+  }
+
+  &__txtContainer {
+    padding-left: 10px;
+  }
 }
 
 .chats__right:hover .dropdownIcon {
@@ -58,7 +102,6 @@
 }
 
 .dropdownIcon {
-  display: none;
   position: absolute;
   top: 50%;
   right: 0%;
@@ -66,4 +109,17 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+.dropdownIconNotActive {
+  display: none;
+}
+
+.dropDown {
+  padding: 5px 20px;
+  cursor: pointer;
+  &__txt {
+    font-size: 18px;
+    font-family: 500;
+  }
 }

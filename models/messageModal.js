@@ -9,22 +9,43 @@ const userSchema = new Schema({
     type: ObjectId,
     default: "",
   },
+
   otherUserId: {
     type: ObjectId,
     default: "",
   },
+
   userName: {
     type: String,
     default: "",
   },
+
   chatRoomId: {
     type: ObjectId,
     default: "",
   },
+
   message: {
     type: String,
     default: "",
   },
+
+  replyerInfo: [
+    {
+      replyerId: {
+        type: String,
+        default: "",
+      },
+      replyerName: {
+        type: String,
+        default: "",
+      },
+      replyerMessage: {
+        type: String,
+        default: "",
+      },
+    },
+  ],
 
   // createdAt: {
   //   type: String,
