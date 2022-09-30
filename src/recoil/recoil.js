@@ -14,6 +14,7 @@ export const authUserAtom = atom({
     email: "",
     logoUrl: "",
     isLoggedIn: "",
+    userList: "",
   },
 });
 export const theOtherUser = atom({
