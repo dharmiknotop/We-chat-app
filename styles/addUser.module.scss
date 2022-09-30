@@ -5,7 +5,7 @@
 
   &__itemContainer {
     padding: 5px 0;
-    font-family: 'lato';
+    font-family: "lato";
     font-weight: 500;
   }
 
@@ -18,5 +18,28 @@
     background: #f0f2f5;
 
     border-radius: 8px;
+  }
+
+  &__userContainer {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+
+    transition: 0.2s all ease-in-out;
+
+    &:hover {
+      position: relative;
+      background-color: #f0f2f5;
+      transform: translateY(-10%);
+      box-shadow: 0px 5px 5px #88888851;
+      z-index: 999;
+    }
+  }
+
+  &__userName {
+    font-size: 18px;
+    margin-left: 10px;
+    margin-bottom: 0;
   }
 }
