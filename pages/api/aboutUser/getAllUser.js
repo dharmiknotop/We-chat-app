@@ -1,36 +1,36 @@
-import nc from 'next-connect'
-import userModal from '../../../models/userModal'
-import FormatResponse from 'response-format'
-import verifyJwt from '../../../middleware/verifyJwt'
+import nc from 'next-connect';
+import userModal from '../../../models/userModal';
+import FormatResponse from 'response-format';
+import verifyJwt from '../../../middleware/verifyJwt';
 
 const handler = nc({
   onError: (err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).end('Something broke!')
+    console.error(err.stack);
+    res.status(500).end('Something broke!');
   },
   onNoMatch: (req, res) => {
-    res.status(404).end('Page is not found')
+    res.status(404).end('Page is not found');
   },
 })
   .use(verifyJwt)
   .post(async (req, res) => {
     try {
-      const { id } = req.payload
+      const { id } = req.payload;
 
       const allUsers = await userModal.find({
         _id: { $ne: id },
-      })
+      });
 
       if (!allUsers) {
         return res
           .status(400)
-          .json(FormatResponse.badRequest(`No User Available `, {}))
+          .json(FormatResponse.badRequest(`No User Available `, {}));
       }
 
-      return res.status(200).json(FormatResponse.success('Success', allUsers))
+      return res.status(200).json(FormatResponse.success('Success', allUsers));
     } catch (error) {
-      return res.status(400).json(FormatResponse.badRequest(error.message, {}))
+      return res.status(400).json(FormatResponse.badRequest(error.message, {}));
     }
-  })
+  });
 
-export default handler
+export default handler;

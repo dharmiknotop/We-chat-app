@@ -1,14 +1,15 @@
-import nc from 'next-connect'
-import FormatResponse from 'response-format'
-import verifyJwt from '../../../middleware/verifyJwt'
-import userModal from '../../../models/userModal'
+import nc from 'next-connect';
+import FormatResponse from 'response-format';
+import verifyJwt from '../../../middleware/verifyJwt';
+import userModal from '../../../models/userModal';
 const handler = nc()
   .use(verifyJwt)
   .post(async (req, res) => {
     try {
-      const { id, userName, userLogo } = req.payload
-      const { otherUserName, otherUserId, otherUserLogo, chatRoomId } = req.body
-      console.log()
+      const { id, userName, userLogo } = req.payload;
+      const { otherUserName, otherUserId, otherUserLogo, chatRoomId } =
+        req.body;
+      console.log();
       //adding the other user in the user's userList
       const user = await userModal.findOneAndUpdate(
         { _id: id },
@@ -20,23 +21,23 @@ const handler = nc()
               userLogo: otherUserLogo,
             },
           },
-        },
-      )
+        }
+      );
       //adding the  user in the other user's userList
-      console.log(otherUserId)
+      console.log(otherUserId);
       await userModal.findOneAndUpdate(
         { _id: otherUserId },
         {
           $push: {
             userList: { userName, userId: id, userLogo },
           },
-        },
-      )
+        }
+      );
 
-      return res.status(200).json(FormatResponse.success('Success', user))
+      return res.status(200).json(FormatResponse.success('Success', user));
     } catch (error) {
-      return res.status(400).json(FormatResponse.badRequest(error.message, {}))
+      return res.status(400).json(FormatResponse.badRequest(error.message, {}));
     }
-  })
+  });
 
-export default handler
+export default handler;

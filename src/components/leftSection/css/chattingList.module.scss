@@ -1,0 +1,72 @@
+.s1 {
+  &__chatListContainer {
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+
+  &__chatListItem {
+    display: flex;
+    align-items: center;
+
+    padding: 10px 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f0f2f5;
+    }
+
+    &__nameSection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__nameTxt {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+}
+.search {
+  &__searchOuterContainer {
+    height: 50px;
+    background-color: white;
+    border-bottom: 2px solid gray;
+    padding: 5px;
+  }
+  &__searchContainer {
+    background-color: #f0f2f5;
+    border-radius: 5px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+
+    &__input {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+    }
+  }
+}
+
+.specificMessages {
+  height: calc(100vh - 115px);
+  overflow-y: auto;
+
+  &_container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    padding-left: 10px;
+    border-bottom: 1px solid gray;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 14px;
+  }
+}

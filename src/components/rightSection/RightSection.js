@@ -1,11 +1,11 @@
-import styles from "./css/rightSection.module.scss";
-import { Fragment, useState } from "react";
-import axios from "axios";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { theOtherUser, authUserAtom, replyingTo } from "../../recoil/recoil";
-import TheChats from "./TheChats";
-import { BiSend } from "react-icons/bi";
-import { ImCross } from "react-icons/im";
+import styles from './css/rightSection.module.scss';
+import { Fragment, useState } from 'react';
+import axios from 'axios';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { theOtherUser, authUserAtom, replyingTo } from '../../recoil/recoil';
+import TheChats from './TheChats';
+import { BiSend } from 'react-icons/bi';
+import { ImCross } from 'react-icons/im';
 
 const RightSection = ({ theChatter, chats, messageEndRef }) => {
   const otherUser = useRecoilValue(theOtherUser);
@@ -14,23 +14,24 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
 
   const [replyTo, setReplyTo] = useRecoilState(replyingTo);
 
+  const [isReplying, setIsReplying] = useState(false);
+
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
-    success: "",
-    error: "",
+    success: '',
+    error: '',
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const createMessage = async () => {
     setRequestGetUser({
       loading: true,
-      success: "",
-      error: "",
+      success: '',
+      error: '',
     });
-    console.log(replyerInfo);
     try {
-      const res = await axios.post(
+      await axios.post(
         `/api/messages/addMessage`,
         {
           chatRoomId: otherUser.chatRoomId,
@@ -46,15 +47,15 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
 
       setRequestGetUser({
         loading: false,
-        success: "Added Successfully.",
-        error: "",
+        success: 'Added Successfully.',
+        error: '',
       });
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       setRequestGetUser({
         loading: false,
-        success: "",
-        error: "Some unexpected error occur.",
+        success: '',
+        error: 'Some unexpected error occur.',
       });
     }
   };
@@ -62,13 +63,19 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
   return (
     <Fragment>
       <div className={` ${styles.s__containerOuter}`}>
-        <div className={` ${styles.s__container}`}>
-          {" "}
+        <div
+          className={` ${
+            isReplying === true
+              ? styles.s__containerWithReplyOn
+              : styles.s__containerWithoutReply
+          }`}
+        >
+          {' '}
           <div className={styles.s__headerContainer}>{theChatter.name}</div>
           <div className={styles.s__chatContainer}>
-            {theChatter.name === "" && (
+            {theChatter.name === '' && (
               <div className={`${styles.s__noUserSelectedContainer}`}>
-                {" "}
+                {' '}
                 currently no user Selected
               </div>
             )}
@@ -77,6 +84,7 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
                 chats={chats}
                 user={user}
                 messageEndRef={messageEndRef}
+                setIsReplying={setIsReplying}
               />
             )}
 
@@ -84,14 +92,14 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
           </div>
         </div>
         <div className={styles.s__addAChatContainer}>
-          {replyerInfo.replyerMessage !== "" && (
+          {replyerInfo.replyerMessage !== '' && (
             <div className={styles.s__addAChatContainer__replyerContainer}>
               <div
                 className={styles.s__addAChatContainer__replytoInnerContainer}
               >
                 <h1 className={styles.s__addAChatContainer__nameTxt}>
                   {replyerInfo.replyerId === user?.id
-                    ? "You"
+                    ? 'You'
                     : replyerInfo?.replyerName}
                   {console.log(user)}
                 </h1>
@@ -104,10 +112,12 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
                 size={15}
                 onClick={() => {
                   setReplyTo({
-                    replyerId: "",
-                    replyerName: "",
-                    replyerMessage: "",
+                    replyerId: '',
+                    replyerName: '',
+                    replyerMessage: '',
                   });
+
+                  setIsReplying(false); // for styling purpose
                 }}
               />
             </div>
@@ -122,10 +132,15 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
                 setSearchQuery(val.target.value);
               }}
               onKeyDown={(e) => {
-                if (searchQuery !== "") {
+                if (searchQuery !== '') {
                   if (e.keyCode === 13) {
+                    setReplyTo({
+                      replyerId: '',
+                      replyerName: '',
+                      replyerMessage: '',
+                    });
                     createMessage();
-                    setSearchQuery("");
+                    setSearchQuery('');
                   }
                 }
               }}
@@ -135,9 +150,9 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
               color="gray"
               className={styles.s__addAChatContainer__svg}
               onClick={() => {
-                if (searchQuery !== "") {
+                if (searchQuery !== '') {
                   createMessage();
-                  setSearchQuery("");
+                  setSearchQuery('');
                 }
               }}
             />

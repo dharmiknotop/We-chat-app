@@ -1,22 +1,22 @@
-import nc from 'next-connect'
-import FormatResponse from 'response-format'
-import verifyJwt from '../../../middleware/verifyJwt'
-import userModal from '../../../models/userModal'
-import chatModal from '../../../models/chatModal'
-import { db } from '../../../firebaseConfig'
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
+import nc from 'next-connect';
+import FormatResponse from 'response-format';
+import verifyJwt from '../../../middleware/verifyJwt';
+import userModal from '../../../models/userModal';
+import chatModal from '../../../models/chatModal';
+import { db } from '../../../firebaseConfig';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 const handler = nc()
   .use(verifyJwt)
   .post(async (req, res) => {
     try {
-      const { id, userName } = req.payload
-      const { otherUserName, otherUserId } = req.body
+      const { id, userName } = req.payload;
+      const { otherUserName, otherUserId } = req.body;
 
-      const tempChatRoom = await chatModal.create({ userList: [] })
+      const tempChatRoom = await chatModal.create({ userList: [] });
 
-      const colRef = doc(db, 'chats', tempChatRoom._id.toString())
+      const colRef = doc(db, 'chats', tempChatRoom._id.toString());
 
-      console.log(tempChatRoom)
+      console.log(tempChatRoom);
 
       const chatRoom = await chatModal.findOneAndUpdate(
         {
@@ -31,8 +31,8 @@ const handler = nc()
               ],
             },
           },
-        },
-      )
+        }
+      );
 
       //adding the chat room id in the user's clicked user in userList
 
@@ -40,10 +40,10 @@ const handler = nc()
         { $and: [{ _id: id }, { 'userList.userId': otherUserId }] },
         {
           $set: { 'userList.$.chatRoomId': chatRoom._id },
-        },
-      )
+        }
+      );
 
-      console.log(user)
+      console.log(user);
 
       //adding the chat room id in the other user's userList
 
@@ -52,20 +52,20 @@ const handler = nc()
 
         {
           $set: { 'userList.$.chatRoomId': chatRoom._id },
-        },
-      )
+        }
+      );
       setDoc(colRef, {
         messageCount: 0,
         chatRoomId: tempChatRoom._id.toString(),
       }).then(() => {
-        console.log('sucess')
-      })
+        console.log('sucess');
+      });
 
-      return res.status(200).json(FormatResponse.success('Success', chatRoom))
+      return res.status(200).json(FormatResponse.success('Success', chatRoom));
     } catch (error) {
-      console.log(error.message)
-      return res.status(400).json(FormatResponse.badRequest(error.message, {}))
+      console.log(error.message);
+      return res.status(400).json(FormatResponse.badRequest(error.message, {}));
     }
-  })
+  });
 
-export default handler
+export default handler;

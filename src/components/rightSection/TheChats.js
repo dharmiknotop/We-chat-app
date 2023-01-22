@@ -1,28 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
+import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
-import { replyingTo, messageId } from "../../recoil/recoil";
-import { useRecoilState } from "recoil";
+import { replyingTo, messageId } from '../../recoil/recoil';
+import { useRecoilState } from 'recoil';
 
-import styles from "./css/theChats.module.scss";
+import styles from './css/theChats.module.scss';
 
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
-const TheChats = ({ chats, user, messageEndRef }) => {
+const TheChats = ({ chats, user, messageEndRef, setIsReplying }) => {
   const message = useRecoilValue(messageId);
 
   const messageRef = useRef();
 
   const changeBackgroundRef = useRef(0);
 
-  // console.log('messagesId',message.id);
-
   useEffect(() => {
-    if (message.id === "") {
+    if (message.id === '') {
       messageEndRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+        behavior: 'smooth',
+        block: 'start',
       });
     }
   }, [chats, messageEndRef, message]);
@@ -30,16 +28,16 @@ const TheChats = ({ chats, user, messageEndRef }) => {
   useEffect(() => {
     if (message) {
       messageRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+        behavior: 'smooth',
+        block: 'start',
       });
 
       if (changeBackgroundRef.current) {
         if (changeBackgroundRef.current.style) {
-          changeBackgroundRef.current.style.backgroundColor = "#04b3b3";
+          changeBackgroundRef.current.style.backgroundColor = '#04b3b3';
 
           setTimeout(() => {
-            changeBackgroundRef.current.style.backgroundColor = "cyan";
+            changeBackgroundRef.current.style.backgroundColor = 'cyan';
           }, 500);
         }
       }
@@ -50,7 +48,6 @@ const TheChats = ({ chats, user, messageEndRef }) => {
     <div>
       {chats &&
         chats.map((item) => {
-          // console.log(item);
           return (
             <RenderChats
               key={item._id}
@@ -59,6 +56,7 @@ const TheChats = ({ chats, user, messageEndRef }) => {
               user={user}
               messageRef={messageRef}
               changeBackgroundRef={changeBackgroundRef}
+              setIsReplying={setIsReplying}
             />
           );
         })}
@@ -73,6 +71,7 @@ const RenderChats = ({
   user,
   messageRef,
   changeBackgroundRef,
+  setIsReplying,
 }) => {
   const [showDropDownImg, setShowDropDownImg] = useState(false);
 
@@ -80,37 +79,45 @@ const RenderChats = ({
 
   // console.log(item);
 
-  const popoverNotification = (
-    <Popover
-      id={`${styles.popover_menu_options}`}
-      style={{
-        borderRadius: "0px",
-        padding: "0px",
-      }}
-    >
-      <Popover.Content
-        style={{
-          borderRadius: "0px",
-          padding: "0px",
-        }}
-      >
-        <div className={styles.dropDown}>
-          <h1
-            className={styles.dropDown__txt}
-            onClick={() => {
-              setReplyTo({
-                replyerId: item?.userId,
-                replyerName: item?.userName,
-                replyerMessage: item?.message,
-              });
-            }}
-          >
-            Reply
-          </h1>
-        </div>
-      </Popover.Content>
-    </Popover>
-  );
+  const popoverCard = (item) => {
+    return (
+      <div className={styles.dropDown}>
+        <h1
+          className={styles.dropDown__txt}
+          onClick={() => {
+            document.body.click(); // Added this to make the popover close onClick.
+
+            setReplyTo({
+              replyerId: item?.userId,
+              replyerName: item?.userName,
+              replyerMessage: item?.message,
+            });
+
+            setIsReplying(true); // for styling purpose
+          }}
+        >
+          Reply to
+        </h1>
+
+        <h1
+          className={styles.dropDown__txt}
+          onClick={() => {
+            document.body.click(); // Added this to make the popover close onClick.
+
+            setReplyTo({
+              replyerId: item?.userId,
+              replyerName: item?.userName,
+              replyerMessage: item?.message,
+            });
+
+            setIsReplying(true); // for styling purpose
+          }}
+        >
+          Reply
+        </h1>
+      </div>
+    );
+  };
 
   const getStylesForUser = (item, user) => {
     if (item.userId === user.id) {
@@ -161,7 +168,7 @@ const RenderChats = ({
           >
             <h2 className={styles.chats__replyContainer__replyerName}>
               {item?.replyerInfo[0]?.replyerId === user.id
-                ? "You"
+                ? 'You'
                 : item?.replyerInfo[0]?.replyerName}
             </h2>
             <h3 className={styles.chats__replyContainer__replyerTxt}>
@@ -174,7 +181,7 @@ const RenderChats = ({
           {item?.message}
           <OverlayTrigger
             placement="bottom"
-            overlay={popoverNotification}
+            overlay={popoverCard(item)}
             trigger="click"
             rootClose
           >
