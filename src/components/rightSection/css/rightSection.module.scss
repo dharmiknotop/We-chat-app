@@ -8,8 +8,12 @@
     height: 100vh;
   }
 
-  &__container {
+  &__containerWithoutReply {
     height: calc(100vh - 120px);
+  }
+
+  &__containerWithReplyOn {
+    height: calc(100vh - 160px);
   }
 
   &__headerContainer {
@@ -35,7 +39,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url("https://cdna.artstation.com/p/assets/images/images/011/168/054/large/joel-morales-escobar-trama-j02.jpg?1528192578");
+      background: url('https://cdna.artstation.com/p/assets/images/images/011/168/054/large/joel-morales-escobar-trama-j02.jpg?1528192578');
       background-size: cover;
       z-index: -1;
       opacity: 0.5;

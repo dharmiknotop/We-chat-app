@@ -20,7 +20,7 @@
     border-top-left-radius: 0px;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       right: 100%;
@@ -39,7 +39,7 @@
     text-align: left;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 100%;
@@ -116,10 +116,23 @@
 }
 
 .dropDown {
-  padding: 5px 20px;
-  cursor: pointer;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 10px gray;
+  overflow: hidden;
+
+  z-index: 999;
+
   &__txt {
-    font-size: 18px;
-    font-family: 500;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+
+    border-bottom: 1px solid gray;
+
+    padding: 5px 15px;
+    margin: 0;
+    cursor: pointer;
   }
 }
