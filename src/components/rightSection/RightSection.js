@@ -7,7 +7,7 @@ import TheChats from './TheChats';
 import { BiSend } from 'react-icons/bi';
 import { ImCross } from 'react-icons/im';
 
-const RightSection = ({ theChatter, chats, messageEndRef }) => {
+const RightSection = ({ requestGetMessages, chats, messageEndRef }) => {
   const otherUser = useRecoilValue(theOtherUser);
   const user = useRecoilValue(authUserAtom);
   const replyerInfo = useRecoilValue(replyingTo);
@@ -71,9 +71,9 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
           }`}
         >
           {' '}
-          <div className={styles.s__headerContainer}>{theChatter.name}</div>
+          <div className={styles.s__headerContainer}>{otherUser.name}</div>
           <div className={styles.s__chatContainer}>
-            {theChatter.name === '' && (
+            {otherUser.name === '' && (
               <div className={`${styles.s__noUserSelectedContainer}`}>
                 {' '}
                 currently no user Selected
@@ -85,6 +85,7 @@ const RightSection = ({ theChatter, chats, messageEndRef }) => {
                 user={user}
                 messageEndRef={messageEndRef}
                 setIsReplying={setIsReplying}
+                requestGetMessages={requestGetMessages}
               />
             )}
 

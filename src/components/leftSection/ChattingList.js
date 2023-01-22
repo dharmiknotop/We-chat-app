@@ -4,15 +4,19 @@ import styles from './css/chattingList.module.scss';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
-import { messageId } from '../../recoil/recoil';
+import { messageId, theOtherUser } from '../../recoil/recoil';
 
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaUserCircle } from 'react-icons/fa';
 import { DebounceInput } from 'react-debounce-input';
 import axios from 'axios';
 
-const ChattingList = ({ userList, setTheChatter }) => {
+const ChattingList = ({ userList }) => {
   const router = useRouter();
+
+  const [theChatter, setTheChatter] = useRecoilState(theOtherUser);
+
+  const [specificMessageId, setSpecificMessageId] = useRecoilState(messageId);
 
   const [requestGetMessages, setRequestGetMessages] = useState({
     loading: false,
@@ -25,8 +29,6 @@ const ChattingList = ({ userList, setTheChatter }) => {
     success: '',
     error: '',
   });
-
-  const [specificMessageId, setSpecificMessageId] = useRecoilState(messageId);
 
   const [chatRoomId, setChatRoomId] = useState('');
 
@@ -174,7 +176,7 @@ const ChattingList = ({ userList, setTheChatter }) => {
                   <span className={styles.s1__chatListItem__nameTxt}>
                     {item?.userName}
                   </span>
-                  <span>{item?.lastMessage} </span>
+                  <span>{item?.lastMessage}</span>
                 </div>
               </div>
             );
@@ -191,7 +193,7 @@ const ChattingList = ({ userList, setTheChatter }) => {
           {!requestGetMessages.loading &&
             specificMessages.map((item) => {
               return (
-                <Link key={item._id} href={`/chatRoom/${item.chatRoomId}`}>
+                <Link key={item._id} href={`/${item.chatRoomId}`}>
                   <a>
                     {' '}
                     <div

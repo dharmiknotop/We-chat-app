@@ -1,5 +1,7 @@
-import Head from 'next/head'
-import MainScreen from '../src/components/index'
+import axios from 'axios';
+import Head from 'next/head';
+import { withAuth } from '../middleware/withAuth';
+import MainScreen from '../src/components/index';
 
 export default function Home() {
   return (
@@ -11,5 +13,8 @@ export default function Home() {
       </Head>
       <MainScreen />
     </div>
-  )
+  );
 }
+export const getServerSideProps = withAuth((context) => {
+  return { props: {} };
+});
