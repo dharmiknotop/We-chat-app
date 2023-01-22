@@ -1,7 +1,7 @@
-import { Fragment } from 'react'
-import '../styles/globals.css'
-import { RecoilRoot } from 'recoil'
-import ValidateSession from '../src/commonFiles/ValidateUser'
+import { Fragment } from 'react';
+import '../styles/globals.css';
+import { RecoilRoot } from 'recoil';
+import ValidateSession from '../src/commonFiles/ValidateUser';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </RecoilRoot>{' '}
     </Fragment>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

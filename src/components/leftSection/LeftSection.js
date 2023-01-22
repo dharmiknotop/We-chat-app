@@ -14,7 +14,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import styles from './css/leftSection.module.scss';
 import ChattingList from './ChattingList';
 
-const LeftSection = ({ user, setTheChatter }) => {
+const LeftSection = ({ user }) => {
   const locationRef = useRef();
   const router = useRouter();
 
@@ -177,7 +177,7 @@ const LeftSection = ({ user, setTheChatter }) => {
         </div>
       </div>
 
-      <ChattingList userList={userList} setTheChatter={setTheChatter} />
+      <ChattingList userList={userList} />
       {renderAddUserModal()}
     </div>
   );

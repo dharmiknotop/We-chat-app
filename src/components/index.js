@@ -7,14 +7,18 @@ import { collection, query, where, onSnapshot } from '@firebase/firestore';
 import { db } from '../../firebaseConfig';
 import LeftSection from './leftSection/LeftSection';
 import RightSection from './rightSection/RightSection';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
-const Index = ({ chats, setMessages }) => {
+const Index = () => {
   const messageEndRef = useRef();
   const router = useRouter();
 
-  const [theChatter, setTheChatter] = useRecoilState(theOtherUser);
+  const [requestGetMessages, setRequestGetMessages] = useState({
+    loading: false,
+    success: '',
+    error: '',
+  });
 
   const user = useRecoilValue(authUserAtom);
 
@@ -24,13 +28,15 @@ const Index = ({ chats, setMessages }) => {
 
   const { chatRoomId } = router.query;
 
+  const [messages, setMessages] = useState([]);
+
   const getMessages = async (id) => {
     try {
-      //   setRequestGetUser({
-      //     loading: true,
-      //     success: '',
-      //     error: '',
-      //   });
+      setRequestGetMessages({
+        loading: true,
+        success: '',
+        error: '',
+      });
       const res = await axios.post(
         `/api/messages/getMessages`,
         { chatRoomId: id },
@@ -41,29 +47,24 @@ const Index = ({ chats, setMessages }) => {
 
       setMessages(res.data.data);
 
-      //   setRequestGetUser({
-      //     loading: false,
-      //     success: 'Added Successfully.',
-      //     error: '',
-      //   });
+      setRequestGetMessages({
+        loading: false,
+        success: 'Added Successfully.',
+        error: '',
+      });
     } catch (error) {
       console.log('error: ', error);
-      //   setRequestGetUser({
-      //     loading: false,
-      //     success: '',
-      //     error: 'Some unexpected error occur.',
-      //   });
+      setRequestGetMessages({
+        loading: false,
+        success: '',
+        error: 'Some unexpected error occur.',
+      });
     }
   };
 
   useEffect(() => {
-    user.isLoggedIn === '' ? router.push('/login') : null;
-  }, [router, user]);
-
-  useEffect(() => {
     const unsub = onSnapshot(tempColRef, (snapshot) => {
       if (snapshot.size) {
-        console.log('chatRoomId sub ka bap bc', chatRoomId);
         getMessages(chatRoomId);
         if (!messageRefId) {
           messageEndRef.current?.scrollIntoView({
@@ -79,19 +80,19 @@ const Index = ({ chats, setMessages }) => {
     return () => {
       unsub();
     };
-  }, [db, router]);
+  }, [db, router, chatRoomId]);
 
   return (
     <div className={` ${styles.containerOuter}`}>
       <div className={` ${styles.container}`}>
         <div className={`${styles.s}`}>
-          <LeftSection user={user} setTheChatter={setTheChatter} />
+          <LeftSection user={user} />
         </div>
         <div className={`${styles.s2}`}>
           <RightSection
-            theChatter={theChatter}
-            chats={chats}
+            chats={messages}
             messageEndRef={messageEndRef}
+            requestGetMessages={requestGetMessages}
           />
         </div>
       </div>

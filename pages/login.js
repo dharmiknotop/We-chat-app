@@ -1,34 +1,34 @@
-import { useEffect, useState } from "react";
-import inputValidation from "../src/commonFiles/inputValidation";
-import Link from "next/link";
-import axios from "axios";
-import styles from "../styles/register.module.scss";
-import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
-import { authUserAtom } from "../src/recoil/recoil";
-import Image from "next/image";
-import { RiAlertFill } from "react-icons/ri";
+import { useEffect, useState } from 'react';
+import inputValidation from '../src/commonFiles/inputValidation';
+import Link from 'next/link';
+import axios from 'axios';
+import styles from '../styles/register.module.scss';
+import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { authUserAtom } from '../src/recoil/recoil';
+import Image from 'next/image';
+import { RiAlertFill } from 'react-icons/ri';
 
 const Login = () => {
   const router = useRouter();
 
   const [requestPostData, setRequestPostData] = useState({
     loading: false,
-    success: "",
-    error: "",
+    success: '',
+    error: '',
   });
 
   const [showBtn, setShowBtn] = useState(true);
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
   const [formDataError, setFormDataError] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
 
   const [user, setUser] = useRecoilState(authUserAtom);
@@ -45,18 +45,18 @@ const Login = () => {
     let hasError = false;
 
     let tempError = {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     };
 
     tempError.email = inputValidation.isInputEmpty(formData.email);
-    if (tempError.email !== "") {
+    if (tempError.email !== '') {
       hasError = true;
       setShowBtn(false);
     }
 
     tempError.password = inputValidation.isInputEmpty(formData.password);
-    if (tempError.password !== "") {
+    if (tempError.password !== '') {
       hasError = true;
       setShowBtn(false);
     }
@@ -71,8 +71,8 @@ const Login = () => {
   const logIn = async () => {
     setRequestPostData({
       loading: true,
-      success: "",
-      error: "",
+      success: '',
+      error: '',
     });
 
     try {
@@ -88,33 +88,33 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-        isLoggedIn: "true",
+        isLoggedIn: 'true',
       });
 
       console.log(res.data.data);
 
       setRequestPostData({
         loading: false,
-        success: "sign up done succesfully.",
-        error: "",
+        success: 'sign up done succesfully.',
+        error: '',
       });
 
       console.log(user);
 
-      router.push("/");
+      router.push('/');
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       if (error.response) {
         setRequestPostData({
           loading: false,
-          success: "",
+          success: '',
           error: error.response.data.message,
         });
       } else {
         setRequestPostData({
           loading: false,
-          success: "",
-          error: "Something went wrong",
+          success: '',
+          error: 'Something went wrong',
         });
       }
     }
@@ -123,17 +123,17 @@ const Login = () => {
   const logInWithDefaultUser = async () => {
     setRequestPostData({
       loading: true,
-      success: "",
-      error: "",
+      success: '',
+      error: '',
     });
 
     try {
       const res = await axios.post(
         `api/auth/login`,
         {
-          name: "Default User",
-          email: "Default User",
-          password: "Default User",
+          name: 'Default User',
+          email: 'Default User',
+          password: 'Default User',
         },
         {
           withCredentials: true,
@@ -144,41 +144,41 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-        isLoggedIn: "true",
+        isLoggedIn: 'true',
       });
 
       console.log(res.data.data);
 
       setRequestPostData({
         loading: false,
-        success: "sign up done succesfully.",
-        error: "",
+        success: 'sign up done succesfully.',
+        error: '',
       });
 
       console.log(user);
 
-      router.push("/");
+      router.push('/');
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       if (error.response) {
         setRequestPostData({
           loading: false,
-          success: "",
+          success: '',
           error: error.response.data.message,
         });
       } else {
         setRequestPostData({
           loading: false,
-          success: "",
-          error: "Something went wrong",
+          success: '',
+          error: 'Something went wrong',
         });
       }
     }
   };
 
-  useEffect(() => {
-    user && user.isLoggedIn === "true" ? router.push("/") : null;
-  }, [user, router]);
+  //   useEffect(() => {
+  //     user && user.isLoggedIn === "true" ? router.push("/") : null;
+  //   }, [user, router]);
 
   return (
     <div className={styles.s}>
@@ -199,7 +199,7 @@ const Login = () => {
               });
             }}
           />
-          {formDataError.email !== "" && (
+          {formDataError.email !== '' && (
             <span className={styles.errorMessage}>
               Please Enter Valid Email
             </span>
@@ -218,7 +218,7 @@ const Login = () => {
               });
             }}
           />
-          {formDataError.password !== "" && (
+          {formDataError.password !== '' && (
             <span className={styles.errorMessage}>
               Please Enter Valid password
             </span>
@@ -229,7 +229,7 @@ const Login = () => {
             <div className="spinner-border text-primary" role="status" />
           </div>
         )}
-        {!requestPostData.loading && requestPostData.error !== "" && (
+        {!requestPostData.loading && requestPostData.error !== '' && (
           <div className={`${styles.errorMessageContainer}`}>
             <div className={`${styles.errorMessageContainer__errorMessage}`}>
               <RiAlertFill className="me-2" />
@@ -238,7 +238,7 @@ const Login = () => {
           </div>
         )}
 
-        {!requestPostData.loading && requestPostData.success !== "" && (
+        {!requestPostData.loading && requestPostData.success !== '' && (
           <div className="text-center pt-2">
             <div className="text-success">{requestPostData.success}</div>
           </div>
@@ -246,7 +246,7 @@ const Login = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.email !== "" && formData.password !== "" && showBtn
+              formData.email !== '' && formData.password !== '' && showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
             }`}
@@ -254,7 +254,7 @@ const Login = () => {
               uploadDetails();
             }}
           >
-            {" "}
+            {' '}
             Log in
           </button>
           <button
@@ -267,7 +267,7 @@ const Login = () => {
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
-          Have an account ?{" "}
+          Have an account ?{' '}
           <Link href="/register">
             <a> Sign Up</a>
           </Link>
@@ -280,7 +280,7 @@ const Login = () => {
           src="/img/register/backgroundImg.png"
           alt=""
           layout="fill"
-        />{" "}
+        />{' '}
         <h5 className={styles.s2__backgroundImgContainer__title}>
           Get started with account
         </h5>
@@ -292,7 +292,7 @@ const Login = () => {
         </h6>
         <Link href="/register">
           <a>
-            {" "}
+            {' '}
             <div className={styles.s2__backgroundImgContainer__logInTxt}>
               Sign in to your account
               <div className={styles.s2__underline}></div>
@@ -303,5 +303,23 @@ const Login = () => {
     </div>
   );
 };
+
+export async function getServerSideProps({ req }) {
+  const tokens = req.headers.cookie.split('=');
+  const token = tokens[1];
+
+  if (token !== '') {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default Login;

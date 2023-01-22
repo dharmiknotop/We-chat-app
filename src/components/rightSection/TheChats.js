@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { replyingTo, messageId } from '../../recoil/recoil';
@@ -8,8 +8,15 @@ import styles from './css/theChats.module.scss';
 
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { MdKeyboardArrowDown } from 'react-icons/md';
+import { RiAlertFill } from 'react-icons/ri';
 
-const TheChats = ({ chats, user, messageEndRef, setIsReplying }) => {
+const TheChats = ({
+  requestGetMessages,
+  chats,
+  user,
+  messageEndRef,
+  setIsReplying,
+}) => {
   const message = useRecoilValue(messageId);
 
   const messageRef = useRef();
@@ -45,23 +52,35 @@ const TheChats = ({ chats, user, messageEndRef, setIsReplying }) => {
   }, [message, messageRef, changeBackgroundRef]);
 
   return (
-    <div>
-      {chats &&
-        chats.map((item) => {
-          return (
-            <RenderChats
-              key={item._id}
-              item={item}
-              message={message}
-              user={user}
-              messageRef={messageRef}
-              changeBackgroundRef={changeBackgroundRef}
-              setIsReplying={setIsReplying}
-            />
-          );
-        })}
+    <Fragment>
+      {requestGetMessages.loading && (
+        <div className=" pt-4 h-100 d-flex justify-content-center align-items-center">
+          <div className="spinner-border text-primary" role="status" />
+        </div>
+      )}
+
+      {!requestGetMessages.loading && requestGetMessages.success !== '' && (
+        <Fragment>
+          {chats &&
+            chats.map((item) => {
+              return (
+                <Fragment key={item._id}>
+                  <RenderChats
+                    item={item}
+                    message={message}
+                    user={user}
+                    messageRef={messageRef}
+                    changeBackgroundRef={changeBackgroundRef}
+                    setIsReplying={setIsReplying}
+                  />
+                </Fragment>
+              );
+            })}
+        </Fragment>
+      )}
+
       <div ref={messageEndRef} />
-    </div>
+    </Fragment>
   );
 };
 
