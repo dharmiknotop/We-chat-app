@@ -14,11 +14,7 @@ const Index = () => {
   const messageEndRef = useRef();
   const router = useRouter();
 
-  const [requestGetMessages, setRequestGetMessages] = useState({
-    loading: false,
-    success: '',
-    error: '',
-  });
+  const { chatRoomId } = router.query;
 
   const user = useRecoilValue(authUserAtom);
 
@@ -26,46 +22,28 @@ const Index = () => {
 
   const tempColRef = collection(db, 'chats');
 
-  const { chatRoomId } = router.query;
-
   const [messages, setMessages] = useState([]);
 
-  const getMessages = async (id) => {
+  const getMessages = async () => {
     try {
-      setRequestGetMessages({
-        loading: true,
-        success: '',
-        error: '',
-      });
       const res = await axios.post(
         `/api/messages/getMessages`,
-        { chatRoomId: id },
+        { chatRoomId },
         {
           withCredentials: true,
         }
       );
 
       setMessages(res.data.data);
-
-      setRequestGetMessages({
-        loading: false,
-        success: 'Added Successfully.',
-        error: '',
-      });
     } catch (error) {
       console.log('error: ', error);
-      setRequestGetMessages({
-        loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
-      });
     }
   };
 
   useEffect(() => {
     const unsub = onSnapshot(tempColRef, (snapshot) => {
       if (snapshot.size) {
-        getMessages(chatRoomId);
+        getMessages();
         if (!messageRefId) {
           messageEndRef.current?.scrollIntoView({
             behavior: 'smooth',
@@ -89,11 +67,7 @@ const Index = () => {
           <LeftSection user={user} />
         </div>
         <div className={`${styles.s2}`}>
-          <RightSection
-            chats={messages}
-            messageEndRef={messageEndRef}
-            requestGetMessages={requestGetMessages}
-          />
+          <RightSection chats={messages} messageEndRef={messageEndRef} />
         </div>
       </div>
     </div>

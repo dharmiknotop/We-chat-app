@@ -35,7 +35,10 @@ const handler = nc()
       const user = await userModal.findOneAndUpdate(
         { $and: [{ _id: id }, { 'userList.userId': otherUserId }] },
         {
-          $set: { 'userList.$.lastMessage': message },
+          $set: {
+            'userList.$.lastMessage': message,
+            'userList.$.lastMessageUser': userName,
+          },
         }
       );
 
@@ -43,7 +46,10 @@ const handler = nc()
         { $and: [{ _id: otherUserId }, { 'userList.userId': id }] },
 
         {
-          $set: { 'userList.$.lastMessage': message },
+          $set: {
+            'userList.$.lastMessage': message,
+            'userList.$.lastMessageUser': userName,
+          },
         }
       );
 

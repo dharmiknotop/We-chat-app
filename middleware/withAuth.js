@@ -1,8 +1,8 @@
 export function withAuth(gssp) {
   return async (context) => {
     const { req } = context;
-    const tokens = req.headers.cookie.split('=');
-    const token = tokens[1];
+    const tokens = req?.headers?.cookie?.split('=');
+    const token = (tokens && tokens[1]) || '';
 
     if (!token || token === undefined || token === '' || token === 'null') {
       return {
