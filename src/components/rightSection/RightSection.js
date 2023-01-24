@@ -6,8 +6,10 @@ import { theOtherUser, authUserAtom, replyingTo } from '../../recoil/recoil';
 import TheChats from './TheChats';
 import { BiSend } from 'react-icons/bi';
 import { ImCross } from 'react-icons/im';
+import Image from 'next/image';
+import { FaUserCircle } from 'react-icons/fa';
 
-const RightSection = ({ requestGetMessages, chats, messageEndRef }) => {
+const RightSection = ({ chats, messageEndRef }) => {
   const otherUser = useRecoilValue(theOtherUser);
   const user = useRecoilValue(authUserAtom);
   const replyerInfo = useRecoilValue(replyingTo);
@@ -71,7 +73,23 @@ const RightSection = ({ requestGetMessages, chats, messageEndRef }) => {
           }`}
         >
           {' '}
-          <div className={styles.s__headerContainer}>{otherUser.name}</div>
+          <div className={styles.s__headerContainer}>
+            {otherUser?.logo && (
+              <Image
+                src={otherUser?.logo}
+                alt="logoImg"
+                width="50"
+                height="50"
+                className="rounded-circle"
+              />
+            )}
+            {otherUser?.logo === '' && (
+              <Fragment>
+                <FaUserCircle size={50} color="gray" />
+              </Fragment>
+            )}
+            <h3 className={styles.s__headerUserName}>{otherUser.name}</h3>
+          </div>
           <div className={styles.s__chatContainer}>
             {otherUser.name === '' && (
               <div className={`${styles.s__noUserSelectedContainer}`}>
@@ -85,7 +103,6 @@ const RightSection = ({ requestGetMessages, chats, messageEndRef }) => {
                 user={user}
                 messageEndRef={messageEndRef}
                 setIsReplying={setIsReplying}
-                requestGetMessages={requestGetMessages}
               />
             )}
 

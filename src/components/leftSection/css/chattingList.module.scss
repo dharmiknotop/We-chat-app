@@ -25,6 +25,11 @@
       font-weight: 600;
     }
   }
+
+  &__chatListItemActive {
+    border-left: 4px solid blue;
+    background-color: #eaecf0;
+  }
 }
 .search {
   &__searchOuterContainer {

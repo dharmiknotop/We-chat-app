@@ -2,9 +2,9 @@ import { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from './css/chattingList.module.scss';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/router';
-import { messageId, theOtherUser } from '../../recoil/recoil';
+import { authUserAtom, messageId, theOtherUser } from '../../recoil/recoil';
 
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaUserCircle } from 'react-icons/fa';
@@ -13,6 +13,8 @@ import axios from 'axios';
 
 const ChattingList = ({ userList }) => {
   const router = useRouter();
+
+  const user = useRecoilValue(authUserAtom);
 
   const [theChatter, setTheChatter] = useRecoilState(theOtherUser);
 
@@ -103,19 +105,19 @@ const ChattingList = ({ userList }) => {
   };
 
   const setChanges = (item) => {
-    console.log(item);
-
     if (item?.chatRoomId === '') {
       getChatRoomId(item);
       setTheChatter({
         id: item?.userId,
         name: item?.userName,
+        logo: item?.userLogo,
         chatRoomId,
       });
     } else {
       setTheChatter({
         id: item?.userId,
         name: item?.userName,
+        logo: item?.userLogo,
         chatRoomId: item?.chatRoomId,
       });
       router.push(`/${item?.chatRoomId}`);
@@ -147,13 +149,16 @@ const ChattingList = ({ userList }) => {
       {searchQuery === '' ? (
         <div className={styles.s1__chatListContainer}>
           {userList?.map((item) => {
+            console.log(item);
             return (
               <div
                 key={item.id}
                 onClick={() => {
                   setChanges(item);
                 }}
-                className={styles.s1__chatListItem}
+                className={`${styles.s1__chatListItem} ${
+                  theChatter.id === item.userId && styles.s1__chatListItemActive
+                }`}
               >
                 {/* {console.log('item', item)} */}
                 <div className="rounded-circle mx-3">
@@ -176,7 +181,12 @@ const ChattingList = ({ userList }) => {
                   <span className={styles.s1__chatListItem__nameTxt}>
                     {item?.userName}
                   </span>
-                  <span>{item?.lastMessage}</span>
+                  <span>
+                    {item.lastMessageUser === user.name
+                      ? 'You'
+                      : item.lastMessageUser}
+                    {console.log({ user: item })}: {item?.lastMessage}
+                  </span>
                 </div>
               </div>
             );

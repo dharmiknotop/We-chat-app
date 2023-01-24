@@ -305,8 +305,8 @@ const Login = () => {
 };
 
 export async function getServerSideProps({ req }) {
-  const tokens = req.headers.cookie.split('=');
-  const token = tokens[1];
+  const tokens = req?.headers?.cookie?.split('=');
+  const token = (tokens && tokens[1]) || '';
 
   if (token !== '') {
     return {

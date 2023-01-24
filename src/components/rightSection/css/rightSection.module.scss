@@ -16,15 +16,25 @@
     height: calc(100vh - 160px);
   }
 
-  &__headerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  &__headerUserName {
+    font-family: 'lato';
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
 
-    background: #f0f2f5;
+    margin-left: 10px;
+  }
+
+  &__headerContainer {
     height: 60px;
 
     position: relative;
+    background: #f0f2f5;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 30px;
     z-index: 5;
   }
 
