@@ -1,12 +1,12 @@
 import axios from 'axios';
-import styles from '../../styles/mainScreen.module.scss';
+import styles from './css/mainScreen.module.scss';
 import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
 import { authUserAtom, messageId, theOtherUser } from '../recoil/recoil';
 import { collection, query, where, onSnapshot } from '@firebase/firestore';
 import { db } from '../../firebaseConfig';
-import LeftSection from './leftSection/LeftSection';
-import RightSection from './rightSection/RightSection';
+import UserList from './leftSection/UserList';
+import ChatList from './rightSection/ChatList';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -64,10 +64,10 @@ const Index = () => {
     <div className={` ${styles.containerOuter}`}>
       <div className={` ${styles.container}`}>
         <div className={`${styles.s}`}>
-          <LeftSection user={user} />
+          <UserList user={user} />
         </div>
         <div className={`${styles.s2}`}>
-          <RightSection chats={messages} messageEndRef={messageEndRef} />
+          <ChatList chats={messages} messageEndRef={messageEndRef} />
         </div>
       </div>
     </div>

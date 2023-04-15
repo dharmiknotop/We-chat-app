@@ -137,7 +137,7 @@ const ChattingList = ({ userList }) => {
             debounceTimeout={500}
             type="text"
             className={`${styles.search__searchContainer__input}`}
-            // value={searchQuery}
+            value={searchQuery}
             placeholder={`Search `}
             onChange={(t) => {
               setSearchQuery(t.target.value);
@@ -181,11 +181,11 @@ const ChattingList = ({ userList }) => {
                   <span className={styles.s1__chatListItem__nameTxt}>
                     {item?.userName}
                   </span>
-                  <span>
+                  <span className={styles.s1__chatListItem__lastMessageTxt}>
                     {item.lastMessageUser === user.name
                       ? 'You'
                       : item.lastMessageUser}
-                    {console.log({ user: item })}: {item?.lastMessage}
+                    : {item?.lastMessage}
                   </span>
                 </div>
               </div>
@@ -203,9 +203,12 @@ const ChattingList = ({ userList }) => {
           {!requestGetMessages.loading &&
             specificMessages.map((item) => {
               return (
-                <Link key={item._id} href={`/${item.chatRoomId}`}>
+                <Link
+                  key={item._id}
+                  href={`/${item.chatRoomId}`}
+                  legacyBehavior
+                >
                   <a>
-                    {' '}
                     <div
                       className={styles.specificMessages_container}
                       onClick={() => {

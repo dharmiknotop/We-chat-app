@@ -1,15 +1,17 @@
-import styles from './css/rightSection.module.scss';
-import { Fragment, useState } from 'react';
 import axios from 'axios';
+import { Fragment, useState } from 'react';
+import Image from 'next/image';
+import styles from './css/chatList.module.scss';
+
+import TheChats from './TheChats';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { theOtherUser, authUserAtom, replyingTo } from '../../recoil/recoil';
-import TheChats from './TheChats';
 import { BiSend } from 'react-icons/bi';
 import { ImCross } from 'react-icons/im';
-import Image from 'next/image';
 import { FaUserCircle } from 'react-icons/fa';
 
-const RightSection = ({ chats, messageEndRef }) => {
+const ChatList = ({ chats, messageEndRef }) => {
   const otherUser = useRecoilValue(theOtherUser);
   const user = useRecoilValue(authUserAtom);
   const replyerInfo = useRecoilValue(replyingTo);
@@ -181,4 +183,4 @@ const RightSection = ({ chats, messageEndRef }) => {
   );
 };
 
-export default RightSection;
+export default ChatList;

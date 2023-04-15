@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { withAuth } from '../middleware/withAuth';
+import { withAuth } from '@backend/middleware/withAuth';
 import MainScreen from '../src/components/index';
 
 export default function Home() {

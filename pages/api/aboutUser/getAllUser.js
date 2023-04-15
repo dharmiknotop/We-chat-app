@@ -1,7 +1,7 @@
 import nc from 'next-connect';
-import userModal from '../../../models/userModal';
+import userModal from '@backend/models/userModal';
 import FormatResponse from 'response-format';
-import verifyJwt from '../../../middleware/verifyJwt';
+import verifyJwt from '@backend/middleware/verifyJwt';
 
 const handler = nc({
   onError: (err, req, res, next) => {

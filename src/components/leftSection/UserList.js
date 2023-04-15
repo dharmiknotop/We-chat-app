@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import useOnClickOutside from '../../../hooks/useOnClickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { Modal } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
@@ -11,10 +11,10 @@ import AddUser from '../AddUser';
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-import styles from './css/leftSection.module.scss';
+import styles from './css/userList.module.scss';
 import ChattingList from './ChattingList';
 
-const LeftSection = ({ user }) => {
+const UserList = ({ user }) => {
   const locationRef = useRef();
   const router = useRouter();
 
@@ -183,4 +183,4 @@ const LeftSection = ({ user }) => {
   );
 };
 
-export default LeftSection;
+export default UserList;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Head from 'next/head';
-import { withAuth } from '../middleware/withAuth';
+import { withAuth } from '@backend/middleware/withAuth';
 import MainScreen from '../src/components/index';
 
 export default function Home() {
