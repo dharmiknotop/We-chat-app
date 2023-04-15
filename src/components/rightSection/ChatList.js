@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Fragment, useState } from 'react';
 import Image from 'next/image';
-import styles from './css/chatList.module.scss';
+import styles from './css/chatlist.module.scss';
 
 import TheChats from './TheChats';
 
