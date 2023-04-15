@@ -5,41 +5,60 @@
 
   &__itemContainer {
     padding: 5px 0;
-    font-family: "lato";
+    font-family: 'lato';
     font-weight: 500;
   }
 
   &__topSection {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
-    padding: 10px;
-    font-weight: 800;
-    background: #f0f2f5;
+    padding: 20px 30px;
+    margin-bottom: 5px;
+    background: #d6dbdb;
 
-    border-radius: 8px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
   }
 
   &__userContainer {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    padding: 10px;
+
+    padding: 10px 20px;
 
     transition: 0.2s all ease-in-out;
+    cursor: pointer;
+
+    border-width: thin;
+    border-bottom: 1px solid #e2dcdc;
 
     &:hover {
       position: relative;
+      transform: translateY(-8%);
+
       background-color: #f0f2f5;
-      transform: translateY(-10%);
       box-shadow: 0px 5px 5px #88888851;
+
       z-index: 999;
     }
   }
 
   &__userName {
     font-size: 18px;
+    font-weight: 600;
+
     margin-left: 10px;
     margin-bottom: 0;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &__crossIcon {
+    cursor: pointer;
   }
 }

@@ -3,7 +3,7 @@ import FormatResponse from 'response-format';
 import verifyJwt from '@backend/middleware/verifyJwt';
 import messageModal from '@backend/models/messageModal';
 import userModal from '@backend/models/userModal';
-import { db } from '@backend/firebaseConfig';
+import { db } from '../../../firebaseConfig';
 import { doc, increment, updateDoc } from 'firebase/firestore';
 const handler = nc()
   .use(verifyJwt)

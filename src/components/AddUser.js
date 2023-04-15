@@ -8,6 +8,8 @@ import { authUserAtom } from '../recoil/recoil';
 import { ImCross } from 'react-icons/im';
 import { FaUserCircle } from 'react-icons/fa';
 
+import toast, { Toaster } from 'react-hot-toast';
+
 const AddUser = ({ setAddUserModal, getUserDetails }) => {
   let displayOrNot = true;
 
@@ -37,6 +39,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
           withCredentials: true,
         }
       );
+
       setAllUsers(res.data.data);
       setRequestGetUser({
         loading: false,
@@ -97,12 +100,12 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
   return (
     <div className={styles.s__container}>
       <div className={styles.s__topSection}>
-        <div>Add a User to the chat Section</div>
+        <div className={styles.s__title}>Add a User to the chat Section</div>
         <ImCross
           onClick={() => {
             setAddUserModal(false);
           }}
-          className="cross"
+          className={styles.s__crossIcon}
           color="black"
         />
       </div>
@@ -126,7 +129,12 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
                     console.log(item);
                     for (let i = 0; i < userList?.userList?.length; i++) {
                       if (item?._id === userList?.userList[i].userId) {
-                        return window.alert('User Already exist');
+                        toast.error('User Already exist', {
+                          position: 'bottom-center',
+                        });
+                        console.log('exec');
+
+                        return;
                       }
                       // console.log(tempUserArr);
                     }
@@ -159,6 +167,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
           })}
         </div>
       )}{' '}
+      <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );
 };

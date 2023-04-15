@@ -12,7 +12,9 @@
     cursor: pointer;
 
     &:hover {
-      background-color: #f0f2f5;
+      border-left: 4px solid blue;
+      background-color: #eaecf0;
+      transition: 0.2s all ease-in-out;
     }
 
     &__nameSection {
@@ -21,8 +23,13 @@
     }
 
     &__nameTxt {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 600;
+    }
+
+    &__lastMessageTxt {
+      font-size: 12px;
+      color: gray;
     }
   }
 
@@ -31,15 +38,16 @@
     background-color: #eaecf0;
   }
 }
+
 .search {
   &__searchOuterContainer {
     height: 50px;
     background-color: white;
-    border-bottom: 2px solid gray;
+    border-bottom: 1px solid #acb2b8;
     padding: 5px;
   }
   &__searchContainer {
-    background-color: #f0f2f5;
+    background-color: #e3e5e7;
     border-radius: 5px;
     height: 35px;
     display: flex;

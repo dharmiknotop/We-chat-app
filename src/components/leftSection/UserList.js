@@ -11,10 +11,10 @@ import AddUser from '../AddUser';
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-import styles from './css/leftSection.module.scss';
+import styles from './css/userList.module.scss';
 import ChattingList from './ChattingList';
 
-const LeftSection = ({ user }) => {
+const UserList = ({ user }) => {
   const locationRef = useRef();
   const router = useRouter();
 
@@ -183,4 +183,4 @@ const LeftSection = ({ user }) => {
   );
 };
 
-export default LeftSection;
+export default UserList;

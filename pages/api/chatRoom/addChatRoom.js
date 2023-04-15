@@ -3,7 +3,7 @@ import FormatResponse from 'response-format';
 import verifyJwt from '@backend/middleware/verifyJwt';
 import userModal from '@backend/models/userModal';
 import chatModal from '@backend/models/chatModal';
-import { db } from '@backend/firebaseConfig';
+import { db } from '../../../firebaseConfig';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 const handler = nc()
   .use(verifyJwt)
@@ -15,8 +15,6 @@ const handler = nc()
       const tempChatRoom = await chatModal.create({ userList: [] });
 
       const colRef = doc(db, 'chats', tempChatRoom._id.toString());
-
-      console.log(tempChatRoom);
 
       const chatRoom = await chatModal.findOneAndUpdate(
         {
@@ -42,8 +40,6 @@ const handler = nc()
           $set: { 'userList.$.chatRoomId': chatRoom._id },
         }
       );
-
-      console.log(user);
 
       //adding the chat room id in the other user's userList
 
