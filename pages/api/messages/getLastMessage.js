@@ -1,7 +1,7 @@
 import nc from 'next-connect';
 import FormatResponse from 'response-format';
-import verifyJwt from '../../../middleware/verifyJwt';
-import chatModal from '../../../models/chatModal';
+import verifyJwt from '@backend/middleware/verifyJwt';
+import chatModal from '@backend/models/chatModal';
 const handler = nc()
   .use(verifyJwt)
   .post(async (req, res) => {

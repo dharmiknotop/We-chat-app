@@ -1,5 +1,5 @@
 import axios from 'axios';
-import styles from '../../styles/mainScreen.module.scss';
+import styles from './css/mainScreen.module.scss';
 import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
 import { authUserAtom, messageId, theOtherUser } from '../recoil/recoil';

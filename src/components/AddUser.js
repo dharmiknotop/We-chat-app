@@ -1,12 +1,12 @@
-import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
-import styles from "../../styles/addUser.module.scss";
-import Image from "next/image";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { authUserAtom } from "../recoil/recoil";
+import axios from 'axios';
+import React, { Fragment, useEffect, useState } from 'react';
+import styles from './css/addUser.module.scss';
+import Image from 'next/image';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authUserAtom } from '../recoil/recoil';
 
-import { ImCross } from "react-icons/im";
-import { FaUserCircle } from "react-icons/fa";
+import { ImCross } from 'react-icons/im';
+import { FaUserCircle } from 'react-icons/fa';
 
 const AddUser = ({ setAddUserModal, getUserDetails }) => {
   let displayOrNot = true;
@@ -15,8 +15,8 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
 
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
-    success: "",
-    error: "",
+    success: '',
+    error: '',
   });
 
   const userList = useRecoilValue(authUserAtom);
@@ -26,8 +26,8 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
   const getAllUser = async () => {
     setRequestGetUser({
       loading: true,
-      success: "",
-      error: "",
+      success: '',
+      error: '',
     });
     try {
       const res = await axios.post(
@@ -40,15 +40,15 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
       setAllUsers(res.data.data);
       setRequestGetUser({
         loading: false,
-        success: "Added Successfully.",
-        error: "",
+        success: 'Added Successfully.',
+        error: '',
       });
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       setRequestGetUser({
         loading: false,
-        success: "",
-        error: "Some unexpected error occur.",
+        success: '',
+        error: 'Some unexpected error occur.',
       });
     }
   };
@@ -56,8 +56,8 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
   const addUserToChatSection = async (item) => {
     setRequestGetUser({
       loading: true,
-      success: "",
-      error: "",
+      success: '',
+      error: '',
     });
     try {
       const res = await axios.post(
@@ -77,15 +77,15 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
 
       setRequestGetUser({
         loading: false,
-        success: "Added Successfully.",
-        error: "",
+        success: 'Added Successfully.',
+        error: '',
       });
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
       setRequestGetUser({
         loading: false,
-        success: "",
-        error: "Some unexpected error occur.",
+        success: '',
+        error: 'Some unexpected error occur.',
       });
     }
   };
@@ -126,7 +126,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
                     console.log(item);
                     for (let i = 0; i < userList?.userList?.length; i++) {
                       if (item?._id === userList?.userList[i].userId) {
-                        return window.alert("User Already exist");
+                        return window.alert('User Already exist');
                       }
                       // console.log(tempUserArr);
                     }
@@ -145,7 +145,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
                           className="rounded-circle"
                         />
                       )}
-                      {item?.logoUrl === "" && (
+                      {item?.logoUrl === '' && (
                         <Fragment>
                           <FaUserCircle size={50} color="gray" />
                         </Fragment>
@@ -158,7 +158,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
             );
           })}
         </div>
-      )}{" "}
+      )}{' '}
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import nc from 'next-connect';
 import FormatResponse from 'response-format';
-import verifyJwt from '../../../middleware/verifyJwt';
-import userModal from '../../../models/userModal';
-import chatModal from '../../../models/chatModal';
-import { db } from '../../../firebaseConfig';
+import verifyJwt from '@backend/middleware/verifyJwt';
+import userModal from '@backend/models/userModal';
+import chatModal from '@backend/models/chatModal';
+import { db } from '@backend/firebaseConfig';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 const handler = nc()
   .use(verifyJwt)

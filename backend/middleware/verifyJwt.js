@@ -7,7 +7,6 @@ const verifyJwt = async (req, res, next) => {
     req.cookies.token === '' ||
     req.cookies.token === null
   ) {
-    console.log(req.cookies);
     return res
       .status(401)
       .json(FormatResponse.badRequest('Unauthorized token doesnot exist', {}));

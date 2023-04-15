@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import useOnClickOutside from '../../../hooks/useOnClickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { Modal } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';

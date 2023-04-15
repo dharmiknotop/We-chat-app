@@ -1,8 +1,8 @@
 import nc from 'next-connect';
-import userModal from '../../../models/userModal';
+import userModal from '@backend/models/userModal';
 import jwt from 'jsonwebtoken';
 import FormatResponse from 'response-format';
-import { createCookie } from '../../../utils/createCookie';
+import { createCookie } from '@backend/utils/createCookie';
 import bcrypt from 'bcryptjs';
 import { serialize } from 'cookie';
 
