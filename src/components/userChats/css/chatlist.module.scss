@@ -1,0 +1,66 @@
+.s {
+  &__containerOuter {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__containerWithoutReply {
+    height: calc(100vh - 120px);
+  }
+
+  &__containerWithReplyOn {
+    height: calc(100vh - 160px);
+  }
+
+  &__headerUserName {
+    font-family: 'lato';
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+
+    margin-left: 10px;
+    margin-bottom: 0;
+  }
+
+  &__headerContainer {
+    height: 60px;
+
+    position: relative;
+    background: #e3e5e7;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 30px;
+    z-index: 5;
+  }
+
+  &__chatContainer {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+
+    &__overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://cdna.artstation.com/p/assets/images/images/011/168/054/large/joel-morales-escobar-trama-j02.jpg?1528192578');
+      background-size: cover;
+      z-index: -1;
+      opacity: 0.5;
+    }
+  }
+
+  &__noUserSelectedContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 60px));
+  }
+}

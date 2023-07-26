@@ -8,7 +8,6 @@ const handler = nc()
     try {
       const { searchQuery } = req.body;
       const { id } = req.payload;
-      console.log(id);
 
       const messages = await messageModal.find({
         $and: [
