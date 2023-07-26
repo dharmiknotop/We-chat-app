@@ -132,7 +132,6 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
                         toast.error('User Already exist', {
                           position: 'bottom-center',
                         });
-                        console.log('exec');
 
                         return;
                       }

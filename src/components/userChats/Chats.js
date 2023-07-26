@@ -1,33 +1,96 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import axios from 'axios';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { replyingTo, messageId } from '../../recoil/recoil';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import styles from './css/theChats.module.scss';
 
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import { RiAlertFill } from 'react-icons/ri';
+import { db } from '../../config/firebaseConfig';
+import { collection, onSnapshot } from '@firebase/firestore';
 
-const TheChats = ({ chats, user, messageEndRef, setIsReplying }) => {
-  const message = useRecoilValue(messageId);
+import { OverlayTrigger } from 'react-bootstrap';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+
+const Chats = ({ user, setIsReplying }) => {
+  const router = useRouter();
+  const { chatRoomId } = router.query;
+
+  const tempColRef = collection(db, 'chats');
+
+  const messageToScroll = useRecoilValue(messageId);
 
   const messageRef = useRef();
-
+  const messageEndRef = useRef();
   const changeBackgroundRef = useRef(0);
 
-  useEffect(() => {
-    if (message.id === '') {
-      messageEndRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+  const [messages, setMessages] = useState([]);
+
+  const [requestGetMessage, setRequestGetMessage] = useState({
+    loading: false,
+    success: '',
+    error: '',
+  });
+
+  const getMessages = async () => {
+    try {
+      setRequestGetMessage({
+        loading: true,
+        success: '',
+        error: '',
+      });
+
+      const res = await axios.post(
+        `/api/messages/getMessages`,
+        { chatRoomId },
+        {
+          withCredentials: true,
+        }
+      );
+
+      setMessages(res.data.data);
+
+      setRequestGetMessage({
+        loading: false,
+        success: 'successfully loaded messages',
+        error: '',
+      });
+    } catch (error) {
+      console.log('error: ', error);
+
+      setRequestGetMessage({
+        loading: false,
+        success: '',
+        error: 'Something went wrong',
       });
     }
-  }, [chats, messageEndRef, message]);
+  };
 
   useEffect(() => {
-    if (message) {
+    const unsub = onSnapshot(tempColRef, (snapshot) => {
+      if (snapshot.size) {
+        getMessages();
+      }
+    });
+    return () => {
+      unsub();
+    };
+  }, [db, router, chatRoomId]);
+
+  useEffect(() => {
+    // scroll to the last chat message
+
+    messageEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, [messageEndRef, messages]);
+
+  useEffect(() => {
+    // scroll to the particular chat message
+
+    if (messageToScroll) {
       messageRef?.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -43,28 +106,35 @@ const TheChats = ({ chats, user, messageEndRef, setIsReplying }) => {
         }
       }
     }
-  }, [message, messageRef, changeBackgroundRef]);
+  }, [messageToScroll, messageRef, changeBackgroundRef]);
 
   return (
     <Fragment>
-      <Fragment>
-        {chats &&
-          chats.map((item) => {
-            return (
-              <Fragment key={item._id}>
-                <RenderChats
-                  item={item}
-                  message={message}
-                  user={user}
-                  messageRef={messageRef}
-                  changeBackgroundRef={changeBackgroundRef}
-                  setIsReplying={setIsReplying}
-                />
-              </Fragment>
-            );
-          })}
-      </Fragment>
+      {requestGetMessage.loading && (
+        <div className="text-center pt-4">
+          <div className="spinner-border text-primary" role="status" />
+        </div>
+      )}
+      {messages &&
+        messages.map((item) => {
+          return (
+            <RenderChats
+              item={item}
+              message={messageToScroll}
+              user={user}
+              messageRef={messageRef}
+              changeBackgroundRef={changeBackgroundRef}
+              setIsReplying={setIsReplying}
+              key={item._id}
+            />
+          );
+        })}
 
+      {!requestGetMessage.loading && requestGetMessage.error !== '' && (
+        <div className="text-center pt-2">
+          <div className="text-danger">{requestGetMessage.error}</div>
+        </div>
+      )}
       <div ref={messageEndRef} />
     </Fragment>
   );
@@ -82,7 +152,7 @@ const RenderChats = ({
 
   const [replyTo, setReplyTo] = useRecoilState(replyingTo);
 
-  // console.log(item);
+  console.log(item);
 
   const popoverCard = (item) => {
     return (
@@ -102,23 +172,6 @@ const RenderChats = ({
           }}
         >
           Reply to
-        </h1>
-
-        <h1
-          className={styles.dropDown__txt}
-          onClick={() => {
-            document.body.click(); // Added this to make the popover close onClick.
-
-            setReplyTo({
-              replyerId: item?.userId,
-              replyerName: item?.userName,
-              replyerMessage: item?.message,
-            });
-
-            setIsReplying(true); // for styling purpose
-          }}
-        >
-          Reply
         </h1>
       </div>
     );
@@ -204,4 +257,4 @@ const RenderChats = ({
   );
 };
 
-export default TheChats;
+export default Chats;

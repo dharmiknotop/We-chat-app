@@ -49,7 +49,6 @@ const handler = nc({
       process.env.SECRET_KEY
     );
 
-    console.log(token);
     createCookie(res, cookies, token);
 
     return res.status(200).json(FormatResponse.success('Success', isValidUser));

@@ -245,7 +245,7 @@ const Register = () => {
         <div className={styles.s__inputContainer}>
           <label>Password</label>
           <input
-            type="text"
+            type="password"
             onChange={(val) => {
               setShowBtn(true);
               setFormData({
@@ -322,10 +322,7 @@ const Register = () => {
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
-          Have an account ?{' '}
-          <Link href="/login">
-            <a> Log In</a>
-          </Link>
+          Have an account ? <Link href="/login">Log In</Link>
         </span>
       </div>
 
@@ -346,12 +343,10 @@ const Register = () => {
           log in if already registered.
         </h6>
         <Link href="/login">
-          <a>
-            <div className={styles.s2__backgroundImgContainer__logInTxt}>
-              Log in to your account
-              <div className={styles.s2__underline}></div>
-            </div>
-          </a>
+          <div className={styles.s2__backgroundImgContainer__logInTxt}>
+            Log in to your account
+            <div className={styles.s2__underline}></div>
+          </div>
         </Link>
       </div>
     </div>
@@ -359,8 +354,8 @@ const Register = () => {
 };
 
 export async function getServerSideProps({ req }) {
-  const tokens = req.headers.cookie.split('=');
-  const token = tokens[1];
+  const tokens = req?.headers?.cookie?.split('=');
+  const token = (tokens && tokens[1]) || '';
 
   if (token !== '') {
     return {

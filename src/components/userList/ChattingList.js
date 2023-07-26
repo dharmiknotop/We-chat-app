@@ -149,7 +149,6 @@ const ChattingList = ({ userList }) => {
       {searchQuery === '' ? (
         <div className={styles.s1__chatListContainer}>
           {userList?.map((item) => {
-            console.log(item);
             return (
               <div
                 key={item.id}
@@ -211,8 +210,9 @@ const ChattingList = ({ userList }) => {
                   <a>
                     <div
                       className={styles.specificMessages_container}
-                      onClick={() => {
+                      onClick={(e) => {
                         // console.log(item);
+                        e.preventDefault();
                         setTheChatter({
                           id: item?.id,
                           name: item?.userName,

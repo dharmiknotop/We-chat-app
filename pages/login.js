@@ -91,15 +91,11 @@ const Login = () => {
         isLoggedIn: 'true',
       });
 
-      console.log(res.data.data);
-
       setRequestPostData({
         loading: false,
         success: 'sign up done succesfully.',
         error: '',
       });
-
-      console.log(user);
 
       router.push('/');
     } catch (error) {
@@ -147,15 +143,11 @@ const Login = () => {
         isLoggedIn: 'true',
       });
 
-      console.log(res.data.data);
-
       setRequestPostData({
         loading: false,
         success: 'sign up done succesfully.',
         error: '',
       });
-
-      console.log(user);
 
       router.push('/');
     } catch (error) {
@@ -267,10 +259,7 @@ const Login = () => {
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
-          Have an account ?{' '}
-          <Link href="/register">
-            <a> Sign Up</a>
-          </Link>
+          Have an account ? <Link href="/register">Sign Up</Link>
         </span>
       </div>
 
@@ -291,13 +280,10 @@ const Login = () => {
           log in if already registered.
         </h6>
         <Link href="/register">
-          <a>
-            {' '}
-            <div className={styles.s2__backgroundImgContainer__logInTxt}>
-              Sign in to your account
-              <div className={styles.s2__underline}></div>
-            </div>
-          </a>
+          <div className={styles.s2__backgroundImgContainer__logInTxt}>
+            Sign in to your account
+            <div className={styles.s2__underline}></div>
+          </div>
         </Link>
       </div>
     </div>

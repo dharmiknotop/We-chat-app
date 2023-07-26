@@ -9,7 +9,6 @@ const handler = nc()
       const { id, userName, userLogo } = req.payload;
       const { otherUserName, otherUserId, otherUserLogo, chatRoomId } =
         req.body;
-      console.log();
       //adding the other user in the user's userList
       const user = await userModal.findOneAndUpdate(
         { _id: id },
