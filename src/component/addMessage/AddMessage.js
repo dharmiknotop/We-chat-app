@@ -1,14 +1,14 @@
+import axios from 'axios';
 import { useState } from 'react';
 import styles from './css/addMessage.module.scss';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { replyingTo, theOtherUser, authUserAtom } from '../recoil/recoil';
+import { replyingTo, theOtherUser, authUserAtom } from '../../recoil/recoil';
 
 import { BiSend } from 'react-icons/bi';
 import { ImCross } from 'react-icons/im';
-import axios from 'axios';
 
-const AddMessage = () => {
+const AddMessage = ({ setIsReplying }) => {
   const user = useRecoilValue(authUserAtom);
   const otherUser = useRecoilValue(theOtherUser);
   const replyerInfo = useRecoilValue(replyingTo);

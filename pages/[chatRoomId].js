@@ -1,15 +1,11 @@
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { withAuth } from '@backend/middleware/withAuth';
-import MainScreen from '../src/components/index';
+import Index from '@container/index';
+import { useRecoilState } from 'recoil';
 
 export default function Home() {
-  return (
-    <div>
-      <MainScreen />
-    </div>
-  );
+  const [theChatter, setTheChatter] = useRecoilState(theOtherUser);
+
+  return <Index />;
 }
 
 export const getServerSideProps = withAuth((context) => {

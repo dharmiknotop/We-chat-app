@@ -4,7 +4,6 @@ import { authUserAtom } from '../recoil/recoil';
 
 import UserList from './userList/UserList';
 import ChatList from './userChats/ChatList';
-import { useRef } from 'react';
 
 const Index = () => {
   const user = useRecoilValue(authUserAtom);
