@@ -152,8 +152,6 @@ const RenderChats = ({
 
   const [replyTo, setReplyTo] = useRecoilState(replyingTo);
 
-  console.log(item);
-
   const popoverCard = (item) => {
     return (
       <div className={styles.dropDown}>
