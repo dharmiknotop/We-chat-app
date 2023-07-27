@@ -7,7 +7,7 @@ import { Modal } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 
-import AddUser from '../AddUser';
+import AddUser from '@component/addUser/AddUser';
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 

@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import styles from './css/addUser.module.scss';
 import Image from 'next/image';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { authUserAtom } from '../recoil/recoil';
+import { authUserAtom } from '../../recoil/recoil';
 
 import { ImCross } from 'react-icons/im';
 import { FaUserCircle } from 'react-icons/fa';

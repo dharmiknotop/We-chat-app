@@ -2,13 +2,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import styles from './css/chatlist.module.scss';
 
-import Chats from './Chats';
+import Chats from '@component/chats/Chats';
+import AddMessage from '@component/addMessage/AddMessage';
 
 import { useRecoilValue } from 'recoil';
 import { theOtherUser, authUserAtom, replyingTo } from '../../recoil/recoil';
 
 import { FaUserCircle } from 'react-icons/fa';
-import AddMessage from '@component/AddMessage';
 
 const ChatList = () => {
   const [isReplying, setIsReplying] = useState(false);
@@ -49,7 +49,7 @@ const ChatList = () => {
           <Chats user={user} setIsReplying={setIsReplying} />
           <div className={styles.s__chatContainer__overlay}></div>
         </div>
-        <AddMessage />
+        <AddMessage setIsReplying={setIsReplying} />
       </div>
     </div>
   );
