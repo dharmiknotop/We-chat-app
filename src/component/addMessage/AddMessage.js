@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import styles from './css/addMessage.module.scss';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -15,20 +15,9 @@ const AddMessage = ({ setIsReplying }) => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [requestGetUser, setRequestGetUser] = useState({
-    loading: false,
-    success: '',
-    error: '',
-  });
-
   const [replyTo, setReplyTo] = useRecoilState(replyingTo);
 
   const createMessage = async () => {
-    setRequestGetUser({
-      loading: true,
-      success: '',
-      error: '',
-    });
     try {
       await axios.post(
         `/api/messages/addMessage`,
@@ -43,19 +32,8 @@ const AddMessage = ({ setIsReplying }) => {
           withCredentials: true,
         }
       );
-
-      setRequestGetUser({
-        loading: false,
-        success: 'Added Successfully.',
-        error: '',
-      });
     } catch (error) {
       console.log('error: ', error);
-      setRequestGetUser({
-        loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
-      });
     }
   };
 
@@ -68,7 +46,6 @@ const AddMessage = ({ setIsReplying }) => {
               {replyerInfo.replyerId === user?.id
                 ? 'You'
                 : replyerInfo?.replyerName}
-              {console.log(user)}
             </h1>
             <h1 className={styles.s__messageTxt}>
               {replyerInfo.replyerMessage}
@@ -89,7 +66,8 @@ const AddMessage = ({ setIsReplying }) => {
           />
         </div>
       )}
-      <div className={styles.s__innerContainer}>
+
+      <div className={styles.s__container}>
         <input
           className={styles.s__input}
           type="text"
@@ -128,4 +106,4 @@ const AddMessage = ({ setIsReplying }) => {
   );
 };
 
-export default AddMessage;
+export default memo(AddMessage);

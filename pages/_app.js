@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
       <RecoilRoot>
         <ValidateSession />
         <Component {...pageProps} />
-      </RecoilRoot>{' '}
+      </RecoilRoot>
     </Fragment>
   );
 }

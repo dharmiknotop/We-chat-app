@@ -1,7 +1,11 @@
 .s1 {
-  width: 450px;
+  width: 250px;
   border-right: 1px solid #acb2b8;
   background-color: white;
+
+  @media (min-width: 576px) {
+    width: 450px;
+  }
 
   &__headerContainer {
     height: 60px;

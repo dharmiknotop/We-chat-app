@@ -1,5 +1,6 @@
+import dynamic from 'next/dynamic';
 import { withAuth } from '@backend/middleware/withAuth';
-import Index from '@container/index';
+const Index = dynamic(() => import('@container/index'));
 
 export default function Home() {
   return <Index />;

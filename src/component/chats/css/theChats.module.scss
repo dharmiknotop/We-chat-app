@@ -136,3 +136,38 @@
     cursor: pointer;
   }
 }
+
+.s {
+  &__chatContainer {
+    position: relative;
+    overflow-y: auto;
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://cdna.artstation.com/p/assets/images/images/011/168/054/large/joel-morales-escobar-trama-j02.jpg?1528192578');
+    background-size: cover;
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  &__withoutReply {
+    height: calc(100vh - 120px);
+  }
+
+  &__withReply {
+    height: calc(100vh - 200px);
+  }
+
+  &__noUserSelectedContainer {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

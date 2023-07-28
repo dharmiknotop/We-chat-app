@@ -8,6 +8,7 @@ const ValidateUser = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(authUserAtom);
   const getUserDetails = async () => {
+    console.log('validating user');
     try {
       const res = await axios.get(`/api/validateSession`, {
         withCredentials: true,

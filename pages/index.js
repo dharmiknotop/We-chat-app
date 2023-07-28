@@ -1,5 +1,8 @@
 import Head from 'next/head';
-import Index from '@container/index';
+import dynamic from 'next/dynamic';
+
+const Index = dynamic(() => import('@container/index'));
+
 import { withAuth } from '@backend/middleware/withAuth';
 
 export default function Home() {

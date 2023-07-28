@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, memo, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { Modal } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import AddUser from '@component/addUser/AddUser';
 
@@ -13,10 +13,15 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 
 import styles from './css/userList.module.scss';
 import ChattingList from './ChattingList';
+import { authUserAtom } from '../../recoil/recoil';
 
-const UserList = ({ user }) => {
+const UserList = () => {
   const locationRef = useRef();
   const router = useRouter();
+
+  console.log('userList component');
+
+  const user = useRecoilValue(authUserAtom);
 
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
@@ -91,17 +96,13 @@ const UserList = ({ user }) => {
   };
 
   const getUserDetails = async (item) => {
-    setRequestGetUser({
-      loading: true,
-      success: '',
-      error: '',
-    });
     try {
-      const res = await axios.get(`/api/aboutUser/getUserDetail`, {
-        withCredentials: true,
+      setRequestGetUser({
+        loading: true,
+        success: '',
+        error: '',
       });
-
-      setUserList(res.data.data.userList);
+      setUserList(user.userList);
 
       setRequestGetUser({
         loading: false,
@@ -124,7 +125,7 @@ const UserList = ({ user }) => {
 
   useEffect(() => {
     getUserDetails();
-  }, []);
+  }, [user]);
 
   return (
     <div className={styles.s1}>
@@ -177,10 +178,18 @@ const UserList = ({ user }) => {
         </div>
       </div>
 
-      <ChattingList userList={userList} />
+      {requestGetUser.loading && (
+        <div className="text-center pt-4">
+          <div className="spinner-border text-primary" role="status" />
+        </div>
+      )}
+      {!requestGetUser.loading && requestGetUser.success !== '' && (
+        <ChattingList userList={userList} />
+      )}
+
       {renderAddUserModal()}
     </div>
   );
 };
 
-export default UserList;
+export default memo(UserList);

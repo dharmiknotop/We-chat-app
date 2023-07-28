@@ -13,7 +13,9 @@ import { collection, onSnapshot } from '@firebase/firestore';
 import { OverlayTrigger } from 'react-bootstrap';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
-const Chats = ({ user, setIsReplying }) => {
+const Chats = (props) => {
+  const { user, setIsReplying, isReplying, otherUser } = props;
+
   const router = useRouter();
   const { chatRoomId } = router.query;
 
@@ -109,12 +111,24 @@ const Chats = ({ user, setIsReplying }) => {
   }, [messageToScroll, messageRef, changeBackgroundRef]);
 
   return (
-    <Fragment>
+    <div
+      className={`${
+        isReplying === true ? styles.s__withReply : styles.s__withoutReply
+      } ${styles.s__chatContainer}`}
+    >
       {requestGetMessage.loading && (
         <div className="text-center pt-4">
           <div className="spinner-border text-primary" role="status" />
         </div>
       )}
+
+      {!requestGetMessage.loading && otherUser.name === '' && (
+        <div className={`${styles.s__noUserSelectedContainer}`}>
+          {' '}
+          Currently no user is selected
+        </div>
+      )}
+
       {messages &&
         messages.map((item) => {
           return (
@@ -136,7 +150,8 @@ const Chats = ({ user, setIsReplying }) => {
         </div>
       )}
       <div ref={messageEndRef} />
-    </Fragment>
+      <div className={styles.s__overlay}></div>
+    </div>
   );
 };
 

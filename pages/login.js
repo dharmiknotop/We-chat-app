@@ -168,10 +168,6 @@ const Login = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     user && user.isLoggedIn === "true" ? router.push("/") : null;
-  //   }, [user, router]);
-
   return (
     <div className={styles.s}>
       <div className={styles.s__registerContainer}>
