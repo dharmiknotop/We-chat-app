@@ -1,10 +1,8 @@
+import dynamic from 'next/dynamic';
 import { withAuth } from '@backend/middleware/withAuth';
-import Index from '@container/index';
-import { useRecoilState } from 'recoil';
+const Index = dynamic(() => import('@container/index'));
 
 export default function Home() {
-  const [theChatter, setTheChatter] = useRecoilState(theOtherUser);
-
   return <Index />;
 }
 

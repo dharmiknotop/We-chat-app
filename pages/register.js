@@ -52,25 +52,25 @@ const Register = () => {
       password: '',
     };
 
-    // tempError.name = inputValidation.isInputEmpty(formData.name);
-    // if (tempError.name !== "") {
-    //   hasError = true;
-    //   setShowBtn(false);
-    // }
+    tempError.name = inputValidation.isInputEmpty(formData.name);
+    if (tempError.name !== '') {
+      hasError = true;
+      setShowBtn(false);
+    }
 
-    // tempError.email = inputValidation.isInputEmailValid(formData.email);
-    // if (tempError.email !== "") {
-    //   hasError = true;
-    //   setShowBtn(false);
-    // }
+    tempError.email = inputValidation.isInputEmailValid(formData.email);
+    if (tempError.email !== '') {
+      hasError = true;
+      setShowBtn(false);
+    }
 
-    // tempError.password = inputValidation.isInputPasswordValid(
-    //   formData.password
-    // );
-    // if (tempError.password !== "") {
-    //   hasError = true;
-    //   setShowBtn(false);
-    // }
+    tempError.password = inputValidation.isInputPasswordValid(
+      formData.password
+    );
+    if (tempError.password !== '') {
+      hasError = true;
+      setShowBtn(false);
+    }
     setFormDataError({
       ...tempError,
     });

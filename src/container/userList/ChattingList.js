@@ -148,48 +148,50 @@ const ChattingList = ({ userList }) => {
       {/* mapping the user list of the user  */}{' '}
       {searchQuery === '' ? (
         <div className={styles.s1__chatListContainer}>
-          {userList?.map((item) => {
-            return (
-              <div
-                key={item.id}
-                onClick={() => {
-                  setChanges(item);
-                }}
-                className={`${styles.s1__chatListItem} ${
-                  theChatter.id === item.userId && styles.s1__chatListItemActive
-                }`}
-              >
-                {/* {console.log('item', item)} */}
-                <div className="rounded-circle mx-3">
-                  {item?.userLogo && (
-                    <Image
-                      src={item?.userLogo}
-                      alt="userLogoImg"
-                      width="50"
-                      height="50"
-                      className="rounded-circle"
-                    />
-                  )}
-                  {item?.userLogo === '' && (
-                    <Fragment>
-                      <FaUserCircle size={50} color="gray" />
-                    </Fragment>
-                  )}
+          {userList &&
+            userList?.map((item) => {
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    setChanges(item);
+                  }}
+                  className={`${styles.s1__chatListItem} ${
+                    theChatter.id === item.userId &&
+                    styles.s1__chatListItemActive
+                  }`}
+                >
+                  {/* {console.log('item', item)} */}
+                  <div className="rounded-circle mx-3">
+                    {item?.userLogo && (
+                      <Image
+                        src={item?.userLogo}
+                        alt="userLogoImg"
+                        width="50"
+                        height="50"
+                        className="rounded-circle"
+                      />
+                    )}
+                    {item?.userLogo === '' && (
+                      <Fragment>
+                        <FaUserCircle size={50} color="gray" />
+                      </Fragment>
+                    )}
+                  </div>
+                  <div className={styles.s1__chatListItem__nameSection}>
+                    <span className={styles.s1__chatListItem__nameTxt}>
+                      {item?.userName}
+                    </span>
+                    <span className={styles.s1__chatListItem__lastMessageTxt}>
+                      {item.lastMessageUser === user.name
+                        ? 'You'
+                        : item.lastMessageUser}
+                      : {item?.lastMessage}
+                    </span>
+                  </div>
                 </div>
-                <div className={styles.s1__chatListItem__nameSection}>
-                  <span className={styles.s1__chatListItem__nameTxt}>
-                    {item?.userName}
-                  </span>
-                  <span className={styles.s1__chatListItem__lastMessageTxt}>
-                    {item.lastMessageUser === user.name
-                      ? 'You'
-                      : item.lastMessageUser}
-                    : {item?.lastMessage}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       ) : (
         <div className={styles.specificMessages}>
