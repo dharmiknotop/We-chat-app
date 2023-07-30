@@ -162,20 +162,22 @@ const ChattingList = ({ userList }) => {
                   }`}
                 >
                   {/* {console.log('item', item)} */}
-                  <div className="rounded-circle mx-3">
+                  <div className="rounded-circle">
                     {item?.userLogo && (
                       <Image
                         src={item?.userLogo}
                         alt="userLogoImg"
                         width="50"
                         height="50"
-                        className="rounded-circle"
+                        className={`rounded-circle ${styles.s1__userImage}`}
                       />
                     )}
                     {item?.userLogo === '' && (
-                      <Fragment>
-                        <FaUserCircle size={50} color="gray" />
-                      </Fragment>
+                      <FaUserCircle
+                        className={styles.s1__userImage}
+                        size={50}
+                        color="gray"
+                      />
                     )}
                   </div>
                   <div className={styles.s1__chatListItem__nameSection}>

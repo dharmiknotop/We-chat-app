@@ -26,10 +26,14 @@ const ChatList = () => {
             alt="logoImg"
             width="50"
             height="50"
-            className="rounded-circle"
+            className={`rounded-circle ${styles.s__userImage}`}
           />
         ) : (
-          <FaUserCircle size={50} color="gray" />
+          <FaUserCircle
+            size={50}
+            color="gray"
+            className={styles.s__userImage}
+          />
         )}
         <h3 className={styles.s__headerUserName}>{otherUser.name}</h3>
       </div>

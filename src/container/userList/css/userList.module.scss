@@ -17,17 +17,26 @@
     background: #e3e5e7;
 
     &__threeDotIconContainer {
-      cursor: pointer;
-      margin-right: 10px;
       position: relative;
       padding: 0 10px;
+
+      cursor: pointer;
+
+      @media (min-width: 576px) {
+        margin-right: 10px;
+      }
     }
 
     &__heading {
+      font-size: 12px;
       font-weight: 600;
-      font-size: 14px;
-      margin: 0;
+
+      margin-bottom: 0;
       margin-left: 15px;
+
+      @media (min-width: 576px) {
+        font-size: 14px;
+      }
     }
   }
 
