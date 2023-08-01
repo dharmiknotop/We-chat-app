@@ -1,17 +1,29 @@
 .text__left {
-  padding: 5px 30px 5px 15px;
+  padding: 5px 15px;
   text-align: left;
+
+  @media (min-width: 576px) {
+    padding: 5px 30px 5px 15px;
+  }
 }
 
 .text__right {
   text-align: right;
-  padding: 5px 30px 5px 15px;
+  padding: 5px 15px;
+
+  @media (min-width: 576px) {
+    padding: 5px 30px 5px 15px;
+  }
 }
 
 .chats {
-  padding: 5px 20px 5px 10px;
+  padding: 2.5px 15px 2.5px 5px;
   position: relative;
   display: inline-block;
+
+  @media (min-width: 576px) {
+    padding: 5px 30px 5px 15px;
+  }
 
   &__left {
     color: white;
@@ -89,7 +101,13 @@
   }
 
   &__txtContainer {
-    padding-left: 10px;
+    font-size: 12px;
+    padding-left: 5px;
+
+    @media (min-width: 576px) {
+      font-size: 16px;
+      padding-left: 10px;
+    }
   }
 }
 

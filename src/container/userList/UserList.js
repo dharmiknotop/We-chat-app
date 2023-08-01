@@ -130,7 +130,7 @@ const UserList = () => {
   return (
     <div className={styles.s1}>
       <div className={styles.s1__headerContainer}>
-        <div className="d-flex align-items-center ms-3">
+        <div className="d-flex align-items-center">
           {user?.userLogo && (
             <Image
               src={user?.logoUrl}
