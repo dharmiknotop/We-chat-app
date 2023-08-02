@@ -36,14 +36,13 @@ const Register = () => {
   const [user, setUser] = useRecoilState(authUserAtom);
 
   const uploadDetails = () => {
-    if (!validateForm()) {
+    if (validateForm()) {
       return;
     }
-
     register();
   };
 
-  const validateForm = async () => {
+  const validateForm = () => {
     let hasError = false;
 
     let tempError = {
@@ -270,11 +269,6 @@ const Register = () => {
             }}
             className="mt-2"
           />
-          {formDataError.email !== '' && (
-            <span className={styles.errorMessage}>
-              Please Enter Valid Email
-            </span>
-          )}
         </div>
         {requestPostData.loading && (
           <div className="text-center pt-4">

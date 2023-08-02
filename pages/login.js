@@ -34,14 +34,15 @@ const Login = () => {
   const [user, setUser] = useRecoilState(authUserAtom);
 
   const uploadDetails = () => {
-    if (!validateForm()) {
+    if (validateForm()) {
+      console.log(validateForm());
       return;
     }
-
+    console.log('login');
     logIn();
   };
 
-  const validateForm = async () => {
+  const validateForm = () => {
     let hasError = false;
 
     let tempError = {
