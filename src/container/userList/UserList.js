@@ -19,8 +19,6 @@ const UserList = () => {
   const locationRef = useRef();
   const router = useRouter();
 
-  console.log('userList component');
-
   const user = useRecoilValue(authUserAtom);
 
   const [requestGetUser, setRequestGetUser] = useState({
@@ -102,7 +100,12 @@ const UserList = () => {
         success: '',
         error: '',
       });
-      setUserList(user.userList);
+
+      const res = await axios.get(`/api/aboutUser/getUserDetail`, {
+        withCredentials: true,
+      });
+
+      setUserList(res.data.data.userList);
 
       setRequestGetUser({
         loading: false,
@@ -125,7 +128,9 @@ const UserList = () => {
 
   useEffect(() => {
     getUserDetails();
-  }, [user]);
+  }, []);
+
+  console.log('getUserDetails');
 
   return (
     <div className={styles.s1}>
