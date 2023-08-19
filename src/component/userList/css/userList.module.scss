@@ -60,29 +60,6 @@
   }
 }
 
-.search {
-  &__searchOuterContainer {
-    height: 50px;
-    background-color: white;
-    border-bottom: 1px solid #acb2b8;
-    padding: 5px;
-  }
-  &__searchContainer {
-    background-color: #e3e5e7;
-    border-radius: 5px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-
-    &__input {
-      background-color: transparent;
-      border: none;
-      outline: none;
-      width: 100%;
-    }
-  }
-}
-
 .specificMessages {
   height: calc(100vh - 115px);
   overflow-y: auto;

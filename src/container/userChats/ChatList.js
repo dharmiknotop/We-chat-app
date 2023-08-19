@@ -1,10 +1,11 @@
-import dynamic from 'next/dynamic';
-import { memo, useState } from 'react';
-import Image from 'next/image';
+import { useState } from 'react';
 import styles from './css/chatlist.module.scss';
 
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+
 const Chats = dynamic(() => import('@component/chats/Chats'));
-const AddMessage = dynamic(() => import('@component/addMessage/AddMessage'));
+const AddMessage = dynamic(() => import('@features/addMessage/AddMessage'));
 
 import { useRecoilValue } from 'recoil';
 import { theOtherUser, authUserAtom } from '../../recoil/recoil';
@@ -50,4 +51,4 @@ const ChatList = () => {
   );
 };
 
-export default memo(ChatList);
+export default ChatList;

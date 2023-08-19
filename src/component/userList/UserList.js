@@ -1,17 +1,20 @@
+import axios from 'axios';
 import { Fragment, useEffect, useState } from 'react';
-import Image from 'next/image';
-import styles from './css/chattingList.module.scss';
+
+import styles from './css/userList.module.scss';
+
 import Link from 'next/link';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { authUserAtom, messageId, theOtherUser } from '../../recoil/recoil';
 
-import { AiOutlineSearch } from 'react-icons/ai';
-import { FaUserCircle } from 'react-icons/fa';
-import { DebounceInput } from 'react-debounce-input';
-import axios from 'axios';
+import SearchMessages from '@features/searchMessage/SearchMessages';
 
-const ChattingList = ({ userList }) => {
+import { FaUserCircle } from 'react-icons/fa';
+
+const UserList = ({ userList }) => {
   const router = useRouter();
 
   const user = useRecoilValue(authUserAtom);
@@ -130,29 +133,20 @@ const ChattingList = ({ userList }) => {
 
   return (
     <Fragment>
-      <div className={styles.search__searchOuterContainer}>
-        <div className={styles.search__searchContainer}>
-          <AiOutlineSearch className="mx-2" />
-          <DebounceInput
-            debounceTimeout={500}
-            type="text"
-            className={`${styles.search__searchContainer__input}`}
-            value={searchQuery}
-            placeholder={`Search `}
-            onChange={(t) => {
-              setSearchQuery(t.target.value);
-            }}
-          />
-        </div>
-      </div>
-      {/* mapping the user list of the user  */}{' '}
+      <SearchMessages
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+
+      {/* mapping the user list of the user  */}
+
       {searchQuery === '' ? (
         <div className={styles.s1__chatListContainer}>
           {userList &&
             userList?.map((item) => {
               return (
                 <div
-                  key={item.id}
+                  key={item._id}
                   onClick={() => {
                     setChanges(item);
                   }}
@@ -215,7 +209,6 @@ const ChattingList = ({ userList }) => {
                     <div
                       className={styles.specificMessages_container}
                       onClick={(e) => {
-                        // console.log(item);
                         e.preventDefault();
                         setTheChatter({
                           id: item?.id,
@@ -245,4 +238,4 @@ const ChattingList = ({ userList }) => {
   );
 };
 
-export default ChattingList;
+export default UserList;

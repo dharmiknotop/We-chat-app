@@ -1,26 +1,16 @@
 import axios from 'axios';
-import { Fragment, memo, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import useOnClickOutside from '../../hooks/useOnClickOutside';
-import { Modal } from 'react-bootstrap';
-import { useRouter } from 'next/router';
-import { useRecoilState, useRecoilValue } from 'recoil';
-
-import AddUser from '@component/addUser/AddUser';
-
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
 import styles from './css/userList.module.scss';
-import ChattingList from './ChattingList';
-import { authUserAtom } from '../../recoil/recoil';
 
-const UserList = () => {
-  const locationRef = useRef();
-  const router = useRouter();
+import { Modal } from 'react-bootstrap';
 
-  const user = useRecoilValue(authUserAtom);
+const AddUser = dynamic(() => import('@features/addUser/AddUser'));
+const Header = dynamic(() => import('@component/userListHeader/Header'));
+const UserList = dynamic(() => import('@component/userList/UserList'));
 
+const UserListContainer = () => {
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
     success: '',
@@ -29,45 +19,7 @@ const UserList = () => {
 
   const [userList, setUserList] = useState([]);
 
-  const [showDropDown, setShowDropDown] = useState(false);
-
   const [addUserModal, setAddUserModal] = useState(false);
-
-  const logOut = async (item) => {
-    setRequestGetUser({
-      loading: true,
-      success: '',
-      error: '',
-    });
-    try {
-      const res = await axios.post(
-        `/api/auth/logout`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-
-      router.push('/login');
-
-      setRequestGetUser({
-        loading: false,
-        success: 'Added Successfully.',
-        error: '',
-      });
-    } catch (error) {
-      console.log('error: ', error);
-      setRequestGetUser({
-        loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
-      });
-    }
-  };
-
-  const changeDropDownStatus = () => {
-    setShowDropDown(false);
-  };
 
   const renderAddUserModal = () => {
     return (
@@ -93,7 +45,7 @@ const UserList = () => {
     );
   };
 
-  const getUserDetails = async (item) => {
+  const getUserDetails = async () => {
     try {
       setRequestGetUser({
         loading: true,
@@ -122,66 +74,13 @@ const UserList = () => {
     }
   };
 
-  // this hook is used to close the dropdown if the user click anywhere outside the dropdown section
-
-  useOnClickOutside(locationRef, changeDropDownStatus);
-
   useEffect(() => {
     getUserDetails();
   }, []);
 
-  console.log('getUserDetails');
-
   return (
     <div className={styles.s1}>
-      <div className={styles.s1__headerContainer}>
-        <div className="d-flex align-items-center">
-          {user?.userLogo && (
-            <Image
-              src={user?.logoUrl}
-              alt="userLogoImg"
-              width="50"
-              height="50"
-              className="rounded-circle "
-            />
-          )}
-          <h3 className={styles.s1__headerContainer__heading}>{user?.name}</h3>
-        </div>
-        {/* Header Section */}
-        <div
-          className={styles.s1__headerContainer__threeDotIconContainer}
-          ref={locationRef}
-        >
-          <BsThreeDotsVertical
-            onClick={() => {
-              setShowDropDown(!showDropDown);
-            }}
-          />
-          <ul
-            className={
-              showDropDown === true
-                ? `${styles.s1__dropdownActive} ${styles.s1__dropdown}  `
-                : `${styles.s1__dropdown} `
-            }
-          >
-            <li
-              onClick={() => {
-                setAddUserModal(true);
-                setShowDropDown(false);
-              }}
-            >
-              Add a user
-            </li>
-            <li
-              onClick={() => {
-                logOut();
-              }}
-            >
-              log out
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Header />
 
       {requestGetUser.loading && (
         <div className="text-center pt-4">
@@ -189,7 +88,7 @@ const UserList = () => {
         </div>
       )}
       {!requestGetUser.loading && requestGetUser.success !== '' && (
-        <ChattingList userList={userList} />
+        <UserList userList={userList} />
       )}
 
       {renderAddUserModal()}
@@ -197,4 +96,4 @@ const UserList = () => {
   );
 };
 
-export default memo(UserList);
+export default UserListContainer;

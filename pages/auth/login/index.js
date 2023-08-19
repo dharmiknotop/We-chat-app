@@ -1,15 +1,20 @@
-import styles from '../styles/register.module.scss';
-import { useEffect, useState } from 'react';
-import inputValidation from '../src/commonFiles/inputValidation';
-import Link from 'next/link';
 import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useRecoilState } from 'recoil';
-import { authUserAtom } from '../src/recoil/recoil';
+import { useState } from 'react';
+
+import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+import { useRecoilState } from 'recoil';
+import { authUserAtom } from '@src/recoil/recoil';
+
+import styles from '@src/styles/register.module.scss';
+
+import { isInputEmpty } from '@src/utils/inputValidation';
+
 import { RiAlertFill } from 'react-icons/ri';
 
-const Register = () => {
+const Login = () => {
   const router = useRouter();
 
   const [requestPostData, setRequestPostData] = useState({
@@ -19,8 +24,6 @@ const Register = () => {
   });
 
   const [showBtn, setShowBtn] = useState(true);
-
-  const [selectedImage, setSelectedImage] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -39,37 +42,30 @@ const Register = () => {
     if (validateForm()) {
       return;
     }
-    register();
+
+    logIn();
   };
 
   const validateForm = () => {
     let hasError = false;
 
     let tempError = {
-      name: '',
       email: '',
       password: '',
     };
 
-    tempError.name = inputValidation.isInputEmpty(formData.name);
-    if (tempError.name !== '') {
-      hasError = true;
-      setShowBtn(false);
-    }
-
-    tempError.email = inputValidation.isInputEmailValid(formData.email);
+    tempError.email = isInputEmpty(formData.email);
     if (tempError.email !== '') {
       hasError = true;
       setShowBtn(false);
     }
 
-    tempError.password = inputValidation.isInputPasswordValid(
-      formData.password
-    );
+    tempError.password = isInputEmpty(formData.password);
     if (tempError.password !== '') {
       hasError = true;
       setShowBtn(false);
     }
+
     setFormDataError({
       ...tempError,
     });
@@ -77,23 +73,17 @@ const Register = () => {
     return hasError;
   };
 
-  const register = async () => {
+  const logIn = async () => {
     setRequestPostData({
       loading: true,
       success: '',
       error: '',
     });
 
-    let logoUrl;
-
-    if (selectedImage) {
-      logoUrl = await getImageUrl();
-    }
-
     try {
       const res = await axios.post(
-        `api/auth/register`,
-        { ...formData, logoUrl },
+        `/api/auth/login`,
+        { ...formData },
         {
           withCredentials: true,
         }
@@ -103,39 +93,32 @@ const Register = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
+        isLoggedIn: 'true',
       });
 
       setRequestPostData({
         loading: false,
-        success: 'sign up done succesfully.',
+        success: 'Succesfully logged in',
         error: '',
       });
 
       router.push('/');
     } catch (error) {
       console.log('error: ', error);
-      setRequestPostData({
-        loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
-      });
+      if (error.response) {
+        setRequestPostData({
+          loading: false,
+          success: '',
+          error: error.response.data.message,
+        });
+      } else {
+        setRequestPostData({
+          loading: false,
+          success: '',
+          error: 'Something went wrong',
+        });
+      }
     }
-  };
-
-  const getImageUrl = async () => {
-    const form = new FormData();
-
-    form.append('file', selectedImage);
-    form.append('upload_preset', 'weChat');
-    form.append('cloud_name', 'dflwrsxue');
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/dflwrsxue/image/upload`,
-      { method: 'POST', body: form }
-    );
-    const res2 = await res.json();
-
-    return res2.url;
   };
 
   const logInWithDefaultUser = async () => {
@@ -147,7 +130,7 @@ const Register = () => {
 
     try {
       const res = await axios.post(
-        `api/auth/login`,
+        `/api/auth/login`,
         {
           name: 'Default User',
           email: 'Default User',
@@ -165,22 +148,13 @@ const Register = () => {
         isLoggedIn: 'true',
       });
 
-      console.log(res.data.data);
-
-      setRequestPostData({
-        loading: true,
-        success: 'sign up done succesfully.',
-        error: '',
-      });
-
-      console.log(user);
-
-      router.push('/');
       setRequestPostData({
         loading: false,
-        success: 'sign up done succesfully.',
+        success: 'Succesfully logged in',
         error: '',
       });
+
+      router.push('/');
     } catch (error) {
       console.log('error: ', error);
       if (error.response) {
@@ -202,31 +176,15 @@ const Register = () => {
   return (
     <div className={styles.s}>
       <div className={styles.s__registerContainer}>
-        <h2 className={styles.s__title}>Sign up to your account</h2>
-        <h3 className={styles.s__subTitle}>
-          Create a account to chat with the world.
-        </h3>
-        <div className={styles.s__inputContainer}>
-          <label>Name</label>
-          <input
-            type="text"
-            onChange={(val) => {
-              setShowBtn(true);
-              setFormData({
-                ...formData,
-                name: val.target.value,
-              });
-            }}
-          />
+        <h2 className={styles.s__title}>Log in to your account</h2>
+        <h3 className={styles.s__subTitle}>log in to chat with the world.</h3>
 
-          {formDataError.name !== '' && (
-            <span className={styles.errorMessage}>Please Enter Name</span>
-          )}
-        </div>
         <div className={styles.s__inputContainer}>
           <label>Email</label>
           <input
             type="text"
+            placeholder="Enter your email"
+            value={formData.email}
             onChange={(val) => {
               setShowBtn(true);
               setFormData({
@@ -244,7 +202,9 @@ const Register = () => {
         <div className={styles.s__inputContainer}>
           <label>Password</label>
           <input
-            type="password"
+            type="text"
+            placeholder="Enter your password"
+            value={formData.password}
             onChange={(val) => {
               setShowBtn(true);
               setFormData({
@@ -258,17 +218,6 @@ const Register = () => {
               Please Enter Valid password
             </span>
           )}
-        </div>
-        <div className="mt-2">
-          <label>User Logo</label>
-          <input
-            type="file"
-            accept=".jpg,.png,.jpeg"
-            onChange={(e) => {
-              setSelectedImage(e.target.files[0]);
-            }}
-            className="mt-2"
-          />
         </div>
         {requestPostData.loading && (
           <div className="text-center pt-4">
@@ -292,10 +241,7 @@ const Register = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.name !== '' &&
-              formData.email !== '' &&
-              formData.password !== '' &&
-              showBtn
+              formData.email !== '' && formData.password !== '' && showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
             }`}
@@ -304,7 +250,7 @@ const Register = () => {
             }}
           >
             {' '}
-            get started
+            Log in
           </button>
           <button
             className={`${styles.s__defaultUserBtn}`}
@@ -316,7 +262,7 @@ const Register = () => {
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
-          Have an account ? <Link href="/login">Log In</Link>
+          New to we-chat? <Link href="/auth/register">Sign Up</Link>
         </span>
       </div>
 
@@ -336,9 +282,9 @@ const Register = () => {
           <br />
           log in if already registered.
         </h6>
-        <Link href="/login">
+        <Link href="/auth/register">
           <div className={styles.s2__backgroundImgContainer__logInTxt}>
-            Log in to your account
+            Sign up to your account
             <div className={styles.s2__underline}></div>
           </div>
         </Link>
@@ -365,4 +311,4 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default Register;
+export default Login;

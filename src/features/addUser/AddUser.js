@@ -11,17 +11,13 @@ import { FaUserCircle } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
 
 const AddUser = ({ setAddUserModal, getUserDetails }) => {
-  let displayOrNot = true;
-
-  let tempUserArr = [];
-
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
     success: '',
     error: '',
   });
 
-  const userList = useRecoilValue(authUserAtom);
+  const user = useRecoilValue(authUserAtom);
 
   const [allUsers, setAllUsers] = useState([]);
 
@@ -56,6 +52,14 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
     }
   };
 
+  const uploadDetails = (item) => {
+    if (checkIfUserExists(item) === true) {
+      return;
+    }
+
+    addUserToChatSection(item);
+  };
+
   const addUserToChatSection = async (item) => {
     setRequestGetUser({
       loading: true,
@@ -63,7 +67,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
       error: '',
     });
     try {
-      const res = await axios.post(
+      await axios.post(
         `/api/aboutUser/addUser`,
         {
           otherUserId: item._id,
@@ -75,8 +79,9 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
         }
       );
 
-      getUserDetails();
       setAddUserModal(false);
+
+      getUserDetails();
 
       setRequestGetUser({
         loading: false,
@@ -91,6 +96,21 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
         error: 'Some unexpected error occur.',
       });
     }
+  };
+
+  const checkIfUserExists = (item) => {
+    let userList = user?.userList;
+
+    for (let i = 0; i < userList.length; i++) {
+      if (item._id === userList[i].userId) {
+        toast.error('User Already exist', {
+          position: 'bottom-center',
+        });
+
+        return true;
+      }
+    }
+    return false;
   };
 
   useEffect(() => {
@@ -117,55 +137,35 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
       {!requestGetUser.loading && (
         <div>
           {allUsers?.map((item) => {
-            for (let i = 0; i < tempUserArr?.length; i++) {
-              console.log(item?._id === tempUserArr[i]);
-            }
-
+            console.log(item);
             return (
-              <Fragment key={item?.id}>
-                <div
-                  className={styles.s__userContainer}
-                  onClick={() => {
-                    console.log(item);
-                    for (let i = 0; i < userList?.userList?.length; i++) {
-                      if (item?._id === userList?.userList[i].userId) {
-                        toast.error('User Already exist', {
-                          position: 'bottom-center',
-                        });
-
-                        return;
-                      }
-                      // console.log(tempUserArr);
-                    }
-
-                    addUserToChatSection(item);
-                  }}
-                >
-                  <Fragment>
-                    <div>
-                      {item?.logoUrl && (
-                        <Image
-                          src={item?.logoUrl}
-                          alt="User Image"
-                          width="50"
-                          height="50"
-                          className="rounded-circle"
-                        />
-                      )}
-                      {item?.logoUrl === '' && (
-                        <Fragment>
-                          <FaUserCircle size={50} color="gray" />
-                        </Fragment>
-                      )}
-                    </div>
-                    <h1 className={styles.s__userName}> {item.name}</h1>
-                  </Fragment>
+              <div
+                key={item._id}
+                className={styles.s__userContainer}
+                onClick={() => {
+                  uploadDetails(item);
+                }}
+              >
+                <div>
+                  {item?.logoUrl && (
+                    <Image
+                      src={item?.logoUrl}
+                      alt="User Image"
+                      width="50"
+                      height="50"
+                      className="rounded-circle"
+                    />
+                  )}
+                  {item?.logoUrl === '' && (
+                    <FaUserCircle size={50} color="gray" />
+                  )}
                 </div>
-              </Fragment>
+                <h1 className={styles.s__userName}> {item.name}</h1>
+              </div>
             );
           })}
         </div>
-      )}{' '}
+      )}
       <Toaster position="bottom-center" reverseOrder={false} />
     </div>
   );

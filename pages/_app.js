@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
-import '../styles/globals.css';
+import '@src/styles/globals.css';
 import { RecoilRoot } from 'recoil';
-import ValidateSession from '../src/commonFiles/ValidateUser';
+import ValidateSession from '../src/utils/ValidateUser';
 
 function MyApp({ Component, pageProps }) {
   return (

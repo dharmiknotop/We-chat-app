@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { memo, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { authUserAtom, theOtherUser } from '../recoil/recoil';
@@ -40,4 +40,4 @@ const Index = () => {
   );
 };
 
-export default memo(Index);
+export default Index;

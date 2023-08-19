@@ -7,7 +7,7 @@ export function withAuth(gssp) {
     if (!token || token === undefined || token === '' || token === 'null') {
       return {
         redirect: {
-          destination: '/login',
+          destination: '/auth/login',
           permanent: false,
         },
       };

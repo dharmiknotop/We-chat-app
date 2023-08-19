@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "paths": {
+      "@src/*": ["./src/*"],
       "@component/*": ["./src/component/*"],
       "@container/*": ["./src/container/*"],
+      "@features/*": ["./src/features/*"],
       "@backend/*": ["./backend/*"]
     }
   }

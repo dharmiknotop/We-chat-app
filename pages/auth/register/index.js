@@ -1,15 +1,23 @@
-import { useEffect, useState } from 'react';
-import inputValidation from '../src/commonFiles/inputValidation';
-import Link from 'next/link';
 import axios from 'axios';
-import styles from '../styles/register.module.scss';
-import { useRouter } from 'next/router';
-import { useRecoilState } from 'recoil';
-import { authUserAtom } from '../src/recoil/recoil';
+import styles from '@src/styles/register.module.scss';
+import { useState } from 'react';
+
+import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+import { useRecoilState } from 'recoil';
+import { authUserAtom } from '@src/recoil/recoil';
+
 import { RiAlertFill } from 'react-icons/ri';
 
-const Login = () => {
+import {
+  isInputEmailValid,
+  isInputEmpty,
+  isInputPasswordValid,
+} from '@src/utils/inputValidation';
+
+const Register = () => {
   const router = useRouter();
 
   const [requestPostData, setRequestPostData] = useState({
@@ -19,6 +27,8 @@ const Login = () => {
   });
 
   const [showBtn, setShowBtn] = useState(true);
+
+  const [selectedImage, setSelectedImage] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -35,33 +45,37 @@ const Login = () => {
 
   const uploadDetails = () => {
     if (validateForm()) {
-      console.log(validateForm());
       return;
     }
-    console.log('login');
-    logIn();
+    register();
   };
 
   const validateForm = () => {
     let hasError = false;
 
     let tempError = {
+      name: '',
       email: '',
       password: '',
     };
 
-    tempError.email = inputValidation.isInputEmpty(formData.email);
+    tempError.name = isInputEmpty(formData.name);
+    if (tempError.name !== '') {
+      hasError = true;
+      setShowBtn(false);
+    }
+
+    tempError.email = isInputEmailValid(formData.email);
     if (tempError.email !== '') {
       hasError = true;
       setShowBtn(false);
     }
 
-    tempError.password = inputValidation.isInputEmpty(formData.password);
+    tempError.password = isInputPasswordValid(formData.password);
     if (tempError.password !== '') {
       hasError = true;
       setShowBtn(false);
     }
-
     setFormDataError({
       ...tempError,
     });
@@ -69,17 +83,23 @@ const Login = () => {
     return hasError;
   };
 
-  const logIn = async () => {
+  const register = async () => {
     setRequestPostData({
       loading: true,
       success: '',
       error: '',
     });
 
+    let logoUrl;
+
+    if (selectedImage) {
+      logoUrl = await getImageUrl();
+    }
+
     try {
       const res = await axios.post(
-        `api/auth/login`,
-        { ...formData },
+        `/api/auth/register`,
+        { ...formData, logoUrl },
         {
           withCredentials: true,
         }
@@ -89,32 +109,39 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-        isLoggedIn: 'true',
       });
 
       setRequestPostData({
         loading: false,
-        success: 'sign up done succesfully.',
+        success: 'Successfully signed in',
         error: '',
       });
 
       router.push('/');
     } catch (error) {
       console.log('error: ', error);
-      if (error.response) {
-        setRequestPostData({
-          loading: false,
-          success: '',
-          error: error.response.data.message,
-        });
-      } else {
-        setRequestPostData({
-          loading: false,
-          success: '',
-          error: 'Something went wrong',
-        });
-      }
+      setRequestPostData({
+        loading: false,
+        success: '',
+        error: 'Some unexpected error occur.',
+      });
     }
+  };
+
+  const getImageUrl = async () => {
+    const form = new FormData();
+
+    form.append('file', selectedImage);
+    form.append('upload_preset', 'weChat');
+    form.append('cloud_name', 'dflwrsxue');
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/dflwrsxue/image/upload`,
+      { method: 'POST', body: form }
+    );
+    const res2 = await res.json();
+
+    return res2.url;
   };
 
   const logInWithDefaultUser = async () => {
@@ -144,9 +171,11 @@ const Login = () => {
         isLoggedIn: 'true',
       });
 
+      console.log(res.data.data);
+
       setRequestPostData({
-        loading: false,
-        success: 'sign up done succesfully.',
+        loading: true,
+        success: 'Succesfully signed in',
         error: '',
       });
 
@@ -172,14 +201,33 @@ const Login = () => {
   return (
     <div className={styles.s}>
       <div className={styles.s__registerContainer}>
-        <h2 className={styles.s__title}>Log in to your account</h2>
-        <h3 className={styles.s__subTitle}>log in to chat with the world.</h3>
+        <h2 className={styles.s__title}>Sign up to your account</h2>
+        <h3 className={styles.s__subTitle}>
+          Create a account to chat with the world.
+        </h3>
+        <div className={styles.s__inputContainer}>
+          <label>Name</label>
+          <input
+            type="text"
+            placeholder="Enter your name"
+            onChange={(val) => {
+              setShowBtn(true);
+              setFormData({
+                ...formData,
+                name: val.target.value,
+              });
+            }}
+          />
 
+          {formDataError.name !== '' && (
+            <span className={styles.errorMessage}>Please Enter Name</span>
+          )}
+        </div>
         <div className={styles.s__inputContainer}>
           <label>Email</label>
           <input
             type="text"
-            value={formData.email}
+            placeholder="Enter your email"
             onChange={(val) => {
               setShowBtn(true);
               setFormData({
@@ -197,8 +245,8 @@ const Login = () => {
         <div className={styles.s__inputContainer}>
           <label>Password</label>
           <input
-            type="text"
-            value={formData.password}
+            type="password"
+            placeholder="Enter your password"
             onChange={(val) => {
               setShowBtn(true);
               setFormData({
@@ -212,6 +260,17 @@ const Login = () => {
               Please Enter Valid password
             </span>
           )}
+        </div>
+        <div className="mt-2">
+          <label>User logo</label>
+          <input
+            type="file"
+            accept=".jpg,.png,.jpeg"
+            onChange={(e) => {
+              setSelectedImage(e.target.files[0]);
+            }}
+            className="mt-2"
+          />
         </div>
         {requestPostData.loading && (
           <div className="text-center pt-4">
@@ -235,7 +294,10 @@ const Login = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.email !== '' && formData.password !== '' && showBtn
+              formData.name !== '' &&
+              formData.email !== '' &&
+              formData.password !== '' &&
+              showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
             }`}
@@ -243,8 +305,7 @@ const Login = () => {
               uploadDetails();
             }}
           >
-            {' '}
-            Log in
+            Sign up
           </button>
           <button
             className={`${styles.s__defaultUserBtn}`}
@@ -252,11 +313,11 @@ const Login = () => {
               logInWithDefaultUser();
             }}
           >
-            Default User
+            Default user
           </button>
         </div>
         <span className={`${styles.s__alreadyHaveAnAccTxt}`}>
-          Have an account ? <Link href="/register">Sign Up</Link>
+          Have an account ? <Link href="/auth/login">Log In</Link>
         </span>
       </div>
 
@@ -276,9 +337,9 @@ const Login = () => {
           <br />
           log in if already registered.
         </h6>
-        <Link href="/register">
+        <Link href="/auth/login">
           <div className={styles.s2__backgroundImgContainer__logInTxt}>
-            Sign in to your account
+            Log in to your account
             <div className={styles.s2__underline}></div>
           </div>
         </Link>
@@ -305,4 +366,4 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default Login;
+export default Register;
