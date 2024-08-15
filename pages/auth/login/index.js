@@ -132,8 +132,8 @@ const Login = () => {
         `/api/auth/login`,
         {
           name: "Default User",
-          email: "Default User",
-          password: "Default User",
+          email: "Default@gmail.com",
+          password: "Dhar@123",
         },
         {
           withCredentials: true,
