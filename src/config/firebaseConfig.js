@@ -11,12 +11,5 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 initializeApp(firebaseConfig);
-console.log("firebase connected");
-console.log(process.env.NEXT_PUBLIC_API_KEY);
-console.log(process.env.NEXT_PUBLIC_AUTH_DOMAIN);
-console.log(process.env.NEXT_PUBLIC_PROJECT_ID);
-console.log(process.env.NEXT_PUBLIC_SENDER_ID);
-console.log(process.env.NEXT_PUBLIC_APP_ID);
-console.log(process.env.NEXT_PUBLIC_MEASUREMENT_ID);
 
 export const db = getFirestore();
