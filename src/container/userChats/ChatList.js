@@ -1,16 +1,15 @@
-import { useState } from 'react';
-import styles from './css/chatlist.module.scss';
+import { useState } from "react";
+import styles from "./css/chatlist.module.scss";
 
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
+import dynamic from "next/dynamic";
 
-const Chats = dynamic(() => import('@component/chats/Chats'));
-const AddMessage = dynamic(() => import('@features/addMessage/AddMessage'));
+const Chats = dynamic(() => import("@component/chats/Chats"));
+const AddMessage = dynamic(() => import("@features/addMessage/AddMessage"));
 
-import { useRecoilValue } from 'recoil';
-import { theOtherUser, authUserAtom } from '../../recoil/recoil';
+import { useRecoilValue } from "recoil";
+import { theOtherUser, authUserAtom } from "../../recoil/recoil";
 
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from "react-icons/fa";
 
 const ChatList = () => {
   const [isReplying, setIsReplying] = useState(false);
@@ -21,8 +20,8 @@ const ChatList = () => {
   return (
     <div className={styles.s__containerOuter}>
       <div className={styles.s__headerContainer}>
-        {otherUser?.logo !== '' ? (
-          <Image
+        {otherUser?.logo !== "" ? (
+          <img
             src={otherUser?.logo}
             alt="logoImg"
             width="50"

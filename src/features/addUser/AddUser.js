@@ -1,20 +1,19 @@
-import axios from 'axios';
-import React, { Fragment, useEffect, useState } from 'react';
-import styles from './css/addUser.module.scss';
-import Image from 'next/image';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { authUserAtom } from '../../recoil/recoil';
+import axios from "axios";
+import React, { Fragment, useEffect, useState } from "react";
+import styles from "./css/addUser.module.scss";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authUserAtom } from "../../recoil/recoil";
 
-import { ImCross } from 'react-icons/im';
-import { FaUserCircle } from 'react-icons/fa';
+import { ImCross } from "react-icons/im";
+import { FaUserCircle } from "react-icons/fa";
 
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 const AddUser = ({ setAddUserModal, getUserDetails }) => {
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
-    success: '',
-    error: '',
+    success: "",
+    error: "",
   });
 
   const user = useRecoilValue(authUserAtom);
@@ -24,8 +23,8 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
   const getAllUser = async () => {
     setRequestGetUser({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
     try {
       const res = await axios.post(
@@ -39,15 +38,15 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
       setAllUsers(res.data.data);
       setRequestGetUser({
         loading: false,
-        success: 'Added Successfully.',
-        error: '',
+        success: "Added Successfully.",
+        error: "",
       });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestGetUser({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
@@ -63,8 +62,8 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
   const addUserToChatSection = async (item) => {
     setRequestGetUser({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
     try {
       await axios.post(
@@ -85,26 +84,26 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
 
       setRequestGetUser({
         loading: false,
-        success: 'Added Successfully.',
-        error: '',
+        success: "Added Successfully.",
+        error: "",
       });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestGetUser({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
 
   const checkIfUserExists = (item) => {
-    let userList = user?.userList;
+    let userList = item.userList;
 
     for (let i = 0; i < userList.length; i++) {
       if (item._id === userList[i].userId) {
-        toast.error('User Already exist', {
-          position: 'bottom-center',
+        toast.error("User Already exist", {
+          position: "bottom-center",
         });
 
         return true;
@@ -148,7 +147,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
               >
                 <div>
                   {item?.logoUrl && (
-                    <Image
+                    <img
                       src={item?.logoUrl}
                       alt="User Image"
                       width="50"
@@ -156,7 +155,7 @@ const AddUser = ({ setAddUserModal, getUserDetails }) => {
                       className="rounded-circle"
                     />
                   )}
-                  {item?.logoUrl === '' && (
+                  {item?.logoUrl === "" && (
                     <FaUserCircle size={50} color="gray" />
                   )}
                 </div>

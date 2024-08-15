@@ -1,44 +1,43 @@
-import axios from 'axios';
-import styles from '@src/styles/register.module.scss';
-import { useState } from 'react';
+import axios from "axios";
+import styles from "@src/styles/register.module.scss";
+import { useState } from "react";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { useRecoilState } from 'recoil';
-import { authUserAtom } from '@src/recoil/recoil';
+import { useRecoilState } from "recoil";
+import { authUserAtom } from "@src/recoil/recoil";
 
-import { RiAlertFill } from 'react-icons/ri';
+import { RiAlertFill } from "react-icons/ri";
 
 import {
   isInputEmailValid,
   isInputEmpty,
   isInputPasswordValid,
-} from '@src/utils/inputValidation';
+} from "@src/utils/inputValidation";
 
 const Register = () => {
   const router = useRouter();
 
   const [requestPostData, setRequestPostData] = useState({
     loading: false,
-    success: '',
-    error: '',
+    success: "",
+    error: "",
   });
 
   const [showBtn, setShowBtn] = useState(true);
 
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
   const [formDataError, setFormDataError] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
 
   const [user, setUser] = useRecoilState(authUserAtom);
@@ -54,25 +53,25 @@ const Register = () => {
     let hasError = false;
 
     let tempError = {
-      name: '',
-      email: '',
-      password: '',
+      name: "",
+      email: "",
+      password: "",
     };
 
     tempError.name = isInputEmpty(formData.name);
-    if (tempError.name !== '') {
+    if (tempError.name !== "") {
       hasError = true;
       setShowBtn(false);
     }
 
     tempError.email = isInputEmailValid(formData.email);
-    if (tempError.email !== '') {
+    if (tempError.email !== "") {
       hasError = true;
       setShowBtn(false);
     }
 
     tempError.password = isInputPasswordValid(formData.password);
-    if (tempError.password !== '') {
+    if (tempError.password !== "") {
       hasError = true;
       setShowBtn(false);
     }
@@ -86,8 +85,8 @@ const Register = () => {
   const register = async () => {
     setRequestPostData({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
 
     let logoUrl;
@@ -95,6 +94,8 @@ const Register = () => {
     if (selectedImage) {
       logoUrl = await getImageUrl();
     }
+
+    console.log(logoUrl);
 
     try {
       const res = await axios.post(
@@ -113,17 +114,17 @@ const Register = () => {
 
       setRequestPostData({
         loading: false,
-        success: 'Successfully signed in',
-        error: '',
+        success: "Successfully signed in",
+        error: "",
       });
 
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestPostData({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
@@ -131,13 +132,13 @@ const Register = () => {
   const getImageUrl = async () => {
     const form = new FormData();
 
-    form.append('file', selectedImage);
-    form.append('upload_preset', 'weChat');
-    form.append('cloud_name', 'dflwrsxue');
+    form.append("file", selectedImage);
+    form.append("upload_preset", "weChat");
+    form.append("cloud_name", "dflwrsxue");
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/dflwrsxue/image/upload`,
-      { method: 'POST', body: form }
+      { method: "POST", body: form }
     );
     const res2 = await res.json();
 
@@ -147,52 +148,54 @@ const Register = () => {
   const logInWithDefaultUser = async () => {
     setRequestPostData({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
 
     try {
       const res = await axios.post(
         `api/auth/login`,
         {
-          name: 'Default User',
-          email: 'Default User',
-          password: 'Default User',
+          name: "Default User",
+          email: "Default User",
+          password: "Default User",
         },
         {
           withCredentials: true,
         }
       );
+
+      console.log(res.data);
       setUser({
         id: res.data.data._id,
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-        isLoggedIn: 'true',
+        isLoggedIn: "true",
       });
 
       console.log(res.data.data);
 
       setRequestPostData({
         loading: true,
-        success: 'Succesfully signed in',
-        error: '',
+        success: "Succesfully signed in",
+        error: "",
       });
 
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       if (error.response) {
         setRequestPostData({
           loading: false,
-          success: '',
+          success: "",
           error: error.response.data.message,
         });
       } else {
         setRequestPostData({
           loading: false,
-          success: '',
-          error: 'Something went wrong',
+          success: "",
+          error: "Something went wrong",
         });
       }
     }
@@ -219,7 +222,7 @@ const Register = () => {
             }}
           />
 
-          {formDataError.name !== '' && (
+          {formDataError.name !== "" && (
             <span className={styles.errorMessage}>Please Enter Name</span>
           )}
         </div>
@@ -236,7 +239,7 @@ const Register = () => {
               });
             }}
           />
-          {formDataError.email !== '' && (
+          {formDataError.email !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid Email
             </span>
@@ -255,7 +258,7 @@ const Register = () => {
               });
             }}
           />
-          {formDataError.password !== '' && (
+          {formDataError.password !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid password
             </span>
@@ -277,7 +280,7 @@ const Register = () => {
             <div className="spinner-border text-primary" role="status" />
           </div>
         )}
-        {!requestPostData.loading && requestPostData.error !== '' && (
+        {!requestPostData.loading && requestPostData.error !== "" && (
           <div className={`${styles.errorMessageContainer}`}>
             <div className={`${styles.errorMessageContainer__errorMessage}`}>
               <RiAlertFill className="me-2" />
@@ -286,7 +289,7 @@ const Register = () => {
           </div>
         )}
 
-        {!requestPostData.loading && requestPostData.success !== '' && (
+        {!requestPostData.loading && requestPostData.success !== "" && (
           <div className="text-center pt-2">
             <div className="text-success">{requestPostData.success}</div>
           </div>
@@ -294,9 +297,9 @@ const Register = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.name !== '' &&
-              formData.email !== '' &&
-              formData.password !== '' &&
+              formData.name !== "" &&
+              formData.email !== "" &&
+              formData.password !== "" &&
               showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
@@ -322,12 +325,12 @@ const Register = () => {
       </div>
 
       <div className={styles.s2__backgroundImgContainer}>
-        <Image
+        <img
           className={styles.s2__backgroundImg}
           src="/img/register/backgroundImg.png"
           alt=""
           layout="fill"
-        />{' '}
+        />{" "}
         <h5 className={styles.s2__backgroundImgContainer__title}>
           Get started with account
         </h5>
@@ -349,13 +352,13 @@ const Register = () => {
 };
 
 export async function getServerSideProps({ req }) {
-  const tokens = req?.headers?.cookie?.split('=');
-  const token = (tokens && tokens[1]) || '';
+  const tokens = req?.headers?.cookie?.split("=");
+  const token = (tokens && tokens[1]) || "";
 
-  if (token !== '') {
+  if (token !== "") {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };

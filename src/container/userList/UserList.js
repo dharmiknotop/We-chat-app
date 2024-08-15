@@ -1,20 +1,20 @@
-import axios from 'axios';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import axios from "axios";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
-import styles from './css/userList.module.scss';
+import styles from "./css/userList.module.scss";
 
-import { Modal } from 'react-bootstrap';
+import { Modal } from "react-bootstrap";
 
-const AddUser = dynamic(() => import('@features/addUser/AddUser'));
-const Header = dynamic(() => import('@component/userListHeader/Header'));
-const UserList = dynamic(() => import('@component/userList/UserList'));
+const AddUser = dynamic(() => import("@features/addUser/AddUser"));
+const Header = dynamic(() => import("@component/userListHeader/Header"));
+const UserList = dynamic(() => import("@component/userList/UserList"));
 
 const UserListContainer = () => {
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
-    success: '',
-    error: '',
+    success: "",
+    error: "",
   });
 
   const [userList, setUserList] = useState([]);
@@ -28,12 +28,12 @@ const UserListContainer = () => {
         size="lg"
         onHide={() => setAddUserModal(false)}
         style={{
-          borderRadius: '0px',
+          borderRadius: "0px",
         }}
       >
         <Modal.Body
           style={{
-            padding: '0px',
+            padding: "0px",
           }}
         >
           <AddUser
@@ -49,8 +49,8 @@ const UserListContainer = () => {
     try {
       setRequestGetUser({
         loading: true,
-        success: '',
-        error: '',
+        success: "",
+        error: "",
       });
 
       const res = await axios.get(`/api/aboutUser/getUserDetail`, {
@@ -61,15 +61,15 @@ const UserListContainer = () => {
 
       setRequestGetUser({
         loading: false,
-        success: 'Added Successfully.',
-        error: '',
+        success: "Added Successfully.",
+        error: "",
       });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestGetUser({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
@@ -80,14 +80,14 @@ const UserListContainer = () => {
 
   return (
     <div className={styles.s1}>
-      <Header />
+      <Header setAddUserModal={setAddUserModal} />
 
       {requestGetUser.loading && (
         <div className="text-center pt-4">
           <div className="spinner-border text-primary" role="status" />
         </div>
       )}
-      {!requestGetUser.loading && requestGetUser.success !== '' && (
+      {!requestGetUser.loading && requestGetUser.success !== "" && (
         <UserList userList={userList} />
       )}
 

@@ -1,17 +1,19 @@
-import { useRef, useState } from 'react';
-import styles from './css/header.module.scss';
+import { useRef, useState } from "react";
+import styles from "./css/header.module.scss";
 
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
-import { useRecoilValue } from 'recoil';
-import { authUserAtom } from '@src/recoil/recoil';
+import { useRecoilValue } from "recoil";
+import { authUserAtom } from "@src/recoil/recoil";
 
-import useOnClickOutside from '../../hooks/useOnClickOutside';
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BsThreeDotsVertical } from "react-icons/bs";
+import axios from "axios";
 
-const Header = () => {
+const Header = (props) => {
+  let { setAddUserModal } = props;
+
   const [showDropDown, setShowDropDown] = useState(false);
 
   const locationRef = useRef();
@@ -19,11 +21,17 @@ const Header = () => {
 
   const user = useRecoilValue(authUserAtom);
 
+  const [requestGetUser, setRequestGetUser] = useState({
+    loading: false,
+    success: "",
+    error: "",
+  });
+
   const logOut = async () => {
     setRequestGetUser({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
     try {
       const res = await axios.post(
@@ -34,19 +42,19 @@ const Header = () => {
         }
       );
 
-      router.push('/auth/login');
+      router.push("/auth/login");
 
       setRequestGetUser({
         loading: false,
-        success: 'Added Successfully.',
-        error: '',
+        success: "Added Successfully.",
+        error: "",
       });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestGetUser({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
@@ -62,8 +70,8 @@ const Header = () => {
   return (
     <div className={styles.s1}>
       <div className="d-flex align-items-center">
-        {user?.userLogo && (
-          <Image
+        {user?.logoUrl && (
+          <img
             src={user?.logoUrl}
             alt="userLogoImg"
             width="50"

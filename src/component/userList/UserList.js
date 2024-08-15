@@ -1,18 +1,17 @@
-import axios from 'axios';
-import { Fragment, useEffect, useState } from 'react';
+import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 
-import styles from './css/userList.module.scss';
+import styles from "./css/userList.module.scss";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { authUserAtom, messageId, theOtherUser } from '../../recoil/recoil';
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authUserAtom, messageId, theOtherUser } from "../../recoil/recoil";
 
-import SearchMessages from '@features/searchMessage/SearchMessages';
+import SearchMessages from "@features/searchMessage/SearchMessages";
 
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from "react-icons/fa";
 
 const UserList = ({ userList }) => {
   const router = useRouter();
@@ -25,27 +24,27 @@ const UserList = ({ userList }) => {
 
   const [requestGetMessages, setRequestGetMessages] = useState({
     loading: false,
-    success: '',
-    error: '',
+    success: "",
+    error: "",
   });
 
   const [requestGetUser, setRequestGetUser] = useState({
     loading: false,
-    success: '',
-    error: '',
+    success: "",
+    error: "",
   });
 
-  const [chatRoomId, setChatRoomId] = useState('');
+  const [chatRoomId, setChatRoomId] = useState("");
 
   const [specificMessages, setSpecificMessages] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getSpecificMessages = async () => {
     setRequestGetMessages({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
     try {
       const res = await axios.post(
@@ -60,15 +59,15 @@ const UserList = ({ userList }) => {
 
       setRequestGetMessages({
         loading: false,
-        success: 'Added Successfully.',
-        error: '',
+        success: "Added Successfully.",
+        error: "",
       });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestGetMessages({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
@@ -76,8 +75,8 @@ const UserList = ({ userList }) => {
   const getChatRoomId = async (item) => {
     setRequestGetUser({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
     try {
       const res = await axios.post(
@@ -94,21 +93,21 @@ const UserList = ({ userList }) => {
 
       setRequestGetUser({
         loading: false,
-        success: 'Added Successfully.',
-        error: '',
+        success: "Added Successfully.",
+        error: "",
       });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       setRequestGetUser({
         loading: false,
-        success: '',
-        error: 'Some unexpected error occur.',
+        success: "",
+        error: "Some unexpected error occur.",
       });
     }
   };
 
   const setChanges = (item) => {
-    if (item?.chatRoomId === '') {
+    if (item?.chatRoomId === "") {
       getChatRoomId(item);
       setTheChatter({
         id: item?.userId,
@@ -140,7 +139,7 @@ const UserList = ({ userList }) => {
 
       {/* mapping the user list of the user  */}
 
-      {searchQuery === '' ? (
+      {searchQuery === "" ? (
         <div className={styles.s1__chatListContainer}>
           {userList &&
             userList?.map((item) => {
@@ -155,10 +154,9 @@ const UserList = ({ userList }) => {
                     styles.s1__chatListItemActive
                   }`}
                 >
-                  {/* {console.log('item', item)} */}
                   <div className="rounded-circle">
                     {item?.userLogo && (
-                      <Image
+                      <img
                         src={item?.userLogo}
                         alt="userLogoImg"
                         width="50"
@@ -166,7 +164,7 @@ const UserList = ({ userList }) => {
                         className={`rounded-circle ${styles.s1__userImage}`}
                       />
                     )}
-                    {item?.userLogo === '' && (
+                    {item?.userLogo === "" && (
                       <FaUserCircle
                         className={styles.s1__userImage}
                         size={50}
@@ -180,7 +178,7 @@ const UserList = ({ userList }) => {
                     </span>
                     <span className={styles.s1__chatListItem__lastMessageTxt}>
                       {item.lastMessageUser === user.name
-                        ? 'You'
+                        ? "You"
                         : item.lastMessageUser}
                       : {item?.lastMessage}
                     </span>

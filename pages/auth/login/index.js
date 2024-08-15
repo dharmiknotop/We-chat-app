@@ -1,39 +1,38 @@
-import axios from 'axios';
-import { useState } from 'react';
+import axios from "axios";
+import { useState } from "react";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { useRecoilState } from 'recoil';
-import { authUserAtom } from '@src/recoil/recoil';
+import { useRecoilState } from "recoil";
+import { authUserAtom } from "@src/recoil/recoil";
 
-import styles from '@src/styles/register.module.scss';
+import styles from "@src/styles/register.module.scss";
 
-import { isInputEmpty } from '@src/utils/inputValidation';
+import { isInputEmpty } from "@src/utils/inputValidation";
 
-import { RiAlertFill } from 'react-icons/ri';
+import { RiAlertFill } from "react-icons/ri";
 
 const Login = () => {
   const router = useRouter();
 
   const [requestPostData, setRequestPostData] = useState({
     loading: false,
-    success: '',
-    error: '',
+    success: "",
+    error: "",
   });
 
   const [showBtn, setShowBtn] = useState(true);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
   const [formDataError, setFormDataError] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
 
   const [user, setUser] = useRecoilState(authUserAtom);
@@ -50,18 +49,18 @@ const Login = () => {
     let hasError = false;
 
     let tempError = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
 
     tempError.email = isInputEmpty(formData.email);
-    if (tempError.email !== '') {
+    if (tempError.email !== "") {
       hasError = true;
       setShowBtn(false);
     }
 
     tempError.password = isInputEmpty(formData.password);
-    if (tempError.password !== '') {
+    if (tempError.password !== "") {
       hasError = true;
       setShowBtn(false);
     }
@@ -76,8 +75,8 @@ const Login = () => {
   const logIn = async () => {
     setRequestPostData({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
 
     try {
@@ -93,29 +92,29 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-        isLoggedIn: 'true',
+        isLoggedIn: "true",
       });
 
       setRequestPostData({
         loading: false,
-        success: 'Succesfully logged in',
-        error: '',
+        success: "Succesfully logged in",
+        error: "",
       });
 
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       if (error.response) {
         setRequestPostData({
           loading: false,
-          success: '',
+          success: "",
           error: error.response.data.message,
         });
       } else {
         setRequestPostData({
           loading: false,
-          success: '',
-          error: 'Something went wrong',
+          success: "",
+          error: "Something went wrong",
         });
       }
     }
@@ -124,17 +123,17 @@ const Login = () => {
   const logInWithDefaultUser = async () => {
     setRequestPostData({
       loading: true,
-      success: '',
-      error: '',
+      success: "",
+      error: "",
     });
 
     try {
       const res = await axios.post(
         `/api/auth/login`,
         {
-          name: 'Default User',
-          email: 'Default User',
-          password: 'Default User',
+          name: "Default User",
+          email: "Default User",
+          password: "Default User",
         },
         {
           withCredentials: true,
@@ -145,29 +144,29 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         logoUrl: res.data.data.logoUrl,
-        isLoggedIn: 'true',
+        isLoggedIn: "true",
       });
 
       setRequestPostData({
         loading: false,
-        success: 'Succesfully logged in',
-        error: '',
+        success: "Succesfully logged in",
+        error: "",
       });
 
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       if (error.response) {
         setRequestPostData({
           loading: false,
-          success: '',
+          success: "",
           error: error.response.data.message,
         });
       } else {
         setRequestPostData({
           loading: false,
-          success: '',
-          error: 'Something went wrong',
+          success: "",
+          error: "Something went wrong",
         });
       }
     }
@@ -193,7 +192,7 @@ const Login = () => {
               });
             }}
           />
-          {formDataError.email !== '' && (
+          {formDataError.email !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid Email
             </span>
@@ -213,7 +212,7 @@ const Login = () => {
               });
             }}
           />
-          {formDataError.password !== '' && (
+          {formDataError.password !== "" && (
             <span className={styles.errorMessage}>
               Please Enter Valid password
             </span>
@@ -224,7 +223,7 @@ const Login = () => {
             <div className="spinner-border text-primary" role="status" />
           </div>
         )}
-        {!requestPostData.loading && requestPostData.error !== '' && (
+        {!requestPostData.loading && requestPostData.error !== "" && (
           <div className={`${styles.errorMessageContainer}`}>
             <div className={`${styles.errorMessageContainer__errorMessage}`}>
               <RiAlertFill className="me-2" />
@@ -233,7 +232,7 @@ const Login = () => {
           </div>
         )}
 
-        {!requestPostData.loading && requestPostData.success !== '' && (
+        {!requestPostData.loading && requestPostData.success !== "" && (
           <div className="text-center pt-2">
             <div className="text-success">{requestPostData.success}</div>
           </div>
@@ -241,7 +240,7 @@ const Login = () => {
         <div className={styles.s__btnContainer}>
           <button
             className={`${
-              formData.email !== '' && formData.password !== '' && showBtn
+              formData.email !== "" && formData.password !== "" && showBtn
                 ? styles.s__activeBtn
                 : styles.s__notActiveBtn
             }`}
@@ -249,7 +248,7 @@ const Login = () => {
               uploadDetails();
             }}
           >
-            {' '}
+            {" "}
             Log in
           </button>
           <button
@@ -267,12 +266,12 @@ const Login = () => {
       </div>
 
       <div className={styles.s2__backgroundImgContainer}>
-        <Image
+        <img
           className={styles.s2__backgroundImg}
           src="/img/register/backgroundImg.png"
           alt=""
           layout="fill"
-        />{' '}
+        />{" "}
         <h5 className={styles.s2__backgroundImgContainer__title}>
           Get started with account
         </h5>
@@ -294,13 +293,13 @@ const Login = () => {
 };
 
 export async function getServerSideProps({ req }) {
-  const tokens = req?.headers?.cookie?.split('=');
-  const token = (tokens && tokens[1]) || '';
+  const tokens = req?.headers?.cookie?.split("=");
+  const token = (tokens && tokens[1]) || "";
 
-  if (token !== '') {
+  if (token !== "") {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
